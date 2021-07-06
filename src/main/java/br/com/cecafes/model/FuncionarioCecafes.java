@@ -6,14 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Produto {
+public class FuncionarioCecafes extends Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,10 +24,5 @@ public class Produto {
     private String nome;
     @NotNull
     @NotEmpty
-    private String categoria;
-    @NotNull
-    @NotEmpty
-    private LocalDateTime dataValidade;
-    @ManyToOne
-    private Produtor produtor;
+    private String matricula;
 }
