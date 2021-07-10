@@ -17,6 +17,7 @@ public class Produtor extends Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull
     @NotEmpty
     private String nome;
@@ -26,7 +27,7 @@ public class Produtor extends Usuario {
     @NotNull
     @NotEmpty
     private String cpf;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Endereco Endereco;
     @OneToMany(mappedBy = "produtor")
     private List<Produto> produtos;

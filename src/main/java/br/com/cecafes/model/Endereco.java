@@ -20,7 +20,6 @@ public class Endereco {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    @NotEmpty
     private Integer numero;
     @NotNull
     @NotEmpty
