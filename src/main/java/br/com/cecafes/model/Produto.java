@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -24,8 +25,9 @@ public class Produto {
     @NotEmpty
     private String categoria;
     @NotNull
-    @NotEmpty
-    private LocalDateTime dataValidade;
+    private Date dataValidade;
+    @NotNull
+    private Integer qtdCaixa;
     @ManyToOne
     private Produtor produtor;
 }
