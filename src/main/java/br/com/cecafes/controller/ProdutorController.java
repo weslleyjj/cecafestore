@@ -1,6 +1,7 @@
 package br.com.cecafes.controller;
 
 import br.com.cecafes.model.Produtor;
+import br.com.cecafes.service.EnderecoService;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.ProdutorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,13 @@ import java.util.Optional;
 @RequestMapping("/produtor")
 public class ProdutorController {
     private ProdutorService produtorService;
+    private EnderecoService enderecoService;
     private MessageService messageService;
 
     @Autowired
-    public ProdutorController(ProdutorService produtorService, MessageService messageService) {
+    public ProdutorController(ProdutorService produtorService, EnderecoService enderecoService, MessageService messageService) {
         this.produtorService = produtorService;
+        this.enderecoService = enderecoService;
         this.messageService = messageService;
     }
 
@@ -61,6 +64,7 @@ public class ProdutorController {
         if (!produtorOptional.isPresent()) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Produtor não encontrado"));
         } else {
+            enderecoService.deleteById(produtorOptional.get().getEndereco().getId());
             produtorService.deleteById(id);
             return ResponseEntity.status(204).build();
         }
