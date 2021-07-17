@@ -27,4 +27,7 @@ public class FuncionarioCecafes extends Usuario {
     @NotNull
     @NotEmpty
     private String matricula;
+    @NotNull
+    @NotEmpty
+    private String cpf;
 }
