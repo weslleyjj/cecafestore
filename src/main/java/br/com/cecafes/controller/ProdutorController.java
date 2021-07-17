@@ -6,6 +6,7 @@ import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.ProdutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,13 +18,15 @@ import java.util.Optional;
 public class ProdutorController {
     private ProdutorService produtorService;
     private EnderecoService enderecoService;
+    private PasswordEncoder passwordEncoder;
     private MessageService messageService;
 
     @Autowired
-    public ProdutorController(ProdutorService produtorService, EnderecoService enderecoService, MessageService messageService) {
+    public ProdutorController(ProdutorService produtorService, EnderecoService enderecoService, MessageService messageService, PasswordEncoder passwordEncoder) {
         this.produtorService = produtorService;
         this.enderecoService = enderecoService;
         this.messageService = messageService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -43,6 +46,7 @@ public class ProdutorController {
 
     @PostMapping
     public ResponseEntity<Produtor> save(@RequestBody @Valid Produtor produtor) {
+        produtor.setSenha(passwordEncoder.encode(produtor.getSenha()));
         return ResponseEntity.status(201).body(produtorService.save(produtor));
     }
 
@@ -53,6 +57,7 @@ public class ProdutorController {
         if (!produtorOptional.isPresent()) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Produtor não encontrado"));
         } else {
+            produtor.setSenha(passwordEncoder.encode(produtor.getSenha()));
             return ResponseEntity.ok(produtorService.save(produtor));
         }
     }

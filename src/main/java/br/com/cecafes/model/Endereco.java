@@ -22,13 +22,16 @@ public class Endereco {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private Integer numero;
+    private String numero;
     @NotNull
     @NotEmpty
     private String bairro;
     @NotNull
     @NotEmpty
     private String cidade;
+    @NotNull
+    @NotEmpty
+    private String cep;
     @NotNull
     @NotEmpty
     private String estado;

@@ -30,7 +30,7 @@ public class Produtor extends Usuario {
     @NotEmpty
     private String cpf;
     @OneToOne(cascade = CascadeType.ALL)
-    private Endereco Endereco;
+    private Endereco endereco;
     @OneToMany(mappedBy = "produtor")
     private List<Produto> produtos;
 }
