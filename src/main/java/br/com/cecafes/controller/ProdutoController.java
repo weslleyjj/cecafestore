@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -30,7 +31,7 @@ public class ProdutoController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         Optional<Produto> produtoOptional = produtoService.findById(id);
-        if (!produtoOptional.isPresent()) {
+        if (produtoOptional.isEmpty()) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Produto não encontrado"));
         } else {
             return ResponseEntity.ok(produtoOptional.get());
@@ -38,18 +39,28 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<Produto> save(@RequestBody Produto produto) {
-        return ResponseEntity.status(201).body(produtoService.save(produto));
+    public ResponseEntity<?> save(@RequestBody Produto produto) {
+        if(validaProduto(produto)){
+            return ResponseEntity.status(201).body(produtoService.save(produto));
+        }else{
+            return ResponseEntity.status(206).body(messageService.createJson("message", "Dados incompletos para cadastro"));
+        }
+
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> update(@RequestBody Produto produto) {
         Optional<Produto> produtoOptional = produtoService.findById(produto.getId());
 
-        if (!produtoOptional.isPresent()) {
+        if (produtoOptional.isEmpty()) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Produto não encontrado"));
         } else {
-            return ResponseEntity.ok(produtoService.save(produto));
+            if(validaProduto(produto)){
+                return ResponseEntity.ok(produtoService.save(produto));
+            }else{
+                return ResponseEntity.status(206).body(messageService.createJson("message", "Dados incompletos para cadastro"));
+            }
+
         }
     }
 
@@ -57,11 +68,17 @@ public class ProdutoController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<Produto> produtoOptional = produtoService.findById(id);
 
-        if (!produtoOptional.isPresent()) {
+        if (produtoOptional.isEmpty()) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Produto não encontrado"));
         } else {
             produtoService.deleteById(id);
             return ResponseEntity.status(204).build();
         }
+    }
+
+    private boolean validaProduto(Produto produto){
+        return (Objects.nonNull(produto.getCategoria()) || produto.getCategoria().isBlank()) && Objects.nonNull(produto.getDataValidade())
+                && (Objects.nonNull(produto.getNome()) || produto.getNome().isBlank()) && Objects.nonNull(produto.getQtdCaixa());
+
     }
 }
