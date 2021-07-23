@@ -28,7 +28,8 @@ public class Comprador extends Usuario {
     @NotNull
     @NotEmpty
     private String cpf;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="endereco_id")
     private Endereco endereco;
     @OneToMany(mappedBy = "comprador")
     private List<Pedido> pedidos;
