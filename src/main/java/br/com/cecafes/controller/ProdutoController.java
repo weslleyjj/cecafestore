@@ -78,7 +78,8 @@ public class ProdutoController {
 
     private boolean validaProduto(Produto produto){
         return (Objects.nonNull(produto.getCategoria()) || produto.getCategoria().isBlank()) && Objects.nonNull(produto.getDataValidade())
-                && (Objects.nonNull(produto.getNome()) || produto.getNome().isBlank()) && Objects.nonNull(produto.getQtdCaixa());
+                && (Objects.nonNull(produto.getNome()) || produto.getNome().isBlank()) && Objects.nonNull(produto.getQuantidade())
+                && Objects.nonNull(produto.getUnidadeMedida()) && Objects.nonNull(produto.getPreco());
 
     }
 }

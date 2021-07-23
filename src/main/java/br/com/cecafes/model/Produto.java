@@ -1,5 +1,6 @@
 package br.com.cecafes.model;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -19,16 +20,20 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
     @NotEmpty
     private String nome;
-    @NotNull
     @NotEmpty
     private String categoria;
     @NotNull
     private Date dataValidade;
     @NotNull
-    private Integer qtdCaixa;
+    private Integer quantidade;
+    @NotBlank
+    private String unidadeMedida;
     @ManyToOne
     private Produtor produtor;
+    @NotNull
+    private String preco;
+
+    private String fotoUrl;
 }
