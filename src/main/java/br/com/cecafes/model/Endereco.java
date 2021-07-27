@@ -25,18 +25,19 @@ public class Endereco {
     @NotBlank
     @NotEmpty
     private String rua;
-    @NotNull
+    @NotBlank
+    @NotEmpty
     private String numero;
     @NotNull
     @NotEmpty
     private String bairro;
-    @NotNull
+    @NotBlank
     @NotEmpty
     private String cidade;
-    @NotNull
+    @NotBlank
     @NotEmpty
     private String cep;
-    @NotNull
+    @NotBlank
     @NotEmpty
     private String estado;
     private String complemento;

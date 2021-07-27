@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -20,13 +21,13 @@ public class Produtor extends Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank
     @NotEmpty
     private String nome;
-    @NotNull
+    @NotBlank
     @NotEmpty
     private String contato;
-    @NotNull
+    @NotBlank
     @NotEmpty
     private String cpf;
     @OneToOne(cascade = CascadeType.ALL)
