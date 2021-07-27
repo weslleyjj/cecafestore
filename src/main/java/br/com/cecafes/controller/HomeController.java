@@ -53,3 +53,23 @@ public class HomeController {
     }
 
 }
+
+/*
+
+Index: Modelo com listagem de imagens, cards, slides
+
+Shop-details: Modelo com detalhamento e abas de informações diferentes
+
+Shop-grid: Modelo com mais listagens e slides
+
+Shopping-cart: Tela com lista por linha, opção de alteração de 1 propriedade, e resumo de dados manipulados
+
+Contact: Form de comunicação, iframe e apresentação breve de informações
+
+Checkout: form e resumo de dados
+
+Blog-details: tags, aside com links, informações de autor
+
+Blog: links, cards e paginação
+
+*/

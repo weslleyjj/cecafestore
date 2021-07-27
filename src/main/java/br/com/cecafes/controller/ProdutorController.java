@@ -7,13 +7,16 @@ import br.com.cecafes.service.ProdutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/produtor")
 public class ProdutorController {
     private ProdutorService produtorService;
@@ -44,10 +47,18 @@ public class ProdutorController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Produtor> save(@RequestBody @Valid Produtor produtor) {
+    @PostMapping("cadastro-produtor")
+    public String save(@RequestBody @Valid Produtor produtor) {
         produtor.setSenha(passwordEncoder.encode(produtor.getSenha()));
-        return ResponseEntity.status(201).body(produtorService.save(produtor));
+        produtorService.save(produtor);
+        return "index";
+    }
+
+    @RequestMapping(value = "form-produtor", method = RequestMethod.GET)
+    public String formProdutor(Model model){
+        model.addAttribute("produtor", new Produtor());
+
+        return "formProdutor";
     }
 
     @PutMapping(value = "/{id}")
