@@ -47,14 +47,14 @@ public class ProdutorController {
         }
     }
 
-    @PostMapping("cadastro-produtor")
-    public String save(@RequestBody @Valid Produtor produtor) {
+    @PostMapping(value = "/cadastrar")
+    public String save(@ModelAttribute @Valid Produtor produtor) {
         produtor.setSenha(passwordEncoder.encode(produtor.getSenha()));
         produtorService.save(produtor);
-        return "index";
+        return "redirect:/";
     }
 
-    @RequestMapping(value = "form-produtor", method = RequestMethod.GET)
+    @GetMapping(value = "/form-produtor")
     public String formProdutor(Model model){
         model.addAttribute("produtor", new Produtor());
 
