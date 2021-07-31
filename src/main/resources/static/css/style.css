@@ -2944,6 +2944,7 @@ ol {
 /* Tablet Device = 768px */
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
+
 	.hero__categories {
 		margin-bottom: 30px;
 	}
@@ -3167,6 +3168,11 @@ ol {
 /* Wide Mobile = 480px */
 
 @media only screen and (max-width: 767px) {
+
+	.btn-banner {
+		margin-top: 10px;
+	}
+
 	.hero__categories {
 		margin-bottom: 30px;
 	}
