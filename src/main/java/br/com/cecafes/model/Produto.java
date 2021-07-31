@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,6 +26,7 @@ public class Produto {
     @NotEmpty
     private String categoria;
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dataValidade;
     @NotNull
     private Integer quantidade;

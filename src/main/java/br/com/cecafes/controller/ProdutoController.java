@@ -1,17 +1,21 @@
 package br.com.cecafes.controller;
 
 import br.com.cecafes.model.Produto;
+import br.com.cecafes.model.Produtor;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/produto")
 public class ProdutoController {
     private ProdutoService produtoService;
@@ -28,6 +32,19 @@ public class ProdutoController {
         return produtoService.findAll();
     }
 
+    @PostMapping(value = "/cadastrar")
+    public String save(@ModelAttribute @Valid Produto produto) {
+        produtoService.save(produto);
+        return "redirect:/";
+    }
+
+    @GetMapping(value = "/form-produto")
+    public String formProduto(Model model){
+        model.addAttribute("produto", new Produto());
+
+        return "formProduto";
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         Optional<Produto> produtoOptional = produtoService.findById(id);
@@ -36,16 +53,6 @@ public class ProdutoController {
         } else {
             return ResponseEntity.ok(produtoOptional.get());
         }
-    }
-
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody Produto produto) {
-        if(validaProduto(produto)){
-            return ResponseEntity.status(201).body(produtoService.save(produto));
-        }else{
-            return ResponseEntity.status(206).body(messageService.createJson("message", "Dados incompletos para cadastro"));
-        }
-
     }
 
     @PutMapping(value = "/{id}")
