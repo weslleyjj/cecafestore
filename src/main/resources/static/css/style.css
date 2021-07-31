@@ -30,6 +30,10 @@
 /* Template default CSS
 /*----------------------------------------*/
 
+* {
+	scroll-behavior: smooth;
+}
+
 html,
 body {
 	height: 100%;

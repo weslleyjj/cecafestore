@@ -57,6 +57,7 @@
     <div class="checkout__form">
       <h4>Cadastro de Produto</h4>
       <form th:method="post" th:action="@{/produto/cadastrar}" th:object="${produto}">
+        <input type="hidden" th:value="1" th:field="*{produtor}">
         <div class="row">
           <div class="col-lg-8 col-md-6">
             <div class="row">
