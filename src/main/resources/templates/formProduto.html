@@ -50,14 +50,8 @@
 <!-- Checkout Section Begin -->
 <section class="checkout spad">
   <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h6><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click here</a> to enter your code
-        </h6>
-      </div>
-    </div>
     <div class="checkout__form">
-      <h4>Cadastro de Produto</h4>
+      <h4>Preencha os campos</h4>
       <form th:method="post" th:action="@{/produto/cadastrar}" th:object="${produto}">
         <input type="hidden" th:value="1" th:field="*{produtor}">
         <div class="row">
