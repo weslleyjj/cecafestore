@@ -6,12 +6,15 @@ import br.com.cecafes.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/funcionario")
 public class FuncionarioCecafesController {
     private FuncionarioCecafesService funcionarioCecafesService;
@@ -40,10 +43,16 @@ public class FuncionarioCecafesController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<FuncionarioCecafes> save(@RequestBody FuncionarioCecafes funcionarioCecafes) {
+    @PostMapping(value = "/cadastrar")
+    public String save(@ModelAttribute @Valid FuncionarioCecafes funcionarioCecafes) {
         funcionarioCecafes.setSenha(passwordEncoder.encode(funcionarioCecafes.getSenha()));
-        return ResponseEntity.status(201).body(funcionarioCecafesService.save(funcionarioCecafes));
+        return "redirect:/";
+    }
+
+    @GetMapping(value = "/form-funcionario")
+    public String formFuncionarioCecafes(Model model) {
+        model.addAttribute("funcionario", new FuncionarioCecafes());
+        return "form-funcionario-cecafes";
     }
 
     @PutMapping(value = "/{id}")
