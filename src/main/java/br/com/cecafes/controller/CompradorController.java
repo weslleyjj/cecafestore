@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -45,11 +46,14 @@ public class CompradorController {
     }
 
     @PostMapping(value = "/cadastrar")
-    public String save(@ModelAttribute @Valid Comprador comprador) {
-        comprador.setSenha(passwordEncoder.encode(comprador.getSenha()));
-        compradorService.save(comprador);
+    public String save(@ModelAttribute @Valid Comprador comprador, Errors errors) {
+        if(!errors.hasErrors()){
+            comprador.setSenha(passwordEncoder.encode(comprador.getSenha()));
+            compradorService.save(comprador);
+            return "redirect:/";
+        }
 
-        return "redirect:/";
+        return "formComprador";
     }
 
     @GetMapping(value = "/form-comprador")
