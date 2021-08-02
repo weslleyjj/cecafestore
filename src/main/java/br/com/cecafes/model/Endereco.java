@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -22,23 +23,36 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
-    @NotEmpty
-    private String rua;
-    @NotBlank
-    @NotEmpty
-    private String numero;
+
     @NotNull
     @NotEmpty
+    @NotBlank
+    private String rua;
+
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    private String numero;
+
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String bairro;
-    @NotBlank
+
+    @NotNull
     @NotEmpty
+    @NotBlank
     private String cidade;
-    @NotBlank
+
+    @NotNull
     @NotEmpty
+    @NotBlank
     private String cep;
-    @NotBlank
+
+    @NotNull
     @NotEmpty
+    @NotBlank
     private String estado;
+
     private String complemento;
 }

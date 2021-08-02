@@ -1,17 +1,22 @@
 package br.com.cecafes.controller;
 
 import br.com.cecafes.model.Comprador;
+import br.com.cecafes.model.Produtor;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.CompradorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/comprador")
 public class CompradorController {
     private CompradorService compradorService;
@@ -40,10 +45,22 @@ public class CompradorController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Comprador> save(@RequestBody Comprador comprador) {
-        comprador.setSenha(passwordEncoder.encode(comprador.getSenha()));
-        return ResponseEntity.status(201).body(compradorService.save(comprador));
+    @PostMapping(value = "/cadastrar")
+    public String save(@ModelAttribute @Valid Comprador comprador, Errors errors) {
+        if(!errors.hasErrors()){
+            comprador.setSenha(passwordEncoder.encode(comprador.getSenha()));
+            compradorService.save(comprador);
+            return "redirect:/";
+        }
+
+        return "formComprador";
+    }
+
+    @GetMapping(value = "/form-comprador")
+    public String formComprador(Model model){
+        model.addAttribute("comprador", new Comprador());
+
+        return "formComprador";
     }
 
     @PutMapping(value = "/{id}")
