@@ -16,3 +16,6 @@ server:
 auth-api:
   username: admin
   password: admin
+
+arquivos:
+  imagens: /home/weslley/Documentos/TADS/PA1/projeto/cecafestore/images/

@@ -52,8 +52,8 @@
   <div class="container">
     <div class="checkout__form">
       <h4>Preencha os campos</h4>
-      <form th:method="post" th:action="@{/produto/cadastrar}" th:object="${produto}">
-        <input type="hidden" th:value="1" th:field="*{produtor}">
+      <form th:method="post" th:action="@{/produto/cadastrar}" th:object="${produto}" enctype="multipart/form-data">
+        <input type="hidden" th:value="1" th:field="*{produtor}" name="produtor">
         <div class="row">
           <div class="col-lg-8 col-md-6">
             <div class="row">
@@ -102,6 +102,10 @@
             <div class="checkout__input">
               <p>Preço por unidade de medida<span>*</span></p>
               <input th:field="*{preco}" type="text" placeholder="Preço por medida" class="checkout__input__add money">
+            </div>
+            <div class="checkout__input">
+              <p>Foto do produto<span>*</span></p>
+              <input th:field="*{foto}" type="file" placeholder="Foto do produto" class="checkout__input__add">
             </div>
           </div>
           <div class="col-lg-4 col-md-6">

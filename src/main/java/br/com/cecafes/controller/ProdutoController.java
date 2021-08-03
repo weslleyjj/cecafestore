@@ -1,16 +1,24 @@
 package br.com.cecafes.controller;
 
+import br.com.cecafes.dto.ProdutoDTO;
 import br.com.cecafes.model.Produto;
 import br.com.cecafes.model.Produtor;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,6 +28,9 @@ import java.util.Optional;
 public class ProdutoController {
     private ProdutoService produtoService;
     private MessageService messageService;
+
+    @Value("${arquivos.imagens}")
+    private String localDasImagens;
 
     @Autowired
     public ProdutoController(ProdutoService produtoService, MessageService messageService) {
@@ -33,14 +44,15 @@ public class ProdutoController {
     }
 
     @PostMapping(value = "/cadastrar")
-    public String save(@ModelAttribute @Valid Produto produto) {
-        produtoService.save(produto);
+    public String save(@ModelAttribute @Valid ProdutoDTO produto) {
+        produto.setFotoUrl(uploadFoto(produto.getFoto(), 1L));
+        produtoService.save(produto.getProduto());
         return "redirect:/";
     }
 
     @GetMapping(value = "/form-produto")
     public String formProduto(Model model){
-        model.addAttribute("produto", new Produto());
+        model.addAttribute("produto", new ProdutoDTO());
 
         return "formProduto";
     }
@@ -88,5 +100,24 @@ public class ProdutoController {
                 && (Objects.nonNull(produto.getNome()) || produto.getNome().isBlank()) && Objects.nonNull(produto.getQuantidade())
                 && Objects.nonNull(produto.getUnidadeMedida()) && Objects.nonNull(produto.getPreco());
 
+    }
+
+    private String uploadFoto(MultipartFile file, Long id){
+        if (file.isEmpty()) {
+            return "";
+        }
+        try {
+
+            byte[] bytes = file.getBytes();
+            String nomeDaImagem = "["+id+"]" + file.getOriginalFilename();
+            Path path = Paths.get(localDasImagens + nomeDaImagem);
+            Files.write(path, bytes);
+
+            return path.toString();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }
