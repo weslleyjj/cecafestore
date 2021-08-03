@@ -46,6 +46,7 @@ public class FuncionarioCecafesController {
     @PostMapping(value = "/cadastrar")
     public String save(@ModelAttribute @Valid FuncionarioCecafes funcionarioCecafes) {
         funcionarioCecafes.setSenha(passwordEncoder.encode(funcionarioCecafes.getSenha()));
+        funcionarioCecafesService.save(funcionarioCecafes);
         return "redirect:/";
     }
 
