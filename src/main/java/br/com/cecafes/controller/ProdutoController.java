@@ -109,11 +109,11 @@ public class ProdutoController {
         try {
 
             byte[] bytes = file.getBytes();
-            String nomeDaImagem = "["+id+"]" + file.getOriginalFilename();
+            String nomeDaImagem = id+"-" + file.getOriginalFilename();
             Path path = Paths.get(localDasImagens + nomeDaImagem);
             Files.write(path, bytes);
 
-            return path.toString();
+            return nomeDaImagem;
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
