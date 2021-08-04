@@ -1,4 +1,4 @@
-<body th:fragment="header">
+<body th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -137,10 +137,10 @@
                         <span>Navegação</span>
                     </div>
                     <ul>
-                        <li><a th:href="@{/produtor/form-produtor}">Cadastro de Produtor</a></li>
-                        <li><a th:href="@{/produto/form-produto}">Cadastro de Produto</a></li>
-                        <li><a th:href="@{/comprador/form-comprador}">Cadastro de Comprador</a></li>
-                        <li><a th:href="@{/funcionario/form-funcionario}">Cadastro de Funcionário Cecafes</a></li>
+                        <li sec:authorize="hasAnyAuthority('PRODUTOR', 'ADMIN')" ><a th:href="@{/produtor/form-produtor}">Cadastro de Produtor</a></li>
+                        <li sec:authorize="isAuthenticated()" ><a th:href="@{/produto/form-produto}">Cadastro de Produto</a></li>
+                        <li sec:authorize="hasAnyAuthority('COMPRADOR', 'ADMIN')" ><a th:href="@{/comprador/form-comprador}">Cadastro de Comprador</a></li>
+                        <li sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" ><a th:href="@{/funcionario/form-funcionario}">Cadastro de Funcionário Cecafes</a></li>
                     </ul>
                 </div>
             </div>
