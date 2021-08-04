@@ -17,7 +17,6 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Audited
 @Entity
 public class Endereco {
     @Id

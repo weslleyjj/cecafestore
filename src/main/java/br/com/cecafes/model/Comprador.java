@@ -15,9 +15,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Audited
 @Entity
-public class Comprador extends Usuario {
+public class Comprador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,4 +45,7 @@ public class Comprador extends Usuario {
 
     @OneToMany(mappedBy = "comprador")
     private List<Pedido> pedidos;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private User user;
 }

@@ -15,7 +15,6 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Audited
 @Entity
 public class Produto {
     @Id

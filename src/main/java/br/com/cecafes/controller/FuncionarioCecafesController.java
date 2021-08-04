@@ -1,6 +1,8 @@
 package br.com.cecafes.controller;
 
 import br.com.cecafes.model.FuncionarioCecafes;
+import br.com.cecafes.model.Role;
+import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.service.FuncionarioCecafesService;
 import br.com.cecafes.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +13,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/funcionario")
 public class FuncionarioCecafesController {
     private FuncionarioCecafesService funcionarioCecafesService;
+    private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private MessageService messageService;
 
     @Autowired
-    public FuncionarioCecafesController(FuncionarioCecafesService funcionarioCecafesService, MessageService messageService, PasswordEncoder passwordEncoder) {
+    public FuncionarioCecafesController(FuncionarioCecafesService funcionarioCecafesService, MessageService messageService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.funcionarioCecafesService = funcionarioCecafesService;
         this.messageService = messageService;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -45,7 +51,15 @@ public class FuncionarioCecafesController {
 
     @PostMapping(value = "/cadastrar")
     public String save(@ModelAttribute @Valid FuncionarioCecafes funcionarioCecafes) {
-        funcionarioCecafes.setSenha(passwordEncoder.encode(funcionarioCecafes.getSenha()));
+        funcionarioCecafes.getUser().setPassword(passwordEncoder.encode(funcionarioCecafes.getUser().getPassword()));
+
+        // Definindo a Role do funcionario no cadastro do mesmo
+        Set<Role> papel = new HashSet<>();
+        papel.add(new Role().builder().id(3).name("FUNCIONARIO").build());
+        funcionarioCecafes.getUser().setRoles(papel);
+        funcionarioCecafes.getUser().setEnabled(true);
+
+        userRepository.save(funcionarioCecafes.getUser());
         funcionarioCecafesService.save(funcionarioCecafes);
         return "redirect:/";
     }
@@ -63,7 +77,7 @@ public class FuncionarioCecafesController {
         if (!funcionarioCecafesOptional.isPresent()) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "FuncionarioCecafes não encontrado"));
         } else {
-            funcionarioCecafes.setSenha(passwordEncoder.encode(funcionarioCecafes.getSenha()));
+            funcionarioCecafes.getUser().setPassword(passwordEncoder.encode(funcionarioCecafes.getUser().getPassword()));
             return ResponseEntity.ok(funcionarioCecafesService.save(funcionarioCecafes));
         }
     }

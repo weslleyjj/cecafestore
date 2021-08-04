@@ -2,6 +2,8 @@ package br.com.cecafes.controller;
 
 import br.com.cecafes.model.Comprador;
 import br.com.cecafes.model.Produtor;
+import br.com.cecafes.model.Role;
+import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.CompradorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +15,25 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/comprador")
 public class CompradorController {
     private CompradorService compradorService;
+    private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private MessageService messageService;
 
     @Autowired
-    public CompradorController(CompradorService compradorService, MessageService messageService, PasswordEncoder passwordEncoder) {
+    public CompradorController(CompradorService compradorService, MessageService messageService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.compradorService = compradorService;
         this.messageService = messageService;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -48,7 +54,15 @@ public class CompradorController {
     @PostMapping(value = "/cadastrar")
     public String save(@ModelAttribute @Valid Comprador comprador, Errors errors) {
         if(!errors.hasErrors()){
-            comprador.setSenha(passwordEncoder.encode(comprador.getSenha()));
+            comprador.getUser().setPassword(passwordEncoder.encode(comprador.getUser().getPassword()));
+
+            // Definindo a Role do comprador no cadastro do mesmo
+            Set<Role> papel = new HashSet<>();
+            papel.add(new Role().builder().id(2).name("COMPRADOR").build());
+            comprador.getUser().setRoles(papel);
+            comprador.getUser().setEnabled(true);
+
+            userRepository.save(comprador.getUser());
             compradorService.save(comprador);
             return "redirect:/";
         }
@@ -70,7 +84,7 @@ public class CompradorController {
         if (!compradorOptional.isPresent()) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Comprador não encontrado"));
         } else {
-            comprador.setSenha(passwordEncoder.encode(comprador.getSenha()));
+            comprador.getUser().setPassword(passwordEncoder.encode(comprador.getUser().getPassword()));
             return ResponseEntity.ok(compradorService.save(comprador));
         }
     }

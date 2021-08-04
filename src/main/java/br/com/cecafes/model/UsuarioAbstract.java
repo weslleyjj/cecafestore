@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public abstract class Usuario {
+public abstract class UsuarioAbstract {
     @NotNull
     @NotEmpty
     private String login;

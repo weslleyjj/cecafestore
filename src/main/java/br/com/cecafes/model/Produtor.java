@@ -8,15 +8,13 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Audited
 @Entity
-public class Produtor extends Usuario {
+public class Produtor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,4 +32,7 @@ public class Produtor extends Usuario {
     private Endereco endereco;
     @OneToMany(mappedBy = "produtor")
     private List<Produto> produtos;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private User user;
 }
