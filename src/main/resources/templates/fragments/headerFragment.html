@@ -76,7 +76,14 @@
                             <a href="https://www.instagram.com/cecafes_rn/" target="_blank"><i class="fa fa-instagram"></i></a>
                         </div>
                         <div class="header__top__right__auth">
-                            <a href="/produtor/form-produtor"><i class="fa fa-user"></i> Login</a>
+                            <div sec:authorize="!isAuthenticated()">
+                                <a href="/login"><i class="fa fa-user"></i> Entrar</a>
+                            </div>
+                            <div sec:authorize="isAuthenticated()">
+                                <form th:action="@{/logout}" method="post">
+                                    <a onclick="this.parentNode.submit();" style="cursor: pointer" ><i class="fa fa-sign-out"></i> Sair</a>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
