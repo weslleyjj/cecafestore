@@ -46,6 +46,7 @@
       -webkit-transition: all 0.3 ease;
       transition: all 0.3 ease;
       cursor: pointer;
+      font-weight: bold;
     }
     .form button:hover,.form button:active,.form button:focus {
       background: #7fad39;
@@ -53,10 +54,15 @@
     .form .message {
       margin: 15px 0 0;
       color: #b3b3b3;
-      font-size: 12px;
+      font-size: 14px;
     }
     .form .message a {
       color: #4CAF50;
+      text-decoration: none;
+    }
+
+    .form .message a:hover {
+      color: #7fad39;
       text-decoration: none;
     }
     .form .register-form {
@@ -109,6 +115,9 @@
 </head>
 <body>
   <div class="login-page">
+    <figure style="text-align: center">
+      <img width="40%" src="/img/favicon.png" />
+    </figure>
     <div class="form">
       <p th:if="${loginError}" class="error">Usuário ou senha inválidos</p>
       <form th:action="@{/login}" method="post" class="login-form">

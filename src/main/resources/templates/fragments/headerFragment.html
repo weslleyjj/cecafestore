@@ -27,7 +27,7 @@
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
             <li class="active"><a href="/">Início</a></li>
-            <li><a href="../shop-grid.html">Loja</a></li>
+            <li><a href="/loja">Loja</a></li>
             <li><a href="#">Comercial</a>
                 <ul class="header__menu__dropdown">
                     <li><a href="../shop-details.html">Venda</a></li>
@@ -101,7 +101,7 @@
                 <nav class="header__menu">
                     <ul>
                         <li class="active"><a href="/">Início</a></li>
-                        <li><a href="../shop-grid.html">Loja</a></li>
+                        <li><a href="/loja">Loja</a></li>
                         <li><a href="#">Comercial</a>
                             <ul class="header__menu__dropdown">
                                 <li><a href="../shop-details.html">Venda</a></li>
@@ -144,9 +144,9 @@
                         <span>Navegação</span>
                     </div>
                     <ul>
-                        <li sec:authorize="hasAnyAuthority('PRODUTOR', 'ADMIN')" ><a th:href="@{/produtor/form-produtor}">Cadastro de Produtor</a></li>
-                        <li sec:authorize="isAuthenticated()" ><a th:href="@{/produto/form-produto}">Cadastro de Produto</a></li>
-                        <li sec:authorize="hasAnyAuthority('COMPRADOR', 'ADMIN')" ><a th:href="@{/comprador/form-comprador}">Cadastro de Comprador</a></li>
+                        <li><a th:href="@{/produtor/form-produtor}">Cadastro de Produtor</a></li>
+                        <li sec:authorize="hasAnyAuthority('PRODUTOR', 'ADMIN')" ><a th:href="@{/produto/form-produto}">Cadastro de Produto</a></li>
+                        <li><a th:href="@{/comprador/form-comprador}">Cadastro de Comprador</a></li>
                         <li sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" ><a th:href="@{/funcionario/form-funcionario}">Cadastro de Funcionário Cecafes</a></li>
                     </ul>
                 </div>
