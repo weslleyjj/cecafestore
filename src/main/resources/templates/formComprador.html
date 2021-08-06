@@ -23,6 +23,7 @@
     <link  href="/css/owl.carousel.min.css" rel="stylesheet">
     <link  href="/css/slicknav.min.css" rel="stylesheet" >
     <link  href="/css/style.css" rel="stylesheet" >
+
 </head>
 
 <body>
@@ -60,7 +61,7 @@
                                 <div class="checkout__input">
                                     <p>Nome Completo<span>*</span></p>
                                     <input th:field="*{nome}" type="text" required>
-                                    <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
+                                    <p th:style="${'color:red;'}" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
                                 </div>
                             </div>
                         </div>
@@ -69,14 +70,14 @@
                                 <div class="checkout__input">
                                     <p>CPF<span>*</span></p>
                                     <input data-mask="000.000.000-00" data-mask-selectonfocus="true" th:field="*{cpf}" type="text" required>
-                                    <p th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></p>
+                                    <p th:style="${'color:red;'}" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></p>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="checkout__input">
                                     <p>Contato<span>*</span></p>
                                     <input data-mask="(00) 0 0000-0000" data-mask-selectonfocus="true" placeholder="(DD) 0000-0000" th:field="*{contato}" type="text" required>
-                                    <p th:if="${#fields.hasErrors('contato')}" th:errors="*{contato}"></p>
+                                    <p th:style="${'color:red;'}" th:if="${#fields.hasErrors('contato')}" th:errors="*{contato}"></p>
                                 </div>
                             </div>
 
@@ -84,11 +85,17 @@
                         <div class="checkout__input">
                             <p>Endereço<span>*</span></p>
                             <input th:field="*{endereco.cidade}" type="text" placeholder="Cidade" class="checkout__input__add" required>
+                            <p th:style="${'color:red;'}" th:if="${#fields.hasErrors('endereco.cidade')}" th:errors="*{endereco.cidade}"></p>
                             <input th:field="*{endereco.rua}" type="text" placeholder="Rua" class="checkout__input__add" required>
+                            <p th:style="${'color:red;'}" th:if="${#fields.hasErrors('endereco.rua')}" th:errors="*{endereco.rua}"></p>
                             <input th:field="*{endereco.bairro}" type="text" placeholder="Bairro" class="checkout__input__add" required>
+                            <p th:style="${'color:red;'}" th:if="${#fields.hasErrors('endereco.bairro')}" th:errors="*{endereco.bairro}"></p>
                             <input th:field="*{endereco.numero}" type="number" placeholder="Número" class="checkout__input__add" required>
+                            <p th:style="${'color:red;'}" th:if="${#fields.hasErrors('endereco.numero')}" th:errors="*{endereco.numero}"></p>
                             <input th:field="*{endereco.estado}" type="text" placeholder="Estado" class="checkout__input__add" required>
+                            <p th:style="${'color:red;'}" th:if="${#fields.hasErrors('endereco.estado')}" th:errors="*{endereco.estado}"></p>
                             <input data-mask="00.000-000" data-mask-selectonfocus="true" th:field="*{endereco.cep}" type="text" placeholder="CEP" class="checkout__input__add" required>
+                            <p th:style="${'color:red;'}" th:if="${#fields.hasErrors('endereco.cep')}" th:errors="*{endereco.cep}"></p>
                             <input th:field="*{endereco.complemento}" type="text" placeholder="Complemento" class="checkout__input__add">
                         </div>
                         <div class="checkout__input">
@@ -133,7 +140,7 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                            <button type="submit" class="site-btn">PLACE ORDER</button>
+                            <button type="submit" class="site-btn">Cadastrar</button>
                         </div>
                     </div>
                 </div>
