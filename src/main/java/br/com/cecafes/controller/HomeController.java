@@ -18,6 +18,9 @@ public class HomeController {
         return "index";
     }
 
+    @RequestMapping(value = "/cadastro-sistema", method = RequestMethod.GET)
+    public String escolhaCadastro() {return "escolha-cadastro";}
+
     @RequestMapping(value = "/shop", method = RequestMethod.GET)
     public String shop() {
         return "shop-details-template";
