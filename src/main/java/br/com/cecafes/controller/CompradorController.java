@@ -7,6 +7,7 @@ import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.CompradorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
@@ -78,7 +81,13 @@ public class CompradorController {
     }
 
     @GetMapping(value = "lista-produtos-compra")
-    public String listProdutosCompra(Model model) {
+    public String listProdutosCompra(Model model, HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        for (Cookie cookie : cookies) {
+            System.out.println(cookie.getName() +"      =       "+ cookie.getValue());
+        }
+
         return "produtosListComprador";
     }
 
