@@ -77,6 +77,11 @@ public class CompradorController {
         return "formComprador";
     }
 
+    @GetMapping(value = "lista-produtos-compra")
+    public String listProdutosCompra(Model model) {
+        return "produtosListComprador";
+    }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> update(@RequestBody Comprador comprador) {
         Optional<Comprador> compradorOptional = compradorService.findById(comprador.getId());
