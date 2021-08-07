@@ -14,12 +14,12 @@ public class HomeController {
 
     @RequestMapping(value = "/shop", method = RequestMethod.GET)
     public String shop() {
-        return "shop-details";
+        return "shop-details-template";
     }
 
     @RequestMapping(value = "/shop-grid", method = RequestMethod.GET)
     public String shopGrid() {
-        return "shop-grid";
+        return "shop-grid-template";
     }
 
     @RequestMapping(value = "/shop-cart", method = RequestMethod.GET)
