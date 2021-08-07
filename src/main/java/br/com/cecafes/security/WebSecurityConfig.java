@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 //                .antMatchers("/").hasAnyAuthority("PRODUTOR", "COMPRADOR", "FUNCIONARIO", "ADMIN")
                 .antMatchers("/").permitAll()
+                .antMatchers("/cadastro-sistema").permitAll()
                 .antMatchers("/loja").permitAll()
                 .antMatchers("/produtor/form-produtor").permitAll()
                 .antMatchers("/produtor/cadastrar").permitAll()
