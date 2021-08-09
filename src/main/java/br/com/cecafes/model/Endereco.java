@@ -25,32 +25,37 @@ public class Endereco {
 
     @NotNull
     @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Rua não pode estar em branco")
+    @Size(min = 5, message = "Rua deve ter pelo menos 5 caracteres")
     private String rua;
 
     @NotNull
     @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Número não pode estar em branco")
     private String numero;
 
     @NotNull
     @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Bairro não pode estar em branco")
+    @Size(min = 5, message = "Bairro deve ter pelo menos 5 caracteres")
     private String bairro;
 
     @NotNull
     @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Cidade não pode estar em branco")
+    @Size(min = 5, message = "Cidade deve ter pelo menos 5 caracteres")
     private String cidade;
 
     @NotNull
     @NotEmpty
-    @NotBlank
+    @NotBlank(message = "CEP não pode estar em branco")
+    @Size(min = 5, message = "CEP deve ter pelo menos 5 caracteres")
     private String cep;
 
     @NotNull
     @NotEmpty
-    @NotBlank
+    @NotBlank(message = "Estado não pode estar em branco")
+    @Size(min = 5, message = "Estado deve ter pelo menos 5 caracteres")
     private String estado;
 
     private String complemento;

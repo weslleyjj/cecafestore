@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,18 +56,22 @@ public class ProdutorController {
     }
 
     @PostMapping(value = "/cadastrar")
-    public String save(@ModelAttribute @Valid Produtor produtor) {
-        produtor.getUser().setPassword(passwordEncoder.encode(produtor.getUser().getPassword()));
+    public String save(@ModelAttribute @Valid Produtor produtor, Errors errors) {
+        if(!errors.hasErrors()){
+            produtor.getUser().setPassword(passwordEncoder.encode(produtor.getUser().getPassword()));
 
-        // Definindo a Role do produtor no cadastro do mesmo
-        Set<Role> papel = new HashSet<>();
-        papel.add(new Role().builder().id(1).name("PRODUTOR").build());
-        produtor.getUser().setRoles(papel);
-        produtor.getUser().setEnabled(true);
+            // Definindo a Role do produtor no cadastro do mesmo
+            Set<Role> papel = new HashSet<>();
+            papel.add(new Role().builder().id(1).name("PRODUTOR").build());
+            produtor.getUser().setRoles(papel);
+            produtor.getUser().setEnabled(true);
 
-        userRepository.save(produtor.getUser());
-        produtorService.save(produtor);
-        return "redirect:/";
+            userRepository.save(produtor.getUser());
+            produtorService.save(produtor);
+            return "redirect:/";
+        }
+
+        return "formProdutor";
     }
 
     @GetMapping(value = "/form-produtor")
