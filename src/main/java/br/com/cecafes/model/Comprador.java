@@ -1,5 +1,6 @@
 package br.com.cecafes.model;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -23,24 +24,25 @@ public class Comprador {
 
     @NotNull
     @NotEmpty
-    @NotBlank(message = "Campo não pode estar em branco")
-    @Size(min = 10, message = "Campo deve ter pelo menos 10 caracteres")
+    @NotBlank(message = "Nome não pode estar em branco")
+    @Size(min = 10, message = "Nome deve ter pelo menos 10 caracteres")
     private String nome;
 
     @NotNull
     @NotEmpty
-    @NotBlank(message = "Campo não pode estar em branco")
+    @NotBlank(message = "Contato não pode estar em branco")
     @Size(min = 16, max = 16, message = "Contato inválido")
     private String contato;
 
     @NotNull
     @NotEmpty
-    @NotBlank(message = "Campo não pode estar em branco")
+    @NotBlank(message = "CPF não pode estar em branco")
     @Size(min = 14, max = 14, message = "CPF inválido")
     private String cpf;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="endereco_id")
+    @Valid
     private Endereco endereco;
 
     @OneToMany(mappedBy = "comprador")

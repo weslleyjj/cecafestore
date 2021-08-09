@@ -60,7 +60,6 @@
                                 <div class="checkout__input">
                                     <p>Nome Completo<span>*</span></p>
                                     <input th:field="*{nome}" type="text" required>
-                                    <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
                                 </div>
                             </div>
                         </div>
@@ -69,14 +68,12 @@
                                 <div class="checkout__input">
                                     <p>CPF<span>*</span></p>
                                     <input data-mask="000.000.000-00" data-mask-selectonfocus="true" th:field="*{cpf}" type="text" required>
-                                    <p th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></p>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="checkout__input">
                                     <p>Contato<span>*</span></p>
                                     <input data-mask="(00) 0 0000-0000" data-mask-selectonfocus="true" placeholder="(DD) 0000-0000" th:field="*{contato}" type="text" required>
-                                    <p th:if="${#fields.hasErrors('contato')}" th:errors="*{contato}"></p>
                                 </div>
                             </div>
 
