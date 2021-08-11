@@ -12,9 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(HttpServletResponse response) {
-        Cookie c = new Cookie("produtos", "");
-        response.addCookie(c);
+    public String home(HttpServletResponse response, HttpServletRequest request) {
+        Cookie[] cookiesRequest = request.getCookies();
+        if ( !verificaCookies(cookiesRequest, "produtos") ){
+            Cookie c = new Cookie("produtos", "");
+            c.setMaxAge(60 * 60 * 24 * 30); // 30 dias
+            response.addCookie(c);
+        }
+
         return "index";
     }
 
@@ -59,6 +64,15 @@ public class HomeController {
     @RequestMapping(value = "/blog", method = RequestMethod.GET)
     public String blog() {
         return "blog";
+    }
+
+    private boolean verificaCookies(Cookie[] cookies, String cookieName){
+        for (Cookie cookie : cookies) {
+            if(cookie.getName().equals(cookieName)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

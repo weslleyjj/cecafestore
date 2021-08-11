@@ -1,11 +1,13 @@
 package br.com.cecafes.controller;
 
 import br.com.cecafes.model.Comprador;
+import br.com.cecafes.model.Produto;
 import br.com.cecafes.model.Produtor;
 import br.com.cecafes.model.Role;
 import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.CompradorService;
+import br.com.cecafes.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +16,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/comprador")
@@ -30,13 +30,15 @@ public class CompradorController {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private MessageService messageService;
+    private ProdutoService produtoService;
 
     @Autowired
-    public CompradorController(CompradorService compradorService, MessageService messageService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public CompradorController(CompradorService compradorService, MessageService messageService, PasswordEncoder passwordEncoder, UserRepository userRepository, ProdutoService produtoService) {
         this.compradorService = compradorService;
         this.messageService = messageService;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.produtoService = produtoService;
     }
 
     @GetMapping
@@ -81,14 +83,29 @@ public class CompradorController {
     }
 
     @GetMapping(value = "lista-produtos-compra")
-    public String listProdutosCompra(Model model, HttpServletRequest request) {
+    public ModelAndView listProdutosCompra(Model model, HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
+        Cookie produtos = resgatarCookies(cookies, "produtos");
 
-        for (Cookie cookie : cookies) {
-            System.out.println(cookie.getName() +"      =       "+ cookie.getValue());
+        ModelAndView modelAndView = new ModelAndView("produtosListComprador");
+        List<Produto> produtosList = new ArrayList<>();
+
+        // Resgata todos os produtos contidos no cookie
+        try {
+            if (!Objects.isNull(produtos)){
+                String[] produtosIds = produtos.getValue().split("/");
+                for (String produtoId : produtosIds) {
+                    Optional<Produto> produtoTemp = produtoService.findById(Long.parseLong(produtoId));
+                    produtoTemp.ifPresent(produtosList::add);
+                }
+            }
+        }catch (Exception e){
+            System.err.println(e);
         }
 
-        return "produtosListComprador";
+        modelAndView.addObject("produtosList", produtosList);
+
+        return modelAndView;
     }
 
     @PutMapping(value = "/{id}")
@@ -113,5 +130,14 @@ public class CompradorController {
             compradorService.deleteById(id);
             return ResponseEntity.status(204).build();
         }
+    }
+
+    private Cookie resgatarCookies(Cookie[] cookies, String cookieName){
+        for (Cookie cookie : cookies) {
+            if(cookie.getName().equals(cookieName)){
+                return cookie;
+            }
+        }
+        return null;
     }
 }
