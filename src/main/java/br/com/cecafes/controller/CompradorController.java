@@ -1,16 +1,14 @@
 package br.com.cecafes.controller;
 
-import br.com.cecafes.model.Comprador;
-import br.com.cecafes.model.Produto;
-import br.com.cecafes.model.Produtor;
-import br.com.cecafes.model.Role;
+import br.com.cecafes.model.*;
 import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.CompradorService;
 import br.com.cecafes.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -83,12 +82,17 @@ public class CompradorController {
     }
 
     @GetMapping(value = "lista-produtos-compra")
-    public ModelAndView listProdutosCompra(Model model, HttpServletRequest request) {
+    public ModelAndView listProdutosCompra(Model model, HttpServletRequest request, Authentication authentication) {
         Cookie[] cookies = request.getCookies();
         Cookie produtos = resgatarCookies(cookies, "produtos");
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        Comprador comprador = compradorService.findByUsername(userDetails.getUsername());
+        Pedido pedido = new Pedido();
 
         ModelAndView modelAndView = new ModelAndView("produtosListComprador");
         List<Produto> produtosList = new ArrayList<>();
+        String numeroPedido = "";
 
         // Resgata todos os produtos contidos no cookie
         try {
@@ -96,14 +100,30 @@ public class CompradorController {
                 String[] produtosIds = produtos.getValue().split("/");
                 for (String produtoId : produtosIds) {
                     Optional<Produto> produtoTemp = produtoService.findById(Long.parseLong(produtoId));
-                    produtoTemp.ifPresent(produtosList::add);
+                    if(produtoTemp.isPresent()){
+                        produtosList.add(produtoTemp.get());
+                        numeroPedido += produtoTemp.get().getId();
+                    }
                 }
             }
         }catch (Exception e){
             System.err.println(e);
         }
 
-        modelAndView.addObject("produtosList", produtosList);
+        if(!Objects.isNull(comprador)){
+            LocalDateTime date = LocalDateTime.now() ;
+            numeroPedido = "";
+            numeroPedido += date.getMonthValue();
+            numeroPedido += date.getDayOfMonth();
+            numeroPedido += date.getHour();
+            numeroPedido += comprador.getId();
+            pedido.setComprador(comprador);
+        }
+
+        pedido.setProdutos(produtosList);
+        pedido.setNumero(numeroPedido);
+
+        modelAndView.addObject("pedido", pedido);
 
         return modelAndView;
     }

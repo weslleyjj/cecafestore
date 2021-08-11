@@ -18,7 +18,6 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
     @NotEmpty
     private String numero;
     @ManyToOne
@@ -27,5 +26,7 @@ public class Pedido {
     @OneToOne
     private Endereco endereco;
     @OneToMany
-    private List<Produto> produto;
+    private List<Produto> produtos;
+
+    private Float valorPedido;
 }

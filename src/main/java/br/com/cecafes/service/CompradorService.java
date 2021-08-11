@@ -25,6 +25,10 @@ public class CompradorService {
         return compradorRepository.findById(id);
     }
 
+    public Comprador findByUsername(String username){
+        return compradorRepository.getCompradorByUsername(username);
+    }
+
     public Comprador save(Comprador comprador) {
         return compradorRepository.save(comprador);
     }

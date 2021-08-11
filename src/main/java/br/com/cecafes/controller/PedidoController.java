@@ -5,12 +5,15 @@ import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/pedido")
 public class PedidoController {
     private PedidoService pedidoService;
@@ -38,8 +41,9 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<Pedido> save(@RequestBody Pedido pedido) {
-        return ResponseEntity.status(201).body(pedidoService.save(pedido));
+    public ModelAndView save(@ModelAttribute @Valid Pedido pedido) {
+        pedidoService.save(pedido);
+        return new ModelAndView("index");
     }
 
     @PutMapping(value = "/{id}")
