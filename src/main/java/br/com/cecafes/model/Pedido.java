@@ -26,6 +26,10 @@ public class Pedido {
     @OneToOne
     private Endereco endereco;
     @OneToMany
+    @JoinTable(name = "pedido_produto",
+            joinColumns = @JoinColumn(name = "pedido_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "produto_id",
+                    referencedColumnName = "id"))
     private List<Produto> produtos;
 
     private Float valorPedido;

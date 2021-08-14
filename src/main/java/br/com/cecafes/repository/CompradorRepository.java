@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CompradorRepository extends JpaRepository<Comprador, Long> {
 
-    @Query(value = "SELECT c.* FROM comprador c join users u on c.user_user_id = u.user_id WHERE u.username = ?1", nativeQuery = true)
+    @Query(value = "SELECT c.* FROM comprador c join users u on c.user_id = u.id WHERE u.username = ?1", nativeQuery = true)
     public Comprador getCompradorByUsername(String username);
 }
