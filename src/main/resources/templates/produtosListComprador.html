@@ -50,7 +50,7 @@
 <section class="shoping-cart spad">
     <div class="container">
 
-        <form method="post" th:action="@{/pedido}" th:object="${pedido}">
+        <form id="formCarrinho" method="post" th:action="@{/pedido}" th:object="${pedido}">
             <input type="hidden" th:field="${pedido.numero}">
             <input type="hidden" th:field="${pedido.comprador.id}">
             <div class="row">
@@ -79,61 +79,18 @@
                                 <td class="shoping__cart__quantity">
                                     <div class="quantity">
                                         <div class="pro-qty">
-                                            <input type="text" value="1">
+                                            <input class="input-quantidade" th:field="${pedido.produtos[__${stat.index}__].quantidade}" type="text" value="1">
+                                            <p style="display: none;" th:text="${produto.preco}"></p>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="shoping__cart__total">
-                                    <span class="valorTotalProduto" th:text="${produto.getPreco()}"></span>
+                                    <span class="valorTotalProduto" th:text="${'R$ '+produto.getPreco()}"></span>
                                 </td>
                                 <td class="shoping__cart__item__close">
                                     <span class="icon_close"></span>
                                 </td>
                             </tr>
-    <!--                        <tr>-->
-    <!--                            <td class="shoping__cart__item">-->
-    <!--                                <img src="/img/cart/cart-2.jpg" alt="">-->
-    <!--                                <h5>Produto</h5>-->
-    <!--                            </td>-->
-    <!--                            <td class="shoping__cart__price">-->
-    <!--                                R$39.00-->
-    <!--                            </td>-->
-    <!--                            <td class="shoping__cart__quantity">-->
-    <!--                                <div class="quantity">-->
-    <!--                                    <div class="pro-qty">-->
-    <!--                                        <input type="text" value="1">-->
-    <!--                                    </div>-->
-    <!--                                </div>-->
-    <!--                            </td>-->
-    <!--                            <td class="shoping__cart__total">-->
-    <!--                                R$39.99-->
-    <!--                            </td>-->
-    <!--                            <td class="shoping__cart__item__close">-->
-    <!--                                <span class="icon_close"></span>-->
-    <!--                            </td>-->
-    <!--                        </tr>-->
-    <!--                        <tr>-->
-    <!--                            <td class="shoping__cart__item">-->
-    <!--                                <img src="/img/cart/cart-3.jpg" alt="">-->
-    <!--                                <h5>Produto</h5>-->
-    <!--                            </td>-->
-    <!--                            <td class="shoping__cart__price">-->
-    <!--                                R$69.00-->
-    <!--                            </td>-->
-    <!--                            <td class="shoping__cart__quantity">-->
-    <!--                                <div class="quantity">-->
-    <!--                                    <div class="pro-qty">-->
-    <!--                                        <input type="text" value="1">-->
-    <!--                                    </div>-->
-    <!--                                </div>-->
-    <!--                            </td>-->
-    <!--                            <td class="shoping__cart__total">-->
-    <!--                                R$69.99-->
-    <!--                            </td>-->
-    <!--                            <td class="shoping__cart__item__close">-->
-    <!--                                <span class="icon_close"></span>-->
-    <!--                            </td>-->
-    <!--                        </tr>-->
                             </tbody>
                         </table>
                     </div>
@@ -156,10 +113,10 @@
                     <div class="shoping__checkout">
                         <h5>Total dos produtos</h5>
                         <ul>
-                            <li>Subtotal <span>R$454.98</span></li>
-                            <li>Total <span class="valorTotalPedido" th:field="${pedido.valorPedido}">R$454.98</span></li>
+                            <li>Subtotal <span class="subTotal">R$ 0</span></li>
+                            <li>Total <span class="valorTotalPedido" >R$ 0</span></li>
                         </ul>
-                        <button type="submit" class="primary-btn">PROSSEGUIR COM A COMPRA</button>
+                        <button type="submit" class="primary-btn">FINALIZAR PEDIDO</button>
                     </div>
                 </div>
             </div>
@@ -172,15 +129,57 @@
 
 <div th:replace="~{fragments/footerFragment :: footer}"></div>
 <!-- Js Plugins -->
-<script src="/js/jquery-3.3.1.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.nice-select.min.js"></script>
-<script src="/js/jquery-ui.min.js"></script>
-<script src="/js/jquery.slicknav.js"></script>
-<script src="/js/mixitup.min.js"></script>
-<script src="/js/owl.carousel.min.js"></script>
-<script src="/js/jquery.mask.js"></script>
-<script src="/js/main.js"></script>
+
+
+
+<script src="/js/jquery-3.3.1.min.js" rel="script"></script>
+<script src="/js/bootstrap.min.js" rel="script"></script>
+<script src="/js/jquery.nice-select.min.js" rel="script"></script>
+<script src="/js/jquery-ui.min.js" rel="script"></script>
+<script src="/js/jquery.slicknav.js" rel="script"></script>
+<script src="/js/mixitup.min.js" rel="script"></script>
+<script src="/js/owl.carousel.min.js"rel="script"></script>
+<script src="/js/jquery.mask.js" rel="script"></script>
+<script src="/js/main.js" rel="script"></script>
+
+<script>
+    var formatter = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+    });
+
+
+    $( document ).ready(function() {
+        $('.input-quantidade').val('1');
+        alterarValoresTotais()
+
+        $('.input-quantidade').change(function() {
+            let valorUnitario = $(this).next().text();
+            valorUnitario = valorUnitario.replace(',', '.');
+
+            let valorFinalAdicao = parseFloat(valorUnitario) * $(this).val();
+            valorFinalAdicao = formatter.format(valorFinalAdicao);
+
+            let campoTotalProduto = $(this).closest('td').next().find('.valorTotalProduto');
+            campoTotalProduto.text(valorFinalAdicao)
+            alterarValoresTotais()
+        });
+
+    });
+
+    function alterarValoresTotais(){
+        let valor = 0;
+        $('.valorTotalProduto').each(function() {
+            let valorString = $(this).text().substr(3);
+            valorString = parseFloat(valorString);
+            valor += valorString;
+        });
+        valor = formatter.format(valor);
+
+        $('.valorTotalPedido').text(valor);
+        $('.subTotal').text(valor);
+    }
+</script>
 
 
 </body>

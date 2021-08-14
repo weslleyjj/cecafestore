@@ -21,8 +21,8 @@ public class CompradorService {
         return compradorRepository.findAll();
     }
 
-    public Optional<Comprador> findById(Long id) {
-        return compradorRepository.findById(id);
+    public Comprador findById(Long id) {
+        return compradorRepository.findById(id).get();
     }
 
     public Comprador findByUsername(String username){

@@ -47,11 +47,11 @@ public class CompradorController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        Optional<Comprador> compradorOptional = compradorService.findById(id);
-        if (!compradorOptional.isPresent()) {
+        Comprador comprador = compradorService.findById(id);
+        if (Objects.isNull(comprador)) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Comprador não encontrado"));
         } else {
-            return ResponseEntity.ok(compradorOptional.get());
+            return ResponseEntity.ok(comprador);
         }
     }
 
@@ -99,10 +99,10 @@ public class CompradorController {
             if (!Objects.isNull(produtos)){
                 String[] produtosIds = produtos.getValue().split("/");
                 for (String produtoId : produtosIds) {
-                    Optional<Produto> produtoTemp = produtoService.findById(Long.parseLong(produtoId));
-                    if(produtoTemp.isPresent()){
-                        produtosList.add(produtoTemp.get());
-                        numeroPedido += produtoTemp.get().getId();
+                    Produto produtoTemp = produtoService.findById(Long.parseLong(produtoId));
+                    if(Objects.nonNull(produtoTemp)){
+                        produtosList.add(produtoTemp);
+                        numeroPedido += produtoTemp.getId();
                     }
                 }
             }
@@ -130,9 +130,9 @@ public class CompradorController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> update(@RequestBody Comprador comprador) {
-        Optional<Comprador> compradorOptional = compradorService.findById(comprador.getId());
+        Comprador compradorUpdate = compradorService.findById(comprador.getId());
 
-        if (!compradorOptional.isPresent()) {
+        if (Objects.isNull(compradorUpdate)) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Comprador não encontrado"));
         } else {
             comprador.getUser().setPassword(passwordEncoder.encode(comprador.getUser().getPassword()));
@@ -142,9 +142,9 @@ public class CompradorController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<Comprador> compradorOptional = compradorService.findById(id);
+        Comprador compradorDelete = compradorService.findById(id);
 
-        if (!compradorOptional.isPresent()) {
+        if (Objects.isNull(compradorDelete)) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Comprador não encontrado"));
         } else {
             compradorService.deleteById(id);

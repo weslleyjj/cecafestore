@@ -59,19 +59,19 @@ public class ProdutoController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        Optional<Produto> produtoOptional = produtoService.findById(id);
-        if (produtoOptional.isEmpty()) {
+        Produto produto = produtoService.findById(id);
+        if (Objects.isNull(produto)) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Produto não encontrado"));
         } else {
-            return ResponseEntity.ok(produtoOptional.get());
+            return ResponseEntity.ok(produto);
         }
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> update(@RequestBody Produto produto) {
-        Optional<Produto> produtoOptional = produtoService.findById(produto.getId());
+        Produto produtoUpdate = produtoService.findById(produto.getId());
 
-        if (produtoOptional.isEmpty()) {
+        if (Objects.isNull(produtoUpdate)) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Produto não encontrado"));
         } else {
             if(validaProduto(produto)){
@@ -85,9 +85,9 @@ public class ProdutoController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<Produto> produtoOptional = produtoService.findById(id);
+        Produto produtoDelete = produtoService.findById(id);
 
-        if (produtoOptional.isEmpty()) {
+        if (Objects.isNull(produtoDelete)) {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Produto não encontrado"));
         } else {
             produtoService.deleteById(id);
