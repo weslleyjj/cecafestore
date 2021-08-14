@@ -22,12 +22,16 @@ public class ProdutoPedidoService {
         return repository.findAll();
     }
 
-    public Optional<ProdutoPedido> findById(Long id) {
-        return repository.findById(id);
+    public ProdutoPedido findById(Long id) {
+        return repository.findById(id).get();
     }
 
-    public ProdutoPedido save(ProdutoPedido pedido) {
-        return repository.save(pedido);
+    public ProdutoPedido save(ProdutoPedido produtoPedido) {
+        return repository.save(produtoPedido);
+    }
+
+    public List<ProdutoPedido> saveAll(List<ProdutoPedido> produtos) {
+        return repository.saveAll(produtos);
     }
 
     public void deleteById(Long id) {

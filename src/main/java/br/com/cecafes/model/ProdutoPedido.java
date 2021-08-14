@@ -32,4 +32,15 @@ public class ProdutoPedido{
     private String unidadeMedida;
     @NotNull
     private String preco;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Pedido pedido;
+
+    public ProdutoPedido(ProdutoCecafes produto){
+        this.produtoCecafes = produto;
+        this.nome = produto.getNome();
+        this.categoria = produto.getCategoria();
+        this.quantidade = produto.getQuantidade();
+        this.unidadeMedida = produto.getUnidadeMedida();
+        this.preco = produto.getPreco();
+    }
 }

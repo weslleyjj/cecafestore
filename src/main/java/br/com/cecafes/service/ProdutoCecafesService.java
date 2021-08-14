@@ -23,8 +23,8 @@ public class ProdutoCecafesService {
         return repository.findAll();
     }
 
-    public Optional<ProdutoCecafes> findById(Long id) {
-        return repository.findById(id);
+    public ProdutoCecafes findById(Long id) {
+        return repository.findById(id).get();
     }
 
     public ProdutoCecafes save(ProdutoCecafes pedido) {
