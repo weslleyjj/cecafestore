@@ -71,14 +71,21 @@ public class PedidoController {
             return "produtosListComprador";
         }
 
+        pedidoOficial.setComprador(comprador);
         pedidoOficial.setEndereco(comprador.getEndereco());
         pedidoOficial.setValorPedido(calculaPedido(produtoPedidoList));
+        pedidoOficial.setNumero(pedido.getNumero());
+
 
         pedidoService.save(pedidoOficial);
 
         produtoPedidoList.forEach(produtoPedido -> produtoPedido.setPedido(pedidoOficial));
 
         produtoPedidoService.saveAll(produtoPedidoList);
+
+        pedidoOficial.setProdutosPedido(produtoPedidoList);
+
+        pedidoService.save(pedidoOficial);
 
         return "index";
     }

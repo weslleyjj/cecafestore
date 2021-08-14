@@ -20,7 +20,7 @@ public class ProdutoPedido{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    @OneToOne
+    @ManyToOne
     private ProdutoCecafes produtoCecafes;
     @NotEmpty
     private String nome;

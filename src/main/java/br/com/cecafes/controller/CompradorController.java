@@ -1,9 +1,11 @@
 package br.com.cecafes.controller;
 
+import br.com.cecafes.dto.PedidoDTO;
 import br.com.cecafes.model.*;
 import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.CompradorService;
+import br.com.cecafes.service.ProdutoCecafesService;
 import br.com.cecafes.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,15 +31,15 @@ public class CompradorController {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private MessageService messageService;
-    private ProdutoService produtoService;
+    private ProdutoCecafesService produtoCecafesService;
 
     @Autowired
-    public CompradorController(CompradorService compradorService, MessageService messageService, PasswordEncoder passwordEncoder, UserRepository userRepository, ProdutoService produtoService) {
+    public CompradorController(CompradorService compradorService, MessageService messageService, PasswordEncoder passwordEncoder, UserRepository userRepository, ProdutoCecafesService produtoCecafesService) {
         this.compradorService = compradorService;
         this.messageService = messageService;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
-        this.produtoService = produtoService;
+        this.produtoCecafesService = produtoCecafesService;
     }
 
     @GetMapping
@@ -88,10 +90,10 @@ public class CompradorController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         Comprador comprador = compradorService.findByUsername(userDetails.getUsername());
-        Pedido pedido = new Pedido();
+        PedidoDTO pedido = new PedidoDTO();
 
         ModelAndView modelAndView = new ModelAndView("produtosListComprador");
-        List<Produto> produtosList = new ArrayList<>();
+        List<ProdutoCecafes> produtosList = new ArrayList<>();
         String numeroPedido = "";
 
         // Resgata todos os produtos contidos no cookie
@@ -99,7 +101,7 @@ public class CompradorController {
             if (!Objects.isNull(produtos)){
                 String[] produtosIds = produtos.getValue().split("/");
                 for (String produtoId : produtosIds) {
-                    Produto produtoTemp = produtoService.findById(Long.parseLong(produtoId));
+                    ProdutoCecafes produtoTemp = produtoCecafesService.findById(Long.parseLong(produtoId));
                     if(Objects.nonNull(produtoTemp)){
                         produtosList.add(produtoTemp);
                         numeroPedido += produtoTemp.getId();

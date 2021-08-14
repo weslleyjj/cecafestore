@@ -25,7 +25,6 @@ public class Pedido {
     private Comprador comprador;
     @OneToOne
     private Endereco endereco;
-    @NotNull
     @OneToMany
     private List<ProdutoPedido> produtosPedido;
 
