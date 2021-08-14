@@ -51,13 +51,6 @@ INSERT INTO public.funcionario_cecafes VALUES (1, '988.456.258-78', '56468', 'Fe
 
 
 --
--- Data for Name: pedido; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.pedido VALUES (1, '852214', 85.43, 1, 1);
-
-
---
 -- Data for Name: produtor; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -84,18 +77,3 @@ INSERT INTO public.produto_cecafes VALUES (2, 'Fruta', 'Banana', '1,50', 500, 'Q
 INSERT INTO public.produto_cecafes VALUES (3, 'Verdura', 'Cebola', '4390,00', 2, 'Tonelada');
 INSERT INTO public.produto_cecafes VALUES (4, 'Legume', 'Macaxeira', '5,28', 760, 'Quilo');
 INSERT INTO public.produto_cecafes VALUES (5, 'Hortaliça', 'Alface', '2,40', 150, 'Quilo');
-
-
---
--- Data for Name: pedido_produto; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.pedido_produto VALUES (1, 1);
-
-
---
--- Data for Name: produto_pedido; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.produto_pedido VALUES (1, 'Fruta', 'Maçã', '4,50', 5, 'Quilo', 1);
-
