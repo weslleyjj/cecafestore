@@ -1,8 +1,14 @@
 package br.com.cecafes.controller;
 
+import br.com.cecafes.model.Produto;
+import br.com.cecafes.service.MessageService;
+import br.com.cecafes.service.ProdutoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class HomeController {
+    private ProdutoService produtoService;
+    private MessageService messageService;
+
+    @Autowired
+    public HomeController(ProdutoService produtoService, MessageService messageService) {
+        this.produtoService = produtoService;
+        this.messageService = messageService;
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(HttpServletResponse response, HttpServletRequest request) {
@@ -30,6 +44,16 @@ public class HomeController {
     public String shop() {
         return "shop-details-template";
     }
+
+    @RequestMapping(value = "/shop/{id}", method = RequestMethod.GET)
+    public ModelAndView shop(@PathVariable(name = "id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("shop-details");
+        Produto produto = produtoService.findById(id);
+        modelAndView.addObject("produto", produto);
+
+        return modelAndView;
+    }
+
 
     @RequestMapping(value = "/shop-grid", method = RequestMethod.GET)
     public String shopGrid() {
