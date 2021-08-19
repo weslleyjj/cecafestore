@@ -18,4 +18,4 @@ auth-api:
   password: admin
 
 arquivos:
-  imagens: /home/weslley/Documentos/TADS/PA1/projeto/cecafestore/images/
+  imagens: /Users/iuryv/Documents/TADS/2021.1/Projetos Aplicados I/cecafestore/src/main/resources/static/img/product/details/

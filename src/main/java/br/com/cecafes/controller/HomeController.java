@@ -54,6 +54,23 @@ public class HomeController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String adicionarCarrinho(@PathVariable(name = "id") Long id, HttpServletResponse response, HttpServletRequest request) {
+        Cookie[] cookiesRequest = request.getCookies();
+
+        if (verificaCookies(cookiesRequest, "produtos")){
+            Cookie cookie = procurarCookie(cookiesRequest, "produtos");
+
+            String valorCookie = cookie.getValue();
+            valorCookie += id + "/";
+
+            cookie.setValue(valorCookie);
+            cookie.setMaxAge(60 * 60 * 24 * 30);
+            response.addCookie(cookie);
+        }
+
+        return "redirect:/";
+    }
 
     @RequestMapping(value = "/shop-grid", method = RequestMethod.GET)
     public String shopGrid() {
@@ -97,6 +114,16 @@ public class HomeController {
             }
         }
         return false;
+    }
+
+    private Cookie procurarCookie(Cookie[] cookies, String cookieName){
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(cookieName)){
+                return cookie;
+            }
+        }
+
+        return null;
     }
 
 }
