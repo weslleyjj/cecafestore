@@ -4,6 +4,7 @@ import br.com.cecafes.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.lang.reflect.Method;
 
 @Configuration
 @EnableWebSecurity
@@ -63,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/comprador/cadastrar").permitAll()
                 .antMatchers("/comprador/**").hasAnyAuthority("COMPRADOR", "ADMIN")
                 .antMatchers("/funcionario/**").hasAnyAuthority("FUNCIONARIO", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/pedido").hasAnyAuthority("COMPRADOR")
 //                .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()

@@ -53,16 +53,34 @@ public class PedidoController {
         List<ProdutoPedido> produtoPedidoList = new ArrayList<>();
         Pedido pedidoOficial = new Pedido();
 
-        //laço para resgatar os produtos e subistituir na lista
+        List<Long> idsProdutos = new ArrayList<>();
+        List<ProdutoCecafes> produtosAnteriores = pedido.getProdutos();
+
+        pedido.getProdutos().forEach(produto -> {
+            idsProdutos.add(produto.getId());
+        });
+
+        pedido.setProdutos(produtoCecafesService.findProdutosByIds(idsProdutos));
+
         for(int i = 0; i < pedido.getProdutos().size() ; i++){
-            ProdutoCecafes produtoTmp = produtoCecafesService.findById(pedido.getProdutos().get(i).getId());
 
-            if (!Objects.isNull(produtoTmp)) {
-                produtoTmp.setQuantidade(pedido.getProdutos().get(i).getQuantidade());
-                produtoPedidoList.add(new ProdutoPedido(produtoTmp));
-            }
+                Long idTmp = produtosAnteriores.get(i).getId();
+                int qtd = produtosAnteriores.get(i).getQuantidade();
+
+                if(pedido.getProdutos().stream().anyMatch(pId -> Objects.equals(pId.getId(), idTmp))){
+                    for (ProdutoCecafes produto : pedido.getProdutos()) {
+                        if(Objects.equals(produto.getId(), idTmp)){
+                            pedido.getProdutos().get(i).setQuantidade(qtd);
+                        }
+                    }
+                }
+
+                if(pedido.getProdutos().stream().anyMatch(pId -> pId.getId() == idTmp)){
+                    pedido.getProdutos().get(i).setQuantidade(qtd);
+                }
+
+                produtoPedidoList.add(new ProdutoPedido(pedido.getProdutos().get(i)));
         }
-
 
         Comprador comprador = compradorService.findById(pedido.getComprador().getId());
 

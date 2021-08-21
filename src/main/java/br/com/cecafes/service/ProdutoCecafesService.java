@@ -18,7 +18,9 @@ public class ProdutoCecafesService {
         this.repository = repository;
     }
 
-
+    public List<ProdutoCecafes> findProdutosByIds(List<Long> listIds){
+        return repository.findProdutosByIds(listIds);
+    }
     public List<ProdutoCecafes> findAll() {
         return repository.findAll();
     }

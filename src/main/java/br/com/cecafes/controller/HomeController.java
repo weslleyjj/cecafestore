@@ -13,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ObjectStreamClass;
+import java.util.Objects;
 
 @Controller
 public class HomeController {
@@ -108,6 +110,9 @@ public class HomeController {
     }
 
     private boolean verificaCookies(Cookie[] cookies, String cookieName){
+        if(Objects.isNull(cookies)){
+            return false;
+        }
         for (Cookie cookie : cookies) {
             if(cookie.getName().equals(cookieName)){
                 return true;
