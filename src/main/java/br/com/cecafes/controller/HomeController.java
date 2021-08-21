@@ -62,11 +62,15 @@ public class HomeController {
             Cookie cookie = procurarCookie(cookiesRequest, "produtos");
 
             String valorCookie = cookie.getValue();
-            valorCookie += id + "/";
 
-            cookie.setValue(valorCookie);
-            cookie.setMaxAge(60 * 60 * 24 * 30);
-            response.addCookie(cookie);
+            if(valorCookie.indexOf(id.toString()) == -1){
+                valorCookie += id + "/";
+
+                cookie.setValue(valorCookie);
+                cookie.setMaxAge(60 * 60 * 24 * 30);
+                response.addCookie(cookie);
+            }
+
         }
 
         return "redirect:/";
