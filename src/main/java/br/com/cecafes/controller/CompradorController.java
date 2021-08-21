@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -34,7 +35,13 @@ public class CompradorController {
     private ProdutoCecafesService produtoCecafesService;
 
     @Autowired
-    public CompradorController(CompradorService compradorService, MessageService messageService, PasswordEncoder passwordEncoder, UserRepository userRepository, ProdutoCecafesService produtoCecafesService) {
+    public CompradorController(
+            CompradorService compradorService,
+            MessageService messageService,
+            PasswordEncoder passwordEncoder,
+            UserRepository userRepository,
+            ProdutoCecafesService produtoCecafesService
+    ) {
         this.compradorService = compradorService;
         this.messageService = messageService;
         this.passwordEncoder = passwordEncoder;
@@ -83,7 +90,39 @@ public class CompradorController {
         return "formComprador";
     }
 
-    @GetMapping(value = "lista-produtos-compra")
+    @GetMapping(value = "/add-cart")
+    public String addCart(@RequestParam(name = "id") Long id, HttpServletRequest request, HttpServletResponse response) {
+        ProdutoCecafes produto = produtoCecafesService.findById(id);
+
+        if (Objects.isNull(produto)) {
+            return "error";
+        }
+
+        Cookie cookies[] = request.getCookies();
+
+        Cookie cookieProduto = null;
+        boolean flag = false;
+        for (Cookie cookie: cookies) {
+            if (cookie.getName().equals("produtos")) {
+                cookieProduto = cookie;
+                flag = true;
+                break;
+            }
+        }
+
+        if (flag) {
+            cookieProduto.setValue(cookieProduto.getValue() + "/" + produto.getId().toString());
+        } else {
+            cookieProduto = new Cookie("produtos", produto.getId().toString() + "/");
+        }
+
+        cookieProduto.setMaxAge(60 * 60 * 24 * 30);
+        response.addCookie(cookieProduto);
+
+        return "redirect:/lista-produtos-compra";
+    }
+
+    @GetMapping(value = "/lista-produtos-compra")
     public ModelAndView listProdutosCompra(Model model, HttpServletRequest request, Authentication authentication) {
         Cookie[] cookies = request.getCookies();
         Cookie produtos = resgatarCookies(cookies, "produtos");

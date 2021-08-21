@@ -13,8 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ObjectStreamClass;
-import java.util.Objects;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -28,7 +27,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(HttpServletResponse response, HttpServletRequest request) {
+    public ModelAndView home(HttpServletResponse response, HttpServletRequest request) {
         Cookie[] cookiesRequest = request.getCookies();
         if ( !verificaCookies(cookiesRequest, "produtos") ){
             Cookie c = new Cookie("produtos", "");
@@ -36,7 +35,11 @@ public class HomeController {
             response.addCookie(c);
         }
 
-        return "index";
+        ModelAndView modelAndView = new ModelAndView("index");
+        List<Produto> produtos = produtoService.findAll();
+        modelAndView.addObject("produtos", produtos);
+
+        return modelAndView;
     }
 
     @RequestMapping(value = "/cadastro-sistema", method = RequestMethod.GET)
@@ -110,9 +113,6 @@ public class HomeController {
     }
 
     private boolean verificaCookies(Cookie[] cookies, String cookieName){
-        if(Objects.isNull(cookies)){
-            return false;
-        }
         for (Cookie cookie : cookies) {
             if(cookie.getName().equals(cookieName)){
                 return true;
