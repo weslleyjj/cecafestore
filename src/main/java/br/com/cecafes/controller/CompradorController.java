@@ -101,7 +101,14 @@ public class CompradorController {
             if (!Objects.isNull(produtos)){
                 String[] produtosIds = produtos.getValue().split("/");
                 for (String produtoId : produtosIds) {
-                    ProdutoCecafes produtoTemp = produtoCecafesService.findById(Long.parseLong(produtoId));
+                    ProdutoCecafes produtoTemp = null;
+                    try{
+                        produtoTemp = produtoCecafesService.findById(Long.parseLong(produtoId));
+                    }catch (NoSuchElementException nse){
+                        System.err.println("Produto referenciado no cookie nao foi encontrado");
+                        System.err.println(nse);
+                        continue;
+                    }
                     if(Objects.nonNull(produtoTemp)){
                         produtosList.add(produtoTemp);
                         numeroPedido += produtoTemp.getId();
