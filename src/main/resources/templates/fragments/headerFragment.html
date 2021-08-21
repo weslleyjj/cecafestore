@@ -122,7 +122,8 @@
                     <ul>
                             <!--           li para levar para listagem de favoritos futuramente            -->
 <!--                        <li><a href="#"><i class="fa fa-heart"></i> <span>0</span></a></li>-->
-                        <li><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+                        <li sec:authorize="hasAnyAuthority('COMPRADOR', 'ADMIN')" ><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+                        <li sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" ><a th:href="@{/pedido/gerencia-pedidos}"><i class="fa fa-address-book"></i></a></li>
                     </ul>
 <!--                    <div class="header__cart__price">item: <span>$150.00</span></div>-->
                 </div>

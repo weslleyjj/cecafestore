@@ -1,6 +1,7 @@
 package br.com.cecafes.controller;
 
 import br.com.cecafes.dto.PedidoDTO;
+import br.com.cecafes.dto.PedidoListagemDTO;
 import br.com.cecafes.model.*;
 import br.com.cecafes.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,6 +107,21 @@ public class PedidoController {
         pedidoService.save(pedidoOficial);
 
         return "index";
+    }
+
+    @GetMapping("/gerencia-pedidos")
+    public ModelAndView listagemPedidos(){
+        ModelAndView model = new ModelAndView("listagemPedidosCecafes");
+        List<PedidoListagemDTO> pedidoListagem = new ArrayList<>();
+        List<Pedido> pedidoList = pedidoService.findAll();
+
+        pedidoList.forEach(pedido -> {
+            pedidoListagem.add(new PedidoListagemDTO(pedido));
+        });
+
+        model.addObject("pedidos", pedidoListagem);
+
+        return model;
     }
 
     @PutMapping(value = "/{id}")

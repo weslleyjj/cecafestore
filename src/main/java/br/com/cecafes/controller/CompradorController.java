@@ -118,6 +118,8 @@ public class CompradorController {
             numeroPedido += date.getMonthValue();
             numeroPedido += date.getDayOfMonth();
             numeroPedido += date.getHour();
+            numeroPedido += date.getMinute();
+            numeroPedido += date.getSecond();
             numeroPedido += comprador.getId();
             pedido.setComprador(comprador);
         }
