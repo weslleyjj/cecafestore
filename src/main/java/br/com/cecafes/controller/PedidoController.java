@@ -5,9 +5,11 @@ import br.com.cecafes.dto.PedidoListagemDTO;
 import br.com.cecafes.model.*;
 import br.com.cecafes.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -40,12 +42,14 @@ public class PedidoController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ModelAndView findById(@PathVariable Long id) {
         Optional<Pedido> pedidoOptional = pedidoService.findById(id);
-        if (!pedidoOptional.isPresent()) {
-            return ResponseEntity.status(404).body(messageService.createJson("message", "Pedido não encontrado"));
+        if (pedidoOptional.isPresent()) {
+            ModelAndView model = new ModelAndView("detalhesPedido");
+            model.addObject("pedido", pedidoOptional.get());
+            return model;
         } else {
-            return ResponseEntity.ok(pedidoOptional.get());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O pedido não foi encontrado no sistema");
         }
     }
 
