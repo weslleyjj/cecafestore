@@ -4,6 +4,7 @@ import br.com.cecafes.dto.PedidoDTO;
 import br.com.cecafes.dto.PedidoListagemDTO;
 import br.com.cecafes.model.*;
 import br.com.cecafes.service.*;
+import br.com.cecafes.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -56,9 +60,10 @@ public class PedidoController {
     }
 
     @PostMapping
-    public String save(@ModelAttribute @Valid PedidoDTO pedido) {
+    public String save(@ModelAttribute @Valid PedidoDTO pedido, HttpServletRequest request, HttpServletResponse response) {
         List<ProdutoPedido> produtoPedidoList = new ArrayList<>();
         Pedido pedidoOficial = new Pedido();
+        Cookie[] cookies = request.getCookies();
 
         List<Long> idsProdutos = new ArrayList<>();
         List<ProdutoCecafes> produtosAnteriores = pedido.getProdutos();
@@ -111,6 +116,11 @@ public class PedidoController {
         pedidoOficial.setProdutosPedido(produtoPedidoList);
 
         pedidoService.save(pedidoOficial);
+
+        // Remoção do cookie após o pedido finalizado
+        Cookie c = CookieUtil.resgatarCookies(cookies, "produtos");
+        assert c != null;
+        response.addCookie(CookieUtil.removerCookie(c));
 
         return "index";
     }

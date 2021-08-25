@@ -32,4 +32,11 @@ public class CookieUtil {
         return null;
     }
 
+    public static Cookie removerCookie(Cookie cookie){
+        cookie.setValue("");
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        return cookie;
+    }
+
 }
