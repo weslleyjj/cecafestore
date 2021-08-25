@@ -2,6 +2,7 @@ package br.com.cecafes.controller;
 
 import br.com.cecafes.dto.PedidoDTO;
 import br.com.cecafes.model.*;
+import br.com.cecafes.repository.ProdutoCecafesRepository;
 import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.CompradorService;
@@ -40,7 +41,8 @@ public class CompradorController {
             MessageService messageService,
             PasswordEncoder passwordEncoder,
             UserRepository userRepository,
-            ProdutoCecafesService produtoCecafesService
+            ProdutoCecafesService produtoCecafesService,
+            ProdutoCecafesRepository produtoCecafesRepository
     ) {
         this.compradorService = compradorService;
         this.messageService = messageService;
@@ -119,7 +121,7 @@ public class CompradorController {
         cookieProduto.setMaxAge(60 * 60 * 24 * 30);
         response.addCookie(cookieProduto);
 
-        return "redirect:/lista-produtos-compra";
+        return "redirect:/";
     }
 
     @GetMapping(value = "/lista-produtos-compra")
@@ -142,7 +144,9 @@ public class CompradorController {
                 for (String produtoId : produtosIds) {
                     ProdutoCecafes produtoTemp = null;
                     try{
-                        produtoTemp = produtoCecafesService.findById(Long.parseLong(produtoId));
+                        if (!produtoId.equals("")) {
+                            produtoTemp = produtoCecafesService.findById(Long.parseLong(produtoId));
+                        }
                     }catch (NoSuchElementException nse){
                         System.err.println("Produto referenciado no cookie nao foi encontrado");
                         System.err.println(nse);

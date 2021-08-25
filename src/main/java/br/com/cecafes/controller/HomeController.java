@@ -1,7 +1,9 @@
 package br.com.cecafes.controller;
 
 import br.com.cecafes.model.Produto;
+import br.com.cecafes.model.ProdutoCecafes;
 import br.com.cecafes.service.MessageService;
+import br.com.cecafes.service.ProdutoCecafesService;
 import br.com.cecafes.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,11 +20,12 @@ import java.util.List;
 @Controller
 public class HomeController {
     private ProdutoService produtoService;
+    private ProdutoCecafesService produtoCecafesService;
     private MessageService messageService;
 
     @Autowired
-    public HomeController(ProdutoService produtoService, MessageService messageService) {
-        this.produtoService = produtoService;
+    public HomeController(ProdutoCecafesService produtoCecafesService, MessageService messageService) {
+        this.produtoCecafesService = produtoCecafesService;
         this.messageService = messageService;
     }
 
@@ -36,7 +39,7 @@ public class HomeController {
         }
 
         ModelAndView modelAndView = new ModelAndView("index");
-        List<Produto> produtos = produtoService.findAll();
+        List<ProdutoCecafes> produtos = produtoCecafesService.findAll();
         modelAndView.addObject("produtos", produtos);
 
         return modelAndView;
@@ -53,7 +56,7 @@ public class HomeController {
     @RequestMapping(value = "/shop/{id}", method = RequestMethod.GET)
     public ModelAndView shop(@PathVariable(name = "id") Long id) {
         ModelAndView modelAndView = new ModelAndView("shop-details");
-        Produto produto = produtoService.findById(id);
+        ProdutoCecafes produto = produtoCecafesService.findById(id);
         modelAndView.addObject("produto", produto);
 
         return modelAndView;

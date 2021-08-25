@@ -100,7 +100,7 @@
         <div class="row featured__filter">
             <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" th:each="produto: ${produtos}">
                 <div class="featured__item">
-                    <div class="featured__item__pic set-bg" th:data-setbg="'/img/product/details/' + ${produto.getFotoUrl()}">
+                    <div class="featured__item__pic set-bg" th:data-setbg="'/img/product/details/' + ${''}">
                         <ul class="featured__item__pic__hover">
                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
                             <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -534,4 +534,13 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/main.js"></script>
 </body>
+<!--<script>-->
+<!--    function produtoAdicionado() {-->
+<!--        Swal.fire(-->
+<!--            'Produto adicionado ao carrinho',-->
+<!--            'Continue seus agendamentos em nosso sistema!',-->
+<!--            'success'-->
+<!--        );-->
+<!--    }-->
+<!--</script>-->
 </html>
