@@ -5,6 +5,7 @@ import br.com.cecafes.model.ProdutoCecafes;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.ProdutoCecafesService;
 import br.com.cecafes.service.ProdutoService;
+import br.com.cecafes.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,13 +32,6 @@ public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView home(HttpServletResponse response, HttpServletRequest request) {
-        Cookie[] cookiesRequest = request.getCookies();
-        if ( !verificaCookies(cookiesRequest, "produtos") ){
-            Cookie c = new Cookie("produtos", "");
-            c.setMaxAge(60 * 60 * 24 * 30); // 30 dias
-            response.addCookie(c);
-        }
-
         ModelAndView modelAndView = new ModelAndView("index");
         List<ProdutoCecafes> produtos = produtoCecafesService.findAll();
         modelAndView.addObject("produtos", produtos);
@@ -66,8 +60,8 @@ public class HomeController {
     public String adicionarCarrinho(@PathVariable(name = "id") Long id, HttpServletResponse response, HttpServletRequest request) {
         Cookie[] cookiesRequest = request.getCookies();
 
-        if (verificaCookies(cookiesRequest, "produtos")){
-            Cookie cookie = procurarCookie(cookiesRequest, "produtos");
+        if (CookieUtil.verificaCookies(cookiesRequest, "produtos")){
+            Cookie cookie = CookieUtil.procurarCookie(cookiesRequest, "produtos");
 
             String valorCookie = cookie.getValue();
 
@@ -117,25 +111,6 @@ public class HomeController {
     @RequestMapping(value = "/blog", method = RequestMethod.GET)
     public String blog() {
         return "blog";
-    }
-
-    private boolean verificaCookies(Cookie[] cookies, String cookieName){
-        for (Cookie cookie : cookies) {
-            if(cookie.getName().equals(cookieName)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Cookie procurarCookie(Cookie[] cookies, String cookieName){
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(cookieName)){
-                return cookie;
-            }
-        }
-
-        return null;
     }
 
 }

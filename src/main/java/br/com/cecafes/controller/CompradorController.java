@@ -8,6 +8,7 @@ import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.CompradorService;
 import br.com.cecafes.service.ProdutoCecafesService;
 import br.com.cecafes.service.ProdutoService;
+import br.com.cecafes.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -127,7 +128,7 @@ public class CompradorController {
     @GetMapping(value = "/lista-produtos-compra")
     public ModelAndView listProdutosCompra(Model model, HttpServletRequest request, Authentication authentication) {
         Cookie[] cookies = request.getCookies();
-        Cookie produtos = resgatarCookies(cookies, "produtos");
+        Cookie produtos = CookieUtil.resgatarCookies(cookies, "produtos");
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         Comprador comprador = compradorService.findByUsername(userDetails.getUsername());
@@ -206,12 +207,4 @@ public class CompradorController {
         }
     }
 
-    private Cookie resgatarCookies(Cookie[] cookies, String cookieName){
-        for (Cookie cookie : cookies) {
-            if(cookie.getName().equals(cookieName)){
-                return cookie;
-            }
-        }
-        return null;
-    }
 }
