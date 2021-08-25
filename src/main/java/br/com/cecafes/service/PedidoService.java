@@ -29,6 +29,10 @@ public class PedidoService {
         return pedidoRepository.save(pedido);
     }
 
+    public List<Pedido> findPedidosByCompradorId(Long idComprador){
+        return pedidoRepository.findPedidosByCompradorId(idComprador);
+    }
+
     public void deleteById(Long id) {
         pedidoRepository.deleteById(id);
     }

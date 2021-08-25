@@ -3,11 +3,16 @@ package br.com.cecafes.controller;
 import br.com.cecafes.dto.PedidoDTO;
 import br.com.cecafes.dto.PedidoListagemDTO;
 import br.com.cecafes.model.*;
+import br.com.cecafes.repository.UserRepository;
+import br.com.cecafes.security.MyUserDetails;
 import br.com.cecafes.service.*;
 import br.com.cecafes.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,14 +37,16 @@ public class PedidoController {
     private ProdutoCecafesService produtoCecafesService;
     private CompradorService compradorService;
     private ProdutoPedidoService produtoPedidoService;
+    private UserRepository userRepository;
 
     @Autowired
-    public PedidoController(PedidoService pedidoService, MessageService messageService, ProdutoCecafesService produtoCecafesService, CompradorService compradorService, ProdutoPedidoService produtoPedidoService) {
+    public PedidoController(PedidoService pedidoService, MessageService messageService, ProdutoCecafesService produtoCecafesService, CompradorService compradorService, ProdutoPedidoService produtoPedidoService, UserRepository userRepository) {
         this.pedidoService = pedidoService;
         this.messageService = messageService;
         this.produtoCecafesService = produtoCecafesService;
         this.compradorService = compradorService;
         this.produtoPedidoService = produtoPedidoService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -129,13 +136,30 @@ public class PedidoController {
     public ModelAndView listagemPedidos(){
         ModelAndView model = new ModelAndView("listagemPedidosCecafes");
         List<PedidoListagemDTO> pedidoListagem = new ArrayList<>();
-        List<Pedido> pedidoList = pedidoService.findAll();
+        List<Pedido> pedidoList;
 
-        pedidoList.forEach(pedido -> {
-            pedidoListagem.add(new PedidoListagemDTO(pedido));
-        });
+        // Resgata o usuario atual
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
 
-        model.addObject("pedidos", pedidoListagem);
+        try {
+            if(!isAdminOrFuncionario(userDetails)){
+                User user = userRepository.getUserByUsername(userDetails.getUsername());
+                Comprador comprador = compradorService.findByUsername(user.getUsername());
+                pedidoList = pedidoService.findPedidosByCompradorId(comprador.getId());
+            }else{
+                pedidoList = pedidoService.findAll();
+            }
+
+            pedidoList.forEach(pedido -> {
+                pedidoListagem.add(new PedidoListagemDTO(pedido));
+            });
+
+            model.addObject("pedidos", pedidoListagem);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro Durante a consulta de pedidos do usuario", e);
+        }
 
         return model;
     }
@@ -170,5 +194,15 @@ public class PedidoController {
         }
 
         return BigDecimal.valueOf(valorTotal).setScale(2, RoundingMode.HALF_DOWN).floatValue();
+    }
+
+    private boolean isAdminOrFuncionario(MyUserDetails user){
+        for (GrantedAuthority authority : user.getAuthorities()) {
+            if(authority.getAuthority().equalsIgnoreCase("admin")
+                || authority.getAuthority().equalsIgnoreCase("funcionario")){
+                return true;
+            }
+        }
+        return false;
     }
 }
