@@ -101,18 +101,19 @@
             <div class="col-lg-6">
                 <nav class="header__menu">
                     <ul>
-                        <li class="active"><a href="/">Início</a></li>
                         <li><a href="/loja">Loja</a></li>
                         <li><a href="#">Comercial</a>
                             <ul class="header__menu__dropdown">
-                                <li><a href="../shop-details-template.html">Venda</a></li>
-                                <li><a href="../shoping-cart.html">Compra</a></li>
+                                <li sec:authorize="hasAnyAuthority('PRODUTOR')" ><a th:href="@{/produto/form-produto}">Venda</a></li>
+                                <li sec:authorize="!hasAnyAuthority('PRODUTOR')"><a th:href="@{/loja}">Compra</a></li>
                                 <li><a href="#mais-informacoes">Mais informações</a></li>
-                                <li><a href="../blog-details.html">Ajuda</a></li>
+<!--                                <li><a th:href="@{/}">Ajuda</a></li>-->
                             </ul>
                         </li>
-                        <li><a href="../blog.html">Suporte</a></li>
-                        <li><a href="../contact.html">Contato</a></li>
+                        <li sec:authorize="hasAnyAuthority('COMPRADOR')"><a th:href="@{/pedido/gerencia-pedidos}">Meus Pedidos</a></li>
+                        <li sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')"><a th:href="@{/pedido/gerencia-pedidos}">Ver Pedidos</a></li>
+                        <li sec:authorize="hasAnyAuthority('PRODUTOR')"><a th:href="@{/produtor}">Meus Produtos</a></li>
+                        <li sec:authorize="!hasAnyAuthority('PRODUTOR', 'FUNCIONARIO')" ><a th:href="@{/comprador/lista-produtos-compra}">Carrinho</a></li>
                     </ul>
                 </nav>
             </div>
@@ -122,8 +123,8 @@
                     <ul>
                             <!--           li para levar para listagem de favoritos futuramente            -->
 <!--                        <li><a href="#"><i class="fa fa-heart"></i> <span>0</span></a></li>-->
-                        <li sec:authorize="hasAnyAuthority('COMPRADOR', 'ADMIN')" ><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
-                        <li sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN', 'COMPRADOR')" ><a th:href="@{/pedido/gerencia-pedidos}"><i class="fa fa-address-book"></i></a></li>
+                        <li title="Carrinho" sec:authorize="!hasAnyAuthority('PRODUTOR')" ><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+                        <li title="Pedidos" sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN', 'COMPRADOR')" ><a th:href="@{/pedido/gerencia-pedidos}"><i class="fa fa-address-book"></i></a></li>
                     </ul>
 <!--                    <div class="header__cart__price">item: <span>$150.00</span></div>-->
                 </div>

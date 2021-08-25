@@ -119,6 +119,7 @@
       <img width="40%" src="/img/favicon.png" />
     </figure>
     <div class="form">
+      <h3>Entre com suas credenciais</h3>
       <p th:if="${loginError}" class="error">Usuário ou senha inválidos</p>
       <form th:action="@{/login}" method="post" class="login-form">
         <div th:if="${param.error}">

@@ -129,7 +129,7 @@ public class PedidoController {
         assert c != null;
         response.addCookie(CookieUtil.removerCookie(c));
 
-        return "index";
+        return "redirect:/pedido/"+pedidoOficial.getId();
     }
 
     @GetMapping("/gerencia-pedidos")
