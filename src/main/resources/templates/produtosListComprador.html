@@ -149,6 +149,7 @@
                     text: 'O produto foi removido do seu carrinho!',
                 })
                 e.parentElement.parentElement.remove();
+                alterarValoresTotais()
             },
             error: function (xhr, textStatus, error){
                 console.log(xhr)
@@ -183,6 +184,8 @@
         let valor = 0;
         $('.valorTotalProduto').each(function() {
             let valorString = $(this).text().substr(3);
+            valorString = valorString.replace('.', '', )
+            valorString = valorString.replace(',', '.', )
             valorString = parseFloat(valorString);
             valor += valorString;
         });
@@ -193,8 +196,6 @@
     }
 
 </script>
-
-
 </body>
 
 </html>
