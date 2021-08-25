@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface ProdutoCecafesRepository extends JpaRepository<ProdutoCecafes, Long> {
 
-    @Query(value = "SELECT * FROM produto_cecafes WHERE id in ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM produto_cecafes WHERE id in ?1 ORDER BY id ASC", nativeQuery = true)
     List<ProdutoCecafes> findProdutosByIds(List<Long> listId);
 
 }

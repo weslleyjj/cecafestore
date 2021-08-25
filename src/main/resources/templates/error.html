@@ -74,6 +74,7 @@
   </g>
 </svg>
 <h1 th:if="${status != null && status == 404}">Página não encontrada</h1>
+<h1 th:if="${status != null && status == 405}">Você não tem permissão para prosseguir com essa ação</h1>
 <h1 th:if="${status != null && status == 500}">Erro interno no sistema</h1>
 <h1 th:if="${status == null}">Você não tem permissão para acessar essa área</h1>
 <h2>Ir para o <a href="/">Início</a></h2>

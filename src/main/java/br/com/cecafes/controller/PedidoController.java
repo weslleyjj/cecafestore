@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -153,11 +155,10 @@ public class PedidoController {
 
     private Float calculaPedido(List<ProdutoPedido> produtos){
         Float valorTotal = 0f;
-
         for (ProdutoPedido produto : produtos) {
             valorTotal += Float.parseFloat(produto.getPreco().replace(',', '.')) * produto.getQuantidade();
         }
 
-        return valorTotal;
+        return BigDecimal.valueOf(valorTotal).setScale(2, RoundingMode.HALF_DOWN).floatValue();
     }
 }
