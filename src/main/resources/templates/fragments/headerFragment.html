@@ -18,7 +18,7 @@
 <!--  Carrinho  -->
     <div class="humberger__menu__cart">
         <ul>
-            <li><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+            <li><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span class="qtdProdutos">0</span></a></li>
         </ul>
     </div>
     <div class="humberger__menu__widget">
@@ -128,7 +128,7 @@
                     <ul>
                             <!--           li para levar para listagem de favoritos futuramente            -->
 <!--                        <li><a href="#"><i class="fa fa-heart"></i> <span>0</span></a></li>-->
-                        <li title="Carrinho" sec:authorize="!hasAnyAuthority('PRODUTOR')" ><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+                        <li title="Carrinho" sec:authorize="!hasAnyAuthority('PRODUTOR')" ><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span class="qtdProdutos">0</span></a></li>
                         <li title="Pedidos" class="ml-1" sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN', 'COMPRADOR')" ><a th:href="@{/pedido/pedidos}" ><i class="fa fa-address-book"></i></a></li>
                     </ul>
 <!--                    <div class="header__cart__price">item: <span>$150.00</span></div>-->
@@ -186,5 +186,40 @@
         </div>
     </div>
 </section>
+<script src="/js/jquery-3.3.1.min.js" rel="script"></script>
+<script>
+    $(document).ready(function () {
+        countQtdeProdutos();
+    });
+
+    function getCookie(cName) {
+        const name = cName + "=";
+        const cDecoded = decodeURIComponent(document.cookie); //to be careful
+        const cArr = cDecoded.split('; ');
+        let res;
+        cArr.forEach(val => {
+            if (val.indexOf(name) === 0) res = val.substring(name.length);
+        })
+        return res
+    }
+
+    function countQtdeProdutos() {
+        const produtos = getCookie('produtos');
+        const produtosArray = produtos.split("/");
+        let count = 0;
+        produtosArray.forEach((produto) => {
+            if (produto != '') {
+                count++;
+            }
+        });
+
+        const elements = document.getElementsByClassName('qtdProdutos');
+
+        for (let i = 0; i < elements.length; i++) {
+            const element = elements.item(i);
+            element.innerHTML = count;
+        }
+    }
+</script>
 <script src="/js/sweetalert2.all.min.js" rel="script"></script>
 </body>
