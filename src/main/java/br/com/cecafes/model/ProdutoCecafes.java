@@ -30,4 +30,6 @@ public class ProdutoCecafes {
     private String unidadeMedida;
     @NotNull
     private String preco;
+
+    private String fotoUrl;
 }

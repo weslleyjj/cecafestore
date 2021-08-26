@@ -1,6 +1,7 @@
 package br.com.cecafes.dto;
 
 import br.com.cecafes.model.Produto;
+import br.com.cecafes.model.ProdutoCecafes;
 import br.com.cecafes.model.Produtor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,6 +34,17 @@ public class ProdutoDTO {
         p.setQuantidade(quantidade);
         p.setUnidadeMedida(unidadeMedida);
         p.setProdutor(produtor);
+        p.setPreco(preco);
+        p.setFotoUrl(fotoUrl);
+        return p;
+    }
+
+    public ProdutoCecafes getProdutoCecafes(){
+        ProdutoCecafes p = new ProdutoCecafes();
+        p.setNome(nome);
+        p.setCategoria(categoria);
+        p.setQuantidade(quantidade);
+        p.setUnidadeMedida(unidadeMedida);
         p.setPreco(preco);
         p.setFotoUrl(fotoUrl);
         return p;
