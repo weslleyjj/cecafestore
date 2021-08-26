@@ -1,4 +1,9 @@
 <body th:fragment="header" xmlns:sec="http://www.w3.org/1999/xhtml">
+<style>
+    .activePageHeader {
+        color: #7fad39 !important;
+    }
+</style>
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -13,32 +18,33 @@
 <!--  Carrinho  -->
     <div class="humberger__menu__cart">
         <ul>
-                <!--     li para levar parar produtos favoritos       -->
-<!--            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>-->
             <li><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
         </ul>
-        <div class="header__cart__price">item: <span>$150.00</span></div>
     </div>
     <div class="humberger__menu__widget">
-
-        <div class="header__top__right__auth">
-            <a href="/produtor/form-produtor"><i class="fa fa-user"></i> Login</a>
+        <div sec:authorize="!isAuthenticated()" class="header__top__right__auth">
+            <a href="/login"><i class="fa fa-user"></i> Entrar</a>
+        </div>
+        <div sec:authorize="isAuthenticated()" class="header__top__right__auth">
+            <form th:action="@{/logout}" method="post">
+                <a onclick="this.parentNode.submit();" style="cursor: pointer" ><i class="fa fa-sign-out"></i> Sair</a>
+            </form>
         </div>
     </div>
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
-            <li class="active"><a href="/">Início</a></li>
-            <li><a href="/loja">Loja</a></li>
+            <li><a th:class="${page == 'loja'} ? activePageHeader" href="/loja">Loja</a></li>
             <li><a href="#">Comercial</a>
                 <ul class="header__menu__dropdown">
-                    <li><a href="../shop-details-template.html">Venda</a></li>
-                    <li><a href="../shoping-cart.html">Compra</a></li>
+                    <li sec:authorize="hasAnyAuthority('PRODUTOR')" ><a th:href="@{/produto/form-produto}">Venda</a></li>
+                    <li sec:authorize="!hasAnyAuthority('PRODUTOR')"><a th:href="@{/loja}">Compra</a></li>
                     <li><a href="#mais-informacoes">Mais informações</a></li>
-                    <li><a href="../blog-details.html">Ajuda</a></li>
+                    <!--                                <li><a th:href="@{/}">Ajuda</a></li>-->
                 </ul>
             </li>
-            <li><a href="../blog.html">Suporte</a></li>
-            <li><a href="../contact.html">Contato</a></li>
+            <li sec:authorize="hasAnyAuthority('PRODUTOR', 'FUNCIONARIO', 'ADMIN')"><a th:class="${page == 'pedido'} ? activePageHeader" th:href="@{/pedido/pedidos}">Pedidos</a></li>
+            <li sec:authorize="hasAnyAuthority('PRODUTOR')"><a th:href="@{/produtor}">Meus Produtos</a></li>
+            <li sec:authorize="!hasAnyAuthority('PRODUTOR', 'FUNCIONARIO')" ><a th:class="${page == 'carrinho'} ? activePageHeader" th:href="@{/comprador/lista-produtos-compra}">Carrinho</a></li>
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
@@ -101,7 +107,7 @@
             <div class="col-lg-6">
                 <nav class="header__menu">
                     <ul>
-                        <li><a href="/loja">Loja</a></li>
+                        <li><a th:class="${page == 'loja'} ? activePageHeader" href="/loja">Loja</a></li>
                         <li><a href="#">Comercial</a>
                             <ul class="header__menu__dropdown">
                                 <li sec:authorize="hasAnyAuthority('PRODUTOR')" ><a th:href="@{/produto/form-produto}">Venda</a></li>
@@ -110,21 +116,20 @@
 <!--                                <li><a th:href="@{/}">Ajuda</a></li>-->
                             </ul>
                         </li>
-                        <li sec:authorize="hasAnyAuthority('COMPRADOR')"><a th:href="@{/pedido/pedidos}">Meus Pedidos</a></li>
-                        <li sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')"><a th:href="@{/pedido/pedidos}">Ver Pedidos</a></li>
+                        <li sec:authorize="hasAnyAuthority('PRODUTOR', 'FUNCIONARIO', 'ADMIN')"><a th:class="${page == 'pedido'} ? activePageHeader" th:href="@{/pedido/pedidos}">Pedidos</a></li>
                         <li sec:authorize="hasAnyAuthority('PRODUTOR')"><a th:href="@{/produtor}">Meus Produtos</a></li>
-                        <li sec:authorize="!hasAnyAuthority('PRODUTOR', 'FUNCIONARIO')" ><a th:href="@{/comprador/lista-produtos-compra}">Carrinho</a></li>
+                        <li sec:authorize="!hasAnyAuthority('PRODUTOR', 'FUNCIONARIO')" ><a th:class="${page == 'carrinho'} ? activePageHeader" th:href="@{/comprador/lista-produtos-compra}">Carrinho</a></li>
                     </ul>
                 </nav>
             </div>
             <!--     Botões de carrinho       -->
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <div class="header__cart">
                     <ul>
                             <!--           li para levar para listagem de favoritos futuramente            -->
 <!--                        <li><a href="#"><i class="fa fa-heart"></i> <span>0</span></a></li>-->
                         <li title="Carrinho" sec:authorize="!hasAnyAuthority('PRODUTOR')" ><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
-                        <li title="Pedidos" sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN', 'COMPRADOR')" ><a th:href="@{/pedido/pedidos}"><i class="fa fa-address-book"></i></a></li>
+                        <li title="Pedidos" class="ml-1" sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN', 'COMPRADOR')" ><a th:href="@{/pedido/pedidos}" ><i class="fa fa-address-book"></i></a></li>
                     </ul>
 <!--                    <div class="header__cart__price">item: <span>$150.00</span></div>-->
                 </div>
