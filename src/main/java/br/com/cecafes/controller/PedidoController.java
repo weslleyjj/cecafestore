@@ -8,12 +8,15 @@ import br.com.cecafes.security.MyUserDetails;
 import br.com.cecafes.service.*;
 import br.com.cecafes.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/pedido")
@@ -132,36 +137,38 @@ public class PedidoController {
         return "redirect:/pedido/"+pedidoOficial.getId();
     }
 
-    @GetMapping("/gerencia-pedidos")
-    public ModelAndView listagemPedidos(){
-        ModelAndView model = new ModelAndView("listagemPedidosCecafes");
-        List<PedidoListagemDTO> pedidoListagem = new ArrayList<>();
-        List<Pedido> pedidoList;
+    @RequestMapping(value = "/pedidos", method = RequestMethod.GET)
+    public String listPedidos(
+            Model model,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+        Page<Pedido> pedidoPage;
 
         // Resgata o usuario atual
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
 
-        try {
-            if(!isAdminOrFuncionario(userDetails)){
-                User user = userRepository.getUserByUsername(userDetails.getUsername());
-                Comprador comprador = compradorService.findByUsername(user.getUsername());
-                pedidoList = pedidoService.findPedidosByCompradorId(comprador.getId());
-            }else{
-                pedidoList = pedidoService.findAll();
-            }
-
-            pedidoList.forEach(pedido -> {
-                pedidoListagem.add(new PedidoListagemDTO(pedido));
-            });
-
-            model.addObject("pedidos", pedidoListagem);
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro Durante a consulta de pedidos do usuario", e);
+        if(!isAdminOrFuncionario(userDetails)){
+            User user = userRepository.getUserByUsername(userDetails.getUsername());
+            Comprador comprador = compradorService.findByUsername(user.getUsername());
+            pedidoPage = pedidoService.findPaginated(PageRequest.of(currentPage - 1, pageSize), comprador.getId());
+        }else{
+            pedidoPage = pedidoService.findPaginated(PageRequest.of(currentPage - 1, pageSize), null);
         }
 
-        return model;
+        model.addAttribute("pedidoPage", pedidoPage);
+
+        int totalPages = pedidoPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        return "listagemPedidosCecafes";
     }
 
     @PutMapping(value = "/{id}")
