@@ -31,13 +31,29 @@
 
 <!-- Banner para login ou cadastro -->
 <div class="container" style="margin-bottom: 30px">
-    <div class="hero__item set-bg" data-setbg="img/hero/banner.jpeg">
+    <div sec:authorize="!isAuthenticated()" class="hero__item set-bg" data-setbg="img/hero/banner.jpeg">
         <div class="hero__text">
             <span>CECAFES</span>
             <h2> Seja bem vindo! <br />Faça seu cadastro</h2>
             <p>Ou faça login se já possuir cadastro</p>
             <a href="/cadastro-sistema" class="primary-btn">CADASTRE-SE</a>
             <a href="/login" class="btn-banner primary-btn">LOGIN</a>
+        </div>
+    </div>
+    <div sec:authorize="isAuthenticated()" class="hero__item set-bg" data-setbg="img/hero/banner.jpeg">
+        <div class="hero__text">
+            <span>CECAFES</span>
+            <h2> Seja bem vindo! <br />Aproveite nossos serviços!</h2>
+            <br>
+            <!--     Botões para produtor       -->
+            <a sec:authorize="hasAnyAuthority('PRODUTOR')" th:href="@{/produto/form-produto}" class="primary-btn">Venda seus produtos</a>
+            <a sec:authorize="hasAnyAuthority('PRODUTOR')" th:href="@{/}" class="primary-btn">Meus produtos</a>
+            <!--     Botões para funcionario       -->
+            <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/pedido/pedidos}" class="primary-btn">Pedidos em aberto</a>
+            <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/}" class="primary-btn">Gerenciar loja</a>
+            <!--     Botões para comprador       -->
+            <a sec:authorize="hasAnyAuthority('COMPRADOR')" th:href="@{/pedido/pedidos}" class="primary-btn">Meus Pedidos</a>
+            <a sec:authorize="hasAnyAuthority('COMPRADOR')" th:href="@{/comprador/lista-produtos-compra}" class="primary-btn">Meu carrinho</a>
         </div>
     </div>
 </div>
