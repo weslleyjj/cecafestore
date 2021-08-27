@@ -112,6 +112,7 @@
                             <ul class="header__menu__dropdown">
                                 <li sec:authorize="hasAnyAuthority('PRODUTOR')" ><a th:href="@{/produto/form-produto}">Venda</a></li>
                                 <li sec:authorize="!hasAnyAuthority('PRODUTOR')"><a th:href="@{/loja}">Compra</a></li>
+                                <li sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')"><a th:href="@{/funcionario/gerencia-loja}">Gerência da loja</a></li>
                                 <li><a href="#mais-informacoes">Mais informações</a></li>
 <!--                                <li><a th:href="@{/}">Ajuda</a></li>-->
                             </ul>

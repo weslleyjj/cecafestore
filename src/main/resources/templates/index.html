@@ -50,7 +50,7 @@
             <a sec:authorize="hasAnyAuthority('PRODUTOR')" th:href="@{/}" class="primary-btn">Meus produtos</a>
             <!--     Botões para funcionario       -->
             <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/pedido/pedidos}" class="primary-btn">Pedidos em aberto</a>
-            <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/}" class="primary-btn">Gerenciar loja</a>
+            <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/funcionario/gerencia-loja}" class="primary-btn">Gerenciar loja</a>
             <!--     Botões para comprador       -->
             <a sec:authorize="hasAnyAuthority('COMPRADOR')" th:href="@{/pedido/pedidos}" class="primary-btn">Meus Pedidos</a>
             <a sec:authorize="hasAnyAuthority('COMPRADOR')" th:href="@{/comprador/lista-produtos-compra}" class="primary-btn">Meu carrinho</a>

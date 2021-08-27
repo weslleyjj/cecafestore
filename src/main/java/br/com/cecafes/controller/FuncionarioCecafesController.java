@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.HashSet;
@@ -37,6 +38,11 @@ public class FuncionarioCecafesController {
     @GetMapping
     public List<FuncionarioCecafes> findAll() {
         return funcionarioCecafesService.findAll();
+    }
+
+    @GetMapping("/gerencia-loja")
+    public ModelAndView paginaGerencia(){
+        return new ModelAndView("gerenciaLoja");
     }
 
     @GetMapping(value = "/{id}")

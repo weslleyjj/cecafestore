@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CecafeStore</title>
+
+    <!-- Google Font -->
+    <link rel="shortcut icon" href="/img/favicon.png" />
+
+    <!-- Google Font -->
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap}" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link  href="/css/bootstrap.min.css" rel="stylesheet">
+    <link  href="/css/font-awesome.min.css" rel="stylesheet">
+    <link  href="/css/elegant-icons.css" rel="stylesheet">
+    <link  href="/css/nice-select.css" rel="stylesheet">
+    <link  href="/css/jquery-ui.min.css" rel="stylesheet">
+    <link  href="/css/owl.carousel.min.css" rel="stylesheet">
+    <link  href="/css/slicknav.min.css" rel="stylesheet" >
+    <link  href="/css/style.css" rel="stylesheet" >
+</head>
+
+<body>
+
+<div th:replace="~{fragments/headerFragment :: header}"></div>
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Painel de Gerência</h2>
+                    <div class="breadcrumb__option">
+                        <a href="/">Início</a>
+                        <span>Painel principal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row d-flex justify-content-between">
+            <div class="col-3 d-flex justify-content-center">
+                <button th:href="@{/produtoCecafes/form-produto-cecafes}" class="site-btn">Cadastrar produto na loja</button>
+            </div>
+            <div class="col-3 d-flex justify-content-center">
+                <button onclick="naoImplementado()" class="site-btn">Produtos da loja</button>
+            </div>
+            <div class="col-3 d-flex justify-content-center">
+                <button onclick="naoImplementado()" class="site-btn">Pedidos em aberto</button>
+            </div>
+            <div class="col-3 d-flex justify-content-center">
+                <button th:href="@{/pedido/pedidos}" class="site-btn">Todos os pedidos</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                               aria-selected="true">Novos produtos cadastrados</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                               aria-selected="false">Pedidos em aberto</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Infomation</h6>
+                                <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                                    Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus. Vivamus
+                                    suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam sit amet quam
+                                    vehicula elementum sed sit amet dui. Donec rutrum congue leo eget malesuada.
+                                    Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur arcu erat,
+                                    accumsan id imperdiet et, porttitor at sem. Praesent sapien massa, convallis a
+                                    pellentesque nec, egestas non nisi. Vestibulum ac diam sit amet quam vehicula
+                                    elementum sed sit amet dui. Vestibulum ante ipsum primis in faucibus orci luctus
+                                    et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam
+                                    vel, ullamcorper sit amet ligula. Proin eget tortor risus.</p>
+                                <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
+                                    ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
+                                    elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
+                                    porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
+                                    nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.
+                                    Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed
+                                    porttitor lectus nibh. Vestibulum ac diam sit amet quam vehicula elementum
+                                    sed sit amet dui. Proin eget tortor risus.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Infomation</h6>
+                                <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                                    Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
+                                    Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
+                                    sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
+                                    eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
+                                    Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
+                                    sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
+                                    diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
+                                    ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+                                    Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
+                                    Proin eget tortor risus.</p>
+                                <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
+                                    ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
+                                    elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
+                                    porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
+                                    nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Details Section End -->
+
+<div th:replace="~{fragments/footerFragment :: footer}"></div>
+
+<!-- Js Plugins -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.mask.js"></script>
+<script src="/js/main.js"></script>
+<script>
+    function naoImplementado(){
+        Swal.fire({
+            icon: 'warning',
+            title: 'Em construção',
+            text: 'Oops... Essa parte do sistema ainda está sendo desenvolvida',
+        });
+    }
+</script>
+</body>
+
+</html>
