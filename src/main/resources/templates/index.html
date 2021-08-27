@@ -116,7 +116,7 @@
         <div class="row featured__filter">
             <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" th:each="produto: ${produtos}">
                 <div class="featured__item">
-                    <div class="featured__item__pic set-bg" th:data-setbg="'/img/product/details/product-details-1.jpg' + ${''}">
+                    <div class="featured__item__pic set-bg" th:data-setbg="'/img/product/details/' + ${produto.getFotoUrl()}">
                         <input class="produtoId" type="hidden" th:value="${produto.id}" />
                         <ul class="featured__item__pic__hover">
                             <li><a th:href="@{'/shop/' + ${produto.id}}"><i class="fa fa-info-circle"></i></a></li>
