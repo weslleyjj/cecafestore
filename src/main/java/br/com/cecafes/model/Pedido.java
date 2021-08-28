@@ -28,5 +28,7 @@ public class Pedido {
     @OneToMany
     private List<ProdutoPedido> produtosPedido;
 
+    private String status;
+
     private Float valorPedido;
 }

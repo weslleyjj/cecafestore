@@ -63,6 +63,7 @@
                         <table>
                             <thead>
                             <tr>
+                                <th>Estado</th>
                                 <th>Numero</th>
                                 <th>Comprador</th>
                                 <th>Valor</th>
@@ -72,6 +73,9 @@
                             </thead>
                             <tbody>
                             <tr th:each="pedido : ${pedidoPage.content}">
+                                <td class="col-1">
+                                    <h5 th:text="${pedido.status}"></h5>
+                                </td>
                                 <td class="col-2">
                                     <h5 th:text="${pedido.numero}"></h5>
                                 </td>
@@ -81,7 +85,7 @@
                                 <td class="col-1">
                                     <span th:text="${'R$ '+pedido.valorPedido}"></span>
                                 </td>
-                                <td class="col-5">
+                                <td class="col-4">
                                     <span th:text="${'Rua: ' + pedido.endereco.rua + ' - ' + pedido.endereco.numero}"></span>
                                     <span th:text="${'Bairro: ' + pedido.endereco.bairro }"></span>
                                     <span th:text="${'Cidade: ' + pedido.endereco.cidade }"></span>

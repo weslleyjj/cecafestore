@@ -27,10 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -65,10 +62,26 @@ public class PedidoController {
         if (pedidoOptional.isPresent()) {
             ModelAndView model = new ModelAndView("detalhesPedido");
             model.addObject("pedido", pedidoOptional.get());
+            model.addObject("corStatus", corStatus(pedidoOptional.get().getStatus()));
             return model;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O pedido não foi encontrado no sistema");
         }
+    }
+
+    @GetMapping(value = "/revisar/{id}/{evento}")
+    public String revisarPedido(@PathVariable Long id, @PathVariable String evento){
+        try{
+            Pedido pedido = pedidoService.findById(id).get();
+            if(Objects.nonNull(pedido)){
+                pedido.setStatus(evento.toUpperCase());
+                pedidoService.save(pedido);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return "redirect:/pedido/"+id;
     }
 
     @PostMapping
@@ -117,6 +130,7 @@ public class PedidoController {
         pedidoOficial.setEndereco(comprador.getEndereco());
         pedidoOficial.setValorPedido(calculaPedido(produtoPedidoList));
         pedidoOficial.setNumero(pedido.getNumero());
+        pedidoOficial.setStatus("PENDENTE");
 
 
         pedidoService.save(pedidoOficial);
@@ -171,29 +185,6 @@ public class PedidoController {
         return "listagemPedidosCecafes";
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> update(@RequestBody Pedido pedido) {
-        Optional<Pedido> pedidoOptional = pedidoService.findById(pedido.getId());
-
-        if (!pedidoOptional.isPresent()) {
-            return ResponseEntity.status(404).body(messageService.createJson("message", "Pedido não encontrado"));
-        } else {
-            return ResponseEntity.ok(pedidoService.save(pedido));
-        }
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        Optional<Pedido> pedidoOptional = pedidoService.findById(id);
-
-        if (!pedidoOptional.isPresent()) {
-            return ResponseEntity.status(404).body(messageService.createJson("message", "Pedido não encontrado"));
-        } else {
-            pedidoService.deleteById(id);
-            return ResponseEntity.status(204).build();
-        }
-    }
-
     private Float calculaPedido(List<ProdutoPedido> produtos){
         Float valorTotal = 0f;
         for (ProdutoPedido produto : produtos) {
@@ -211,5 +202,15 @@ public class PedidoController {
             }
         }
         return false;
+    }
+
+    private String corStatus(String status){
+        switch (status) {
+            case "PENDENTE": return "darkorange";
+            case "REVISADO": return "#17a2b8";
+            case "CONFIRMADO": return "#7fad39";
+            case "NEGADO": return "tomato";
+            default: return "transparent";
+        }
     }
 }
