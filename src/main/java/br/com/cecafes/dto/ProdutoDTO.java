@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 public class ProdutoDTO {
+    private Long id;
     private String nome;
     private String categoria;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -47,6 +48,36 @@ public class ProdutoDTO {
         p.setUnidadeMedida(unidadeMedida);
         p.setPreco(preco);
         p.setFotoUrl(fotoUrl);
+        return p;
+    }
+
+    public ProdutoDTO getProdutoDTO(Produto produto){
+        ProdutoDTO p = new ProdutoDTO();
+
+        p.setId(produto.getId());
+        p.setNome(produto.getNome());
+        p.setCategoria(produto.getCategoria());
+        p.setDataValidade(produto.getDataValidade());
+        p.setQuantidade(produto.getQuantidade());
+        p.setUnidadeMedida(produto.getUnidadeMedida());
+        p.setPreco(produto.getPreco());
+
+        return p;
+    }
+
+    public Produto getProdutoEditado(){
+        Produto p = new Produto();
+
+        p.setId(id);
+        p.setNome(nome);
+        p.setCategoria(categoria);
+        p.setDataValidade(dataValidade);
+        p.setQuantidade(quantidade);
+        p.setUnidadeMedida(unidadeMedida);
+        p.setProdutor(produtor);
+        p.setPreco(preco);
+        p.setFotoUrl(fotoUrl);
+
         return p;
     }
 }
