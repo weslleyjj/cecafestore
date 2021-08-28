@@ -88,7 +88,7 @@ public class HomeController {
         List<ProdutoCecafes> produtosCecafes = produtoCecafesService.findAll();
         List<ProdutoCecafes> produtosCecafesBusca = new ArrayList<>();
 
-        Pattern pattern = Pattern.compile(nome);
+        Pattern pattern = Pattern.compile(nome, Pattern.CASE_INSENSITIVE);
 
         if (!produtosCecafes.isEmpty()) {
             Matcher matcher;
