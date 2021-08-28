@@ -8,15 +8,20 @@ import br.com.cecafes.service.ProdutoService;
 import br.com.cecafes.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class HomeController {
@@ -76,6 +81,30 @@ public class HomeController {
         }
 
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/busca-produto", method = RequestMethod.GET)
+    public String buscaProduto(@RequestParam String nome, Model model) {
+        List<ProdutoCecafes> produtosCecafes = produtoCecafesService.findAll();
+        List<ProdutoCecafes> produtosCecafesBusca = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile(nome);
+
+        if (!produtosCecafes.isEmpty()) {
+            Matcher matcher;
+            boolean matchFound;
+            for(ProdutoCecafes produto: produtosCecafes) {
+                matcher = pattern.matcher(produto.getNome() + " " + produto.getCategoria());
+                matchFound = matcher.find();
+
+                if (matchFound) {
+                    produtosCecafesBusca.add(produto);
+                }
+            }
+        }
+
+        model.addAttribute("produtos", produtosCecafesBusca);
+        return "busca";
     }
 
     @RequestMapping(value = "/shop-grid", method = RequestMethod.GET)

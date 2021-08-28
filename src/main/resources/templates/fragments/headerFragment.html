@@ -161,13 +161,13 @@
             <div class="col-lg-9">
                 <div class="hero__search">
                     <div class="hero__search__form">
-                        <form action="/">
+                        <form method="get" id="busca-form">
                             <div class="hero__search__categories">
-                                Categorias
-                                <span class="arrow_carrot-down"></span>
+                                Busca
+                                <span class="arrow_carrot-right"></span>
                             </div>
-                            <input type="text" placeholder="O que você precisa?">
-                            <button type="submit" class="site-btn">BUSCAR</button>
+                            <input id="busca-input" type="text" placeholder="O que você precisa?">
+                            <button id="busca-button" type="submit" class="site-btn">BUSCAR</button>
                         </form>
                     </div>
                     <div class="hero__search__phone">
@@ -220,4 +220,19 @@
     }
 </script>
 <script src="/js/sweetalert2.all.min.js" rel="script"></script>
+<script>
+    // document.getElementById('busca-button').addEventListener('click', () => {
+    //     const value = document.getElementById('busca-input').value
+    //     window.location.href = "/busca-produto?nome=" + value;
+    // });
+
+    $('#busca-form').submit(function(e){
+        e.preventDefault();
+
+        let value = $('#busca-input').val();
+        console.log(value);
+        $('#busca-form').attr('action', "/busca-produto?" + "nome=" + value).submit();
+        // console.log($('#busca-form').attr('action'))
+    });
+</script>
 </body>

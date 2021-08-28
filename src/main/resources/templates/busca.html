@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CecafeStore</title>
+
+    <link rel="shortcut icon" href="/img/favicon.png" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/headerFragment :: header}"></div>
+
+<!-- Categories Section Begin -->
+<!--<section class="categories">-->
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="categories__slider owl-carousel">-->
+<!--                <div class="col-lg-3">-->
+<!--                    <div class="categories__item set-bg" data-setbg="img/categories/cat-1.jpg">-->
+<!--                        <h5><a href="#">Fresh Fruit</a></h5>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-3">-->
+<!--                    <div class="categories__item set-bg" data-setbg="img/categories/cat-2.jpg">-->
+<!--                        <h5><a href="#">Dried Fruit</a></h5>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-3">-->
+<!--                    <div class="categories__item set-bg" data-setbg="img/categories/cat-3.jpg">-->
+<!--                        <h5><a href="#">Vegetables</a></h5>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-3">-->
+<!--                    <div class="categories__item set-bg" data-setbg="img/categories/cat-4.jpg">-->
+<!--                        <h5><a href="#">drink fruits</a></h5>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-3">-->
+<!--                    <div class="categories__item set-bg" data-setbg="img/categories/cat-5.jpg">-->
+<!--                        <h5><a href="#">drink fruits</a></h5>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+<!-- Categories Section End -->
+
+<!-- Featured Section Begin -->
+<section class="featured spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Nossos produtos</h2>
+                </div>
+                <div class="featured__controls">
+                    <ul>
+                        <li class="active" data-filter="*">Todos</li>
+                        <li data-filter=".Fruta">Fruta</li>
+                        <li data-filter=".Verdura">Verdura</li>
+                        <li data-filter=".Legume">Legume</li>
+                        <li data-filter=".Vegetal">Vegetal</li>
+                        <li data-filter=".Hortaliça">Hortaliça</li>
+                        <li data-filter=".Grãos">Grãos</li>
+                        <li data-filter=".Sementes">Sementes</li>
+                        <li data-filter=".Cultivos">Cultivos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row featured__filter">
+            <div class="col-lg-3 col-md-4 col-sm-6 mix"
+                 th:each="produto: ${produtos}"
+                 th:class="'col-lg-3 col-md-4 col-sm-6 mix ' + ${produto.getCategoria()}"
+            >
+                <div class="featured__item">
+                    <div class="featured__item__pic set-bg" th:data-setbg="'/img/product/details/' + ${produto.getFotoUrl()}">
+                        <input class="produtoId" type="hidden" th:value="${produto.id}" />
+                        <ul class="featured__item__pic__hover">
+                            <li><a th:href="@{'/shop/' + ${produto.id}}"><i class="fa fa-info-circle"></i></a></li>
+                            <li><a sec:authorize="hasAnyAuthority('COMPRADOR', 'ADMIN')" onclick="addCart(this)" class="add-carrinho"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="featured__item__text">
+                        <h6><a th:href="@{'/shop/' + ${produto.id}}" th:text="${produto.getNome()}"></a></h6>
+                        <h5 th:text="'R$' + ${produto.getPreco()}"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:replace="~{fragments/footerFragment :: footer}"></div>
+
+<!-- Js Plugins -->
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.slicknav.js"></script>
+<script src="js/mixitup.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+<script>
+    function addCart(e) {
+        const baseurl = window.location.origin;
+        const idProduto = e.parentElement.parentElement.parentElement.firstChild.nextSibling.value
+        $.ajax({
+            url : baseurl+"/add-item/"+idProduto,
+            type : 'get',
+            success: function (response){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Produto Adicionado',
+                    text: 'O produto foi adicionado ao seu carrinho!',
+                })
+            },
+            error: function (xhr, textStatus, error){
+                console.log(xhr)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops...',
+                    text: 'Houve um problema interno e o produto não pôde ser adicionado ao carrinho',
+                })
+            }
+        });
+
+        countQtdeProdutos();
+    }
+</script>
+</html>

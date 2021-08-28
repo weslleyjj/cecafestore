@@ -55,6 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/busca-produto/**").permitAll()
                 .antMatchers("/cadastro-sistema").permitAll()
                 .antMatchers("/loja").permitAll()
                 .antMatchers("/produtor/form-produtor").permitAll()
