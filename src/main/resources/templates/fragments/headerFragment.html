@@ -42,7 +42,7 @@
                     <!--                                <li><a th:href="@{/}">Ajuda</a></li>-->
                 </ul>
             </li>
-            <li sec:authorize="hasAnyAuthority('PRODUTOR', 'FUNCIONARIO', 'ADMIN')"><a th:class="${page == 'pedido'} ? activePageHeader" th:href="@{/pedido/pedidos}">Pedidos</a></li>
+            <li sec:authorize="hasAnyAuthority('PRODUTOR', 'FUNCIONARIO', 'ADMIN')"><a th:class="${page == 'pedido'} ? activePageHeader" th:href="@{/funcionario/gerencia-loja}">Gerenciar Loja</a></li>
             <li sec:authorize="hasAnyAuthority('PRODUTOR')"><a th:href="@{/produtor}">Meus Produtos</a></li>
             <li sec:authorize="!hasAnyAuthority('PRODUTOR', 'FUNCIONARIO')" ><a th:class="${page == 'carrinho'} ? activePageHeader" th:href="@{/comprador/lista-produtos-compra}">Carrinho</a></li>
         </ul>
@@ -127,12 +127,9 @@
             <div class="col-lg-2">
                 <div class="header__cart">
                     <ul>
-                            <!--           li para levar para listagem de favoritos futuramente            -->
-<!--                        <li><a href="#"><i class="fa fa-heart"></i> <span>0</span></a></li>-->
-                        <li title="Carrinho" sec:authorize="!hasAnyAuthority('PRODUTOR')" ><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span class="qtdProdutos">0</span></a></li>
+                        <li title="Carrinho" sec:authorize="!hasAnyAuthority('PRODUTOR', 'FUNCIONARIO')" ><a th:href="@{/comprador/lista-produtos-compra}"><i class="fa fa-shopping-bag"></i> <span class="qtdProdutos">0</span></a></li>
                         <li title="Pedidos" class="ml-1" sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN', 'COMPRADOR')" ><a th:href="@{/pedido/pedidos}" ><i class="fa fa-address-book"></i></a></li>
                     </ul>
-<!--                    <div class="header__cart__price">item: <span>$150.00</span></div>-->
                 </div>
             </div>
         </div>

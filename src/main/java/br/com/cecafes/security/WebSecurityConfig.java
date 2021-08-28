@@ -54,7 +54,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
         http.authorizeRequests()
-//                .antMatchers("/").hasAnyAuthority("PRODUTOR", "COMPRADOR", "FUNCIONARIO", "ADMIN")
                 .antMatchers("/").permitAll()
                 .antMatchers("/cadastro-sistema").permitAll()
                 .antMatchers("/loja").permitAll()
@@ -70,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/pedido/pedidos").hasAnyAuthority("FUNCIONARIO", "ADMIN", "COMPRADOR")
                 .antMatchers("/pedido/pedidos/**").hasAnyAuthority("FUNCIONARIO", "ADMIN", "COMPRADOR")
                 .antMatchers("/pedido/revisar/**").hasAnyAuthority("FUNCIONARIO", "ADMIN")
-//                .anyRequest().authenticated()
+                .antMatchers("/pedido/pedidos-em-aberto").hasAnyAuthority("FUNCIONARIO", "ADMIN")
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and()

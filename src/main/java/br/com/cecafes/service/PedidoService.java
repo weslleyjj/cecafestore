@@ -69,4 +69,26 @@ public class PedidoService {
 
         return pedidoPage;
     }
+
+    public Page<Pedido> findPaginatedEmAberto(Pageable pageable) {
+        List<Pedido> pedidos;
+        pedidos = pedidoRepository.findAllByPedidoPendente();
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<Pedido> list;
+
+        if (pedidos.size() < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, pedidos.size());
+            list = pedidos.subList(startItem, toIndex);
+        }
+
+        Page<Pedido> pedidoPage
+                = new PageImpl<Pedido>(list, PageRequest.of(currentPage, pageSize), pedidos.size());
+
+        return pedidoPage;
+    }
 }

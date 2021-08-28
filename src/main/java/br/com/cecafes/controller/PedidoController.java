@@ -185,6 +185,30 @@ public class PedidoController {
         return "listagemPedidosCecafes";
     }
 
+    @RequestMapping(value = "/pedidos-em-aberto", method = RequestMethod.GET)
+    public String listPedidosEmAberto(
+            Model model,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+        Page<Pedido> pedidoPage;
+
+        pedidoPage = pedidoService.findPaginatedEmAberto(PageRequest.of(currentPage - 1, pageSize));
+
+        model.addAttribute("pedidoPage", pedidoPage);
+
+        int totalPages = pedidoPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        return "listagemPedidosCecafes";
+    }
+
     private Float calculaPedido(List<ProdutoPedido> produtos){
         Float valorTotal = 0f;
         for (ProdutoPedido produto : produtos) {
