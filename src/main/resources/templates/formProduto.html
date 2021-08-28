@@ -53,7 +53,6 @@
     <div class="checkout__form">
       <h4>Preencha os campos</h4>
       <form th:method="post" th:action="@{/produto/cadastrar}" th:object="${produto}" enctype="multipart/form-data">
-        <input type="hidden" th:value="1" th:field="*{produtor}" name="produtor">
         <div class="row">
           <div class="col-lg-8 col-md-6">
             <div class="row">

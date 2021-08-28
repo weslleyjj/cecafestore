@@ -3,12 +3,18 @@ package br.com.cecafes.controller;
 import br.com.cecafes.dto.ProdutoDTO;
 import br.com.cecafes.model.Produto;
 import br.com.cecafes.model.Produtor;
+import br.com.cecafes.model.User;
+import br.com.cecafes.repository.UserRepository;
+import br.com.cecafes.security.MyUserDetails;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.ProdutoService;
+import br.com.cecafes.service.ProdutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,14 +38,18 @@ import java.util.Optional;
 public class ProdutoController {
     private ProdutoService produtoService;
     private MessageService messageService;
+    private ProdutorService produtorService;
+    private UserRepository userRepository;
 
     @Value("${arquivos.imagens}")
     private String localDasImagens;
 
     @Autowired
-    public ProdutoController(ProdutoService produtoService, MessageService messageService) {
+    public ProdutoController(ProdutoService produtoService, MessageService messageService, ProdutorService produtorService, UserRepository userRepository) {
         this.produtoService = produtoService;
         this.messageService = messageService;
+        this.produtorService = produtorService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -49,8 +59,16 @@ public class ProdutoController {
 
     @PostMapping(value = "/cadastrar")
     public String save(@ModelAttribute @Valid ProdutoDTO produto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        User user = userRepository.getUserByUsername(userDetails.getUsername());
+        Produtor produtor = produtorService.findByUsername(user.getUsername());
+
+        produto.setProdutor(produtor);
+
         produto.setFotoUrl(uploadFoto(produto.getFoto(), 1L));
         produtoService.save(produto.getProduto());
+
         return "redirect:/";
     }
 
