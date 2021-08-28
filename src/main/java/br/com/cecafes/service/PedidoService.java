@@ -32,6 +32,10 @@ public class PedidoService {
         return pedidoRepository.findById(id);
     }
 
+    public List<Pedido> findByNumero(String numero) {
+        return pedidoRepository.findAllByNumero(numero);
+    }
+
     public Pedido save(Pedido pedido) {
         return pedidoRepository.save(pedido);
     }

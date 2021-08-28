@@ -209,6 +209,14 @@ public class PedidoController {
         return "listagemPedidosCecafes";
     }
 
+    @GetMapping(value = "/busca-pedido")
+    private String buscaPedido(@RequestParam String numero, Model model) {
+        List<Pedido> pedidos = pedidoService.findByNumero(numero.trim());
+        model.addAttribute("pedidos", pedidos);
+
+        return "busca-pedido";
+    }
+
     private Float calculaPedido(List<ProdutoPedido> produtos){
         Float valorTotal = 0f;
         for (ProdutoPedido produto : produtos) {

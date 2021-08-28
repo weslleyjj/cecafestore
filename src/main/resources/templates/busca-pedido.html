@@ -71,17 +71,17 @@
                     <div class="shoping__cart__table">
                         <table>
                             <thead>
-                                <tr>
-                                    <th>Estado</th>
-                                    <th>Número</th>
-                                    <th>Comprador</th>
-                                    <th>Valor</th>
-                                    <th>Endereço</th>
-                                    <th>Ações</th>
-                                </tr>
+                            <tr>
+                                <th>Estado</th>
+                                <th>Número</th>
+                                <th>Comprador</th>
+                                <th>Valor</th>
+                                <th>Endereço</th>
+                                <th>Ações</th>
+                            </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="pedido : ${pedidoPage.content}">
+                            <tr th:if="${!pedidos.isEmpty()}" th:each="pedido : ${pedidos}">
                                 <td class="col-1">
                                     <h5 th:text="${pedido.status}"></h5>
                                 </td>
@@ -106,12 +106,16 @@
                             </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div th:if="${pedidoPage.totalPages > 0}" class="product__pagination"
-                          style="display: flex; flex-wrap: wrap; width: fit-content;">
-                        <a th:each="pageNumber : ${pageNumbers}" th:href="@{/pedido/pedidos(size=${pedidoPage.size}, page=${pageNumber})}"
-                           th:text="${pageNumber}"
-                           th:class="${pageNumber==pedidoPage.number + 1} ? activePage"></a>
+                        <div style="margin-top: 10%;" th:unless="${!pedidos.isEmpty()}">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="section-title related-blog-title">
+                                        <h2 style="color: #191919; !important;">PEDIDO NÃO ENCONTRADO</h2>
+                                        <button style="margin-top: 5%" id="voltar" class="site-btn">VOLTAR</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -143,6 +147,10 @@
         e.preventDefault();
         const value = document.getElementById('busca-pedido-input').value
         window.location.href = "/pedido/busca-pedido?numero=" + value;
+    });
+
+    document.getElementById('voltar').addEventListener('click', () => {
+        window.location.href = '/pedido/pedidos';
     });
 </script>
 </body>
