@@ -105,22 +105,29 @@
                 <div class="featured__controls">
                     <ul>
                         <li class="active" data-filter="*">Todos</li>
-                        <li data-filter=".oranges">Frutas</li>
-                        <li data-filter=".fresh-meat">Legumes</li>
-                        <li data-filter=".vegetables">Verduras</li>
-                        <li data-filter=".fastfood">Grãos</li>
+                        <li data-filter=".Fruta">Fruta</li>
+                        <li data-filter=".Verdura">Verdura</li>
+                        <li data-filter=".Legume">Legume</li>
+                        <li data-filter=".Vegetal">Vegetal</li>
+                        <li data-filter=".Hortaliça">Hortaliça</li>
+                        <li data-filter=".Grãos">Grãos</li>
+                        <li data-filter=".Sementes">Sementes</li>
+                        <li data-filter=".Cultivos">Cultivos</li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="row featured__filter">
-            <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" th:each="produto: ${produtos}">
+            <div class="col-lg-3 col-md-4 col-sm-6 mix"
+                 th:each="produto: ${produtos}"
+                 th:class="'col-lg-3 col-md-4 col-sm-6 mix ' + ${produto.getCategoria()}"
+            >
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg" th:data-setbg="'/img/product/details/' + ${produto.getFotoUrl()}">
                         <input class="produtoId" type="hidden" th:value="${produto.id}" />
                         <ul class="featured__item__pic__hover">
                             <li><a th:href="@{'/shop/' + ${produto.id}}"><i class="fa fa-info-circle"></i></a></li>
-                            <li><a onclick="addCart(this)" class="add-carrinho"><i class="fa fa-shopping-cart"></i></a></li>
+                            <li><a sec:authorize="hasAnyAuthority('COMPRADOR', 'ADMIN')" onclick="addCart(this)" class="add-carrinho"><i class="fa fa-shopping-cart"></i></a></li>
                         </ul>
                     </div>
                     <div class="featured__item__text">
