@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -80,7 +80,7 @@
                     <p>Produto com estoque a confirmar pela cecafes após a realização do pedido, a quantidade
                         desejada pode ser escolhida posteriormente em seu carrinho de compras</p>
 
-                    <button id="add-carrinho" class="primary-btn">ADICIONAR AO CARRINHO</button>
+                    <button sec:authorize="hasAnyAuthority('COMPRADOR', 'ADMIN')" id="add-carrinho" class="primary-btn">ADICIONAR AO CARRINHO</button>
                     <ul>
                         <li><b>Disponibilidade</b> <span>Em estoque</span></li>
                         <li><b>Categoria</b> <span th:text="${produto.categoria}"></span></li>
