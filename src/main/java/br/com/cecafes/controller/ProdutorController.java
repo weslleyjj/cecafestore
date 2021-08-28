@@ -4,11 +4,14 @@ import br.com.cecafes.model.Produtor;
 import br.com.cecafes.model.Role;
 import br.com.cecafes.model.User;
 import br.com.cecafes.repository.UserRepository;
+import br.com.cecafes.security.MyUserDetails;
 import br.com.cecafes.service.EnderecoService;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.ProdutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,6 +75,18 @@ public class ProdutorController {
         }
 
         return "formProdutor";
+    }
+
+    @GetMapping(value = "/listar")
+    public String listarProdutos(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        User user = userRepository.getUserByUsername(userDetails.getUsername());
+        Produtor produtor = produtorService.findByUsername(user.getUsername());
+
+        model.addAttribute("listProdutos", produtor.getProdutos());
+
+        return "listagemProdutosProdutor";
     }
 
     @GetMapping(value = "/form-produtor")

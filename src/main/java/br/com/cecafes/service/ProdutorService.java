@@ -32,4 +32,8 @@ public class ProdutorService {
     public void deleteById(Long id) {
         produtorRepository.deleteById(id);
     }
+
+    public Produtor findByUsername(String username) {
+        return produtorRepository.getProdutorByUsername(username);
+    }
 }
