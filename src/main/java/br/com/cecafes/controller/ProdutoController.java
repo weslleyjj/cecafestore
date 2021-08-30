@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.thymeleaf.model.IModel;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -59,10 +60,7 @@ public class ProdutoController {
 
     @PostMapping(value = "/cadastrar")
     public String save(@ModelAttribute @Valid ProdutoDTO produto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-        User user = userRepository.getUserByUsername(userDetails.getUsername());
-        Produtor produtor = produtorService.findByUsername(user.getUsername());
+        Produtor produtor = getProdutor();
 
         produto.setProdutor(produtor);
 
@@ -89,32 +87,33 @@ public class ProdutoController {
         }
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> update(@RequestBody Produto produto) {
-        Produto produtoUpdate = produtoService.findById(produto.getId());
+    @RequestMapping(value = "/editar/{id}")
+    public String editar(@PathVariable(name = "id") Long id, Model model) {
+        Produto produtoUpdate = produtoService.findById(id);
+        ProdutoDTO produtoDTO = new ProdutoDTO();
+        produtoDTO = produtoDTO.getProdutoDTO(produtoUpdate);
+        model.addAttribute("produto", produtoDTO);
 
-        if (Objects.isNull(produtoUpdate)) {
-            return ResponseEntity.status(404).body(messageService.createJson("message", "Produto não encontrado"));
-        } else {
-            if(validaProduto(produto)){
-                return ResponseEntity.ok(produtoService.save(produto));
-            }else{
-                return ResponseEntity.status(206).body(messageService.createJson("message", "Dados incompletos para cadastro"));
-            }
-
-        }
+        return "formEditarProduto";
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        Produto produtoDelete = produtoService.findById(id);
+    @PostMapping(value = "/saveEditar")
+    public String saveEditar(@ModelAttribute @Valid ProdutoDTO produto) {
+        Produtor produtor = getProdutor();
 
-        if (Objects.isNull(produtoDelete)) {
-            return ResponseEntity.status(404).body(messageService.createJson("message", "Produto não encontrado"));
-        } else {
-            produtoService.deleteById(id);
-            return ResponseEntity.status(204).build();
-        }
+        produto.setProdutor(produtor);
+
+        produto.setFotoUrl(uploadFoto(produto.getFoto(), 1L));
+        produtoService.save(produto.getProdutoEditado());
+
+        return "redirect:/produtor/listar";
+    }
+
+    @RequestMapping(value = "/deletar/{id}")
+    public String delete(@PathVariable(name = "id") Long id) {
+        produtoService.deleteById(id);
+
+        return "redirect:/produtor/listar";
     }
 
     private boolean validaProduto(Produto produto){
@@ -141,5 +140,14 @@ public class ProdutoController {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    private Produtor getProdutor(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        User user = userRepository.getUserByUsername(userDetails.getUsername());
+        Produtor produtor = produtorService.findByUsername(user.getUsername());
+
+        return produtor;
     }
 }
