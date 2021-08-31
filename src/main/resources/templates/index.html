@@ -123,7 +123,7 @@
                  th:class="'col-lg-3 col-md-4 col-sm-6 mix ' + ${produto.getCategoria()}"
             >
                 <div class="featured__item">
-                    <div class="featured__item__pic set-bg" th:data-setbg="'/img/product/details/' + ${produto.getFotoUrl()}">
+                    <div class="featured__item__pic set-bg" th:data-setbg="'/arquivos/fotos/' + ${produto.getFotoUrl()}">
                         <input class="produtoId" type="hidden" th:value="${produto.id}" />
                         <ul class="featured__item__pic__hover">
                             <li><a th:href="@{'/shop/' + ${produto.id}}"><i class="fa fa-info-circle"></i></a></li>

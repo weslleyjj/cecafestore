@@ -70,7 +70,7 @@
                             <tr th:each="produto, stat : ${pedido.produtos}">
                                 <input type="hidden" th:field="${pedido.produtos[__${stat.index}__].id}">
                                 <td class="shoping__cart__item">
-                                    <img src="/img/cart/cart-1.jpg" alt="">
+                                    <img width="15%" th:src="'/arquivos/fotos/' + ${produto.getFotoUrl()}" alt="">
                                     <h5 th:text="${produto.nome}"></h5>
                                 </td>
                                 <td class="shoping__cart__price">

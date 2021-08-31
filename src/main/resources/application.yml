@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/cecafes
     username: postgres
-    password: postgres
+    password: gugu
   jpa:
     show-sql: false
     hibernate:
@@ -18,4 +18,5 @@ auth-api:
   password: admin
 
 arquivos:
-  imagens: /Users/iuryv/Documents/TADS/2021.1/Projetos Aplicados I/cecafestore/src/main/resources/static/img/product/details/
+  produtor: produtor/imagens/produtos/
+  cecafes: cecafes/imagens/produtos/

@@ -171,7 +171,7 @@
                             <div class="col-lg-4" th:each="produto : ${produtos}">
                                 <div class="product__discount__item">
                                     <div class="product__discount__item__pic set-bg"
-                                         th:data-setbg="'/img/product/details/' + ${produto.getFotoUrl()}">
+                                         th:data-setbg="'/arquivos/fotos/' + ${produto.getFotoUrl()}">
                                         <input class="produtoId" type="hidden" th:value="${produto.id}" />
 <!--                                        <div class="product__discount__percent">-20%</div>-->
                                         <ul class="product__item__pic__hover">
@@ -217,7 +217,7 @@
                 <div class="row featured__filter">
                     <div class="col-lg-4 col-md-6 col-sm-6 mix"  th:each="produto: ${produtoPage.content}" th:class="'col-lg-4 col-md-6 col-sm-6 mix ' + ${produto.getCategoria()}">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" th:data-setbg="'/img/product/details/' + ${produto.getFotoUrl()}">
+                            <div class="product__item__pic set-bg" th:data-setbg="'/arquivos/fotos/' + ${produto.getFotoUrl()}">
                                 <input class="produtoId" type="hidden" th:value="${produto.id}" />
                                 <ul class="product__item__pic__hover">
 <!--                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>-->
