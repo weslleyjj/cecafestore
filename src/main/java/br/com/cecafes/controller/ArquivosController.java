@@ -13,12 +13,12 @@ import java.io.InputStream;
 @RequestMapping("/arquivos")
 public class ArquivosController {
 
-    @Value("${arquivos.imagens}")
+    @Value("${arquivos.cecafes}")
     private String localDasImagens;
 
-    @RequestMapping(value = "/fotos/{file_name}", method = RequestMethod.GET, produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+    @RequestMapping(value = "/fotos/{fileName}", method = RequestMethod.GET, produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
     @ResponseBody
-    public byte[] getFile(@PathVariable("file_name") String fileName) throws IOException {
+    public byte[] getFile(@PathVariable("fileName") String fileName) throws IOException {
         FileSystemResource fs = new FileSystemResource(localDasImagens+fileName);
         InputStream in = fs.getInputStream();
         return in.readAllBytes();

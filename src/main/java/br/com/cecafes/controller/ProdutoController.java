@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class ProdutoController {
     private ProdutorService produtorService;
     private UserRepository userRepository;
 
-    @Value("${arquivos.imagens}")
+    @Value("${arquivos.produtor}")
     private String localDasImagens;
 
     @Autowired
@@ -64,7 +65,7 @@ public class ProdutoController {
 
         produto.setProdutor(produtor);
 
-        produto.setFotoUrl(uploadFoto(produto.getFoto(), 1L));
+        produto.setFotoUrl(uploadFoto(produto.getFoto(), produto.getNome(), produto.getProdutor().getId()));
         produtoService.save(produto.getProduto());
 
         return "redirect:/";
@@ -103,7 +104,7 @@ public class ProdutoController {
 
         produto.setProdutor(produtor);
 
-        produto.setFotoUrl(uploadFoto(produto.getFoto(), 1L));
+        produto.setFotoUrl(uploadFoto(produto.getFoto(), produto.getNome(), produto.getProdutor().getId()));
         produtoService.save(produto.getProdutoEditado());
 
         return "redirect:/produtor/listar";
@@ -123,18 +124,20 @@ public class ProdutoController {
 
     }
 
-    private String uploadFoto(MultipartFile file, Long id){
+    private String uploadFoto(MultipartFile file, String nomeAppend, Long id){
         if (file.isEmpty()) {
             return "";
         }
         try {
+            String fileName = id.toString() + "-" + nomeAppend + "-" + file.getOriginalFilename();
 
-            byte[] bytes = file.getBytes();
-            String nomeDaImagem = id+"-" + file.getOriginalFilename();
-            Path path = Paths.get(localDasImagens + nomeDaImagem);
-            Files.write(path, bytes);
+            Path path = Paths.get(localDasImagens).toAbsolutePath().normalize();
+            Files.createDirectories(path);
 
-            return nomeDaImagem;
+            Path targetLocation = path.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            return fileName;
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

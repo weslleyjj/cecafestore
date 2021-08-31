@@ -1,6 +1,7 @@
 package br.com.cecafes.service;
 
 import br.com.cecafes.model.FuncionarioCecafes;
+import br.com.cecafes.model.Produtor;
 import br.com.cecafes.repository.FuncionarioCecafesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class FuncionarioCecafesService {
 
     public FuncionarioCecafes save(FuncionarioCecafes funcionarioCecafes) {
         return funcionarioCecafesRepository.save(funcionarioCecafes);
+    }
+
+    public FuncionarioCecafes findByUsername(String username) {
+        return funcionarioCecafesRepository.getFuncionarioCecafesByUsername(username);
     }
 
     public void deleteById(Long id) {
