@@ -117,8 +117,8 @@
 <!--                                <li><a th:href="@{/}">Ajuda</a></li>-->
                             </ul>
                         </li>
-                        <li sec:authorize="hasAnyAuthority('PRODUTOR', 'FUNCIONARIO', 'ADMIN')"><a th:class="${page == 'pedido'} ? activePageHeader" th:href="@{/funcionario/gerencia-loja}">Gerenciar Loja</a></li>
-                        <li sec:authorize="hasAnyAuthority('PRODUTOR')"><a th:href="@{/produtor}">Meus Produtos</a></li>
+                        <li sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')"><a th:class="${page == 'pedido'} ? activePageHeader" th:href="@{/funcionario/gerencia-loja}">Gerenciar Loja</a></li>
+                        <li sec:authorize="hasAnyAuthority('PRODUTOR')"><a th:href="@{/produtor/listar}">Meus Produtos</a></li>
                         <li sec:authorize="!hasAnyAuthority('PRODUTOR', 'FUNCIONARIO')" ><a th:class="${page == 'carrinho'} ? activePageHeader" th:href="@{/comprador/lista-produtos-compra}">Carrinho</a></li>
                     </ul>
                 </nav>
