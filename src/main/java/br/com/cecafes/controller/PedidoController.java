@@ -1,7 +1,6 @@
 package br.com.cecafes.controller;
 
 import br.com.cecafes.dto.PedidoDTO;
-import br.com.cecafes.dto.PedidoListagemDTO;
 import br.com.cecafes.model.*;
 import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.security.MyUserDetails;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -123,7 +121,7 @@ public class PedidoController {
 
         // Caso seja admin ou outra role, nao ira cumprir a operaçao
         if(Objects.isNull(comprador)){
-            return "produtosListComprador";
+            return "listagemCarrinhoComprador";
         }
 
         pedidoOficial.setComprador(comprador);

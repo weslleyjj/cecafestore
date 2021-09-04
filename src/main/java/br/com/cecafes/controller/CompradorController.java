@@ -7,7 +7,6 @@ import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.service.MessageService;
 import br.com.cecafes.service.CompradorService;
 import br.com.cecafes.service.ProdutoCecafesService;
-import br.com.cecafes.service.ProdutoService;
 import br.com.cecafes.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -134,7 +133,7 @@ public class CompradorController {
         Comprador comprador = compradorService.findByUsername(userDetails.getUsername());
         PedidoDTO pedido = new PedidoDTO();
 
-        ModelAndView modelAndView = new ModelAndView("produtosListComprador");
+        ModelAndView modelAndView = new ModelAndView("listagemCarrinhoComprador");
         List<ProdutoCecafes> produtosList = new ArrayList<>();
         String numeroPedido = "";
 
