@@ -42,6 +42,7 @@ public class ProdutoDTO {
 
     public ProdutoCecafes getProdutoCecafes(){
         ProdutoCecafes p = new ProdutoCecafes();
+        p.setId(id);
         p.setNome(nome);
         p.setCategoria(categoria);
         p.setQuantidade(quantidade);
@@ -58,6 +59,19 @@ public class ProdutoDTO {
         p.setNome(produto.getNome());
         p.setCategoria(produto.getCategoria());
         p.setDataValidade(produto.getDataValidade());
+        p.setQuantidade(produto.getQuantidade());
+        p.setUnidadeMedida(produto.getUnidadeMedida());
+        p.setPreco(produto.getPreco());
+
+        return p;
+    }
+
+    public ProdutoDTO getProdutoDTOFromProdutoCecafes(ProdutoCecafes produto){
+        ProdutoDTO p = new ProdutoDTO();
+
+        p.setId(produto.getId());
+        p.setNome(produto.getNome());
+        p.setCategoria(produto.getCategoria());
         p.setQuantidade(produto.getQuantidade());
         p.setUnidadeMedida(produto.getUnidadeMedida());
         p.setPreco(produto.getPreco());

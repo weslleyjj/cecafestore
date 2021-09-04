@@ -20,6 +20,7 @@ public class ProdutoCecafes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Boolean ativo;
     @NotEmpty
     private String nome;
     @NotEmpty

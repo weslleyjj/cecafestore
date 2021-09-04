@@ -40,7 +40,9 @@ public class ProdutoCecafesService {
     }
 
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        ProdutoCecafes p = repository.findById(id).get();
+        p.setAtivo(false);
+        repository.save(p);
     }
 
     public Page<ProdutoCecafes> findPaginated(Pageable pageable) {

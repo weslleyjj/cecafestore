@@ -1,10 +1,7 @@
 package br.com.cecafes.controller;
 
 import br.com.cecafes.dto.ProdutoDTO;
-import br.com.cecafes.model.FuncionarioCecafes;
-import br.com.cecafes.model.ProdutoCecafes;
-import br.com.cecafes.model.Produtor;
-import br.com.cecafes.model.User;
+import br.com.cecafes.model.*;
 import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.security.MyUserDetails;
 import br.com.cecafes.service.FuncionarioCecafesService;
@@ -58,6 +55,37 @@ public class ProdutoCecafesController {
         return produtoCecafesService.findAll();
     }
 
+    @RequestMapping(value = "/editar/{id}")
+    public String editar(@PathVariable(name = "id") Long id, Model model) {
+        ProdutoCecafes produtoUpdate = produtoCecafesService.findById(id);
+        ProdutoDTO produtoDTO = new ProdutoDTO();
+        produtoDTO = produtoDTO.getProdutoDTOFromProdutoCecafes(produtoUpdate);
+        model.addAttribute("produto", produtoDTO);
+
+        return "formEditarProdutoCecafes";
+    }
+
+    @PostMapping(value = "/saveEditar")
+    public String saveEditar(@ModelAttribute @Valid ProdutoDTO produto) {
+
+        produto.setFotoUrl(uploadFoto(produto.getFoto(), produto.getNome(), 999L));
+        produtoCecafesService.save(produto.getProdutoCecafes());
+
+        return "redirect:/shop/" + produto.getId();
+    }
+
+    @RequestMapping(value = "/deletar/{id}")
+    public String delete(@PathVariable(name = "id") Long id) {
+        try{
+            produtoCecafesService.deleteById(id);
+        }catch (Exception e){
+            return "redirect:/produtoCecafes/editar/" + id;
+        }
+
+
+        return "redirect:/funcionario/produtos-loja";
+    }
+
     @PostMapping(value = "/cadastrar")
     public String save(@ModelAttribute @Valid ProdutoDTO produto) {
         FuncionarioCecafes funcionarioCecafes = getFuncionario();
@@ -91,18 +119,6 @@ public class ProdutoCecafesController {
             return ResponseEntity.status(404).body(messageService.createJson("message", "Produto não encontrado"));
         } else {
             return ResponseEntity.ok(produtoCecafesService.save(produto));
-        }
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        ProdutoCecafes produtoDelete = produtoCecafesService.findById(id);
-
-        if (Objects.isNull(produtoDelete)) {
-            return ResponseEntity.status(404).body(messageService.createJson("message", "Produto não encontrado"));
-        } else {
-            produtoCecafesService.deleteById(id);
-            return ResponseEntity.status(204).build();
         }
     }
 
