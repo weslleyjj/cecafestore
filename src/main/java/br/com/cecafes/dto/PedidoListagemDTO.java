@@ -23,7 +23,7 @@ public class PedidoListagemDTO {
     private String numero;
     private Comprador comprador = new Comprador();
     private Endereco endereco;
-    private Float valorPedido;
+    private String valorPedido;
 
     public PedidoListagemDTO(Pedido pedido){
         this.id = pedido.getId();

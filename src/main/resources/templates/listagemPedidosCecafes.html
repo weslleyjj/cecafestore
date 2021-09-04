@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -109,7 +109,10 @@
                     </div>
                     <div th:if="${pedidoPage.totalPages > 0}" class="product__pagination"
                           style="display: flex; flex-wrap: wrap; width: fit-content;">
-                        <a th:each="pageNumber : ${pageNumbers}" th:href="@{/pedido/pedidos(size=${pedidoPage.size}, page=${pageNumber})}"
+                        <a th:if="${!pedidosEmAberto}" th:each="pageNumber : ${pageNumbers}" th:href="@{/pedido/pedidos(size=${pedidoPage.size}, page=${pageNumber})}"
+                           th:text="${pageNumber}"
+                           th:class="${pageNumber==pedidoPage.number + 1} ? activePage"></a>
+                        <a th:if="${pedidosEmAberto}" th:each="pageNumber : ${pageNumbers}" th:href="@{/pedido/pedidos-em-aberto(size=${pedidoPage.size}, page=${pageNumber})}"
                            th:text="${pageNumber}"
                            th:class="${pageNumber==pedidoPage.number + 1} ? activePage"></a>
                     </div>

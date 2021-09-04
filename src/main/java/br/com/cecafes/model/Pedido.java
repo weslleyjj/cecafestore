@@ -30,5 +30,5 @@ public class Pedido {
 
     private String status;
 
-    private Float valorPedido;
+    private String valorPedido;
 }

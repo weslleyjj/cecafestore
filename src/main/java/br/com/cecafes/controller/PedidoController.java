@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -179,6 +180,7 @@ public class PedidoController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+        model.addAttribute("pedidosEmAberto", false);
 
         return "listagemPedidosCecafes";
     }
@@ -203,6 +205,7 @@ public class PedidoController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+        model.addAttribute("pedidosEmAberto", true);
 
         return "listagemPedidosCecafes";
     }
@@ -215,13 +218,16 @@ public class PedidoController {
         return "busca-pedido";
     }
 
-    private Float calculaPedido(List<ProdutoPedido> produtos){
+    private String calculaPedido(List<ProdutoPedido> produtos){
         Float valorTotal = 0f;
         for (ProdutoPedido produto : produtos) {
             valorTotal += Float.parseFloat(produto.getPreco().replace(',', '.')) * produto.getQuantidade();
         }
 
-        return BigDecimal.valueOf(valorTotal).setScale(2, RoundingMode.HALF_DOWN).floatValue();
+        Locale ptBr = new Locale("pt", "BR");
+        String valorString = NumberFormat.getCurrencyInstance(ptBr).format(valorTotal);
+
+        return valorString.substring(3);
     }
 
     private boolean isAdminOrFuncionario(MyUserDetails user){
