@@ -47,7 +47,7 @@
             <br>
             <!--     Botões para produtor       -->
             <a sec:authorize="hasAnyAuthority('PRODUTOR')" th:href="@{/produto/form-produto}" class="primary-btn">Venda seus produtos</a>
-            <a sec:authorize="hasAnyAuthority('PRODUTOR')" th:href="@{/}" class="primary-btn">Meus produtos</a>
+            <a sec:authorize="hasAnyAuthority('PRODUTOR')" th:href="@{/produtor/listar}" class="primary-btn">Meus produtos</a>
             <!--     Botões para funcionario       -->
             <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/pedido/pedidos}" class="primary-btn">Pedidos em aberto</a>
             <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/funcionario/gerencia-loja}" class="primary-btn">Gerenciar loja</a>

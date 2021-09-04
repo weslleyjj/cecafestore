@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CecafeStore</title>
+
+    <link rel="shortcut icon" href="/img/favicon.png" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link  href="/css/bootstrap.min.css" rel="stylesheet">
+    <link  href="/css/font-awesome.min.css" rel="stylesheet">
+    <link  href="/css/elegant-icons.css" rel="stylesheet">
+    <link  href="/css/nice-select.css" rel="stylesheet">
+    <link  href="/css/jquery-ui.min.css" rel="stylesheet">
+    <link  href="/css/owl.carousel.min.css" rel="stylesheet">
+    <link  href="/css/slicknav.min.css" rel="stylesheet" >
+    <link  href="/css/style.css" rel="stylesheet" >
+    <style>
+        .activePage {
+            background-color: #7fad39;
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="~{fragments/headerFragment :: header(page = 'pedido')}"></div>
+
+<!-- Breadcrumb Section Begin -->
+<section id="breadcumb" class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Produtos da loja</h2>
+                    <div class="breadcrumb__option">
+                        <a href="/">Início</a>
+                        <span>Lista de produtos cadastrados</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+
+        <div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Produto</th>
+                                <th>Preço</th>
+                                <th>Unidade de medida</th>
+                                <th>Ações</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="produto : ${produtosPage.content}">
+                                <td class="col-sm-2">
+                                    <img width="70%" th:src="'/arquivos/fotos/' + ${produto.getFotoUrl()}" alt="">
+                                </td>
+                                <td class="col-sm-3">
+                                    <h5 th:text="${produto.nome}"></h5>
+                                </td>
+                                <td class="col-sm-2">
+                                    <span th:text="${produto.preco}"></span>
+                                </td>
+                                <td class="col-sm-2">
+                                    <span th:text="${produto.unidadeMedida}"></span>
+                                </td>
+                                <td class="col-sm-3">
+                                    <a title="Editar" th:href="@{'/produto/editar/' + ${produto.id}}"><i class="fa fa-pencil fa-fw"></i></a>&nbsp;&nbsp;&nbsp;
+                                    <a title="Excluir" th:href="@{'/produto/deletar/' + ${produto.id}}"><i class="fa fa-trash-o fa-lg"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:if="${produtosPage.totalPages > 0}" class="product__pagination"
+                         style="display: flex; flex-wrap: wrap; width: fit-content;">
+                        <a th:each="pageNumber : ${pageNumbers}" th:href="@{/funcionario/produtos-loja(size=${produtosPage.size}, page=${pageNumber})}"
+                           th:text="${pageNumber}"
+                           th:class="${pageNumber==produtosPage.number + 1} ? activePage"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- Shoping Cart Section End -->
+
+<div th:replace="~{fragments/footerFragment :: footer}"></div>
+<!-- Js Plugins -->
+<script src="/js/jquery-3.3.1.min.js" rel="script"></script>
+<script src="/js/bootstrap.min.js" rel="script"></script>
+<script src="/js/jquery.nice-select.min.js" rel="script"></script>
+<script src="/js/jquery-ui.min.js" rel="script"></script>
+<script src="/js/jquery.slicknav.js" rel="script"></script>
+<script src="/js/mixitup.min.js" rel="script"></script>
+<script src="/js/owl.carousel.min.js"rel="script"></script>
+<script src="/js/jquery.mask.js" rel="script"></script>
+<script src="/js/main.js" rel="script"></script>
+<script>
+    $(document).ready(function(){
+        $('html, body').animate({
+            scrollTop: $("#breadcumb").offset().top
+        }, 500);
+    });
+</script>
+</body>
+
+</html>

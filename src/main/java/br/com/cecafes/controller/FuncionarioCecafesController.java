@@ -1,11 +1,13 @@
 package br.com.cecafes.controller;
 
-import br.com.cecafes.model.FuncionarioCecafes;
-import br.com.cecafes.model.Role;
+import br.com.cecafes.model.*;
 import br.com.cecafes.repository.UserRepository;
 import br.com.cecafes.service.FuncionarioCecafesService;
 import br.com.cecafes.service.MessageService;
+import br.com.cecafes.service.ProdutoCecafesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,21 +20,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/funcionario")
 public class FuncionarioCecafesController {
+
     private FuncionarioCecafesService funcionarioCecafesService;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private MessageService messageService;
+    private ProdutoCecafesService produtoCecafesService;
 
     @Autowired
-    public FuncionarioCecafesController(FuncionarioCecafesService funcionarioCecafesService, MessageService messageService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public FuncionarioCecafesController(ProdutoCecafesService produtoCecafesService, FuncionarioCecafesService funcionarioCecafesService, MessageService messageService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.funcionarioCecafesService = funcionarioCecafesService;
         this.messageService = messageService;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.produtoCecafesService = produtoCecafesService;
     }
 
     @GetMapping
@@ -74,6 +81,29 @@ public class FuncionarioCecafesController {
     public String formFuncionarioCecafes(Model model) {
         model.addAttribute("funcionario", new FuncionarioCecafes());
         return "form-funcionario-cecafes";
+    }
+
+    @GetMapping("/produtos-loja")
+    public String listProdutosCecafes(Model model,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+        Page<ProdutoCecafes> produtosPage;
+
+        produtosPage = produtoCecafesService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+
+        model.addAttribute("produtosPage", produtosPage);
+
+        int totalPages = produtosPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        return "listagemProdutosCecafes";
     }
 
     @PutMapping(value = "/{id}")
