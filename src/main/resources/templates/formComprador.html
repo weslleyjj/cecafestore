@@ -23,6 +23,21 @@
     <link  href="/css/owl.carousel.min.css" rel="stylesheet">
     <link  href="/css/slicknav.min.css" rel="stylesheet" >
     <link  href="/css/style.css" rel="stylesheet" >
+
+    <style>
+        input.error {
+            border-color: red;
+            font-weight: 300;
+            color: red;
+        }
+
+        label.error {
+            color: red;
+            font-size: 1rem;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -51,52 +66,63 @@
 <section class="checkout spad">
     <div class="container">
         <div class="checkout__form">
-            <h4>Preencha os campos</h4>
-            <form th:method="POST" th:action="@{/comprador/cadastrar}" th:object="${comprador}">
-                <div class="row">
-                    <div class="col-lg-8 col-md-6">
-                        <div class="row">
+            <form id="form-comp" th:method="POST" th:action="@{/comprador/cadastrar}" th:object="${comprador}">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h4 class="text-center">Preencha os campos</h4>
+                        <div class="row justify-content-center">
                             <div class="col-lg-12">
                                 <div class="checkout__input">
                                     <p>Nome Completo<span>*</span></p>
-                                    <input th:field="*{nome}" type="text" required>
+                                    <input id="nome" style="color: black; border-color: black" th:field="*{nome}" type="text">
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-8">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7">
                                 <div class="checkout__input">
                                     <p>CPF<span>*</span></p>
-                                    <input data-mask="000.000.000-00" data-mask-selectonfocus="true" th:field="*{cpf}" type="text" required>
+                                    <input id="cpf" style="color: black; border-color: black" data-mask="000.000.000-00" data-mask-selectonfocus="true" placeholder="000.000.000-00" th:field="*{cpf}" type="text">
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-5">
                                 <div class="checkout__input">
                                     <p>Contato<span>*</span></p>
-                                    <input data-mask="(00) 0 0000-0000" data-mask-selectonfocus="true" placeholder="(DD) 0000-0000" th:field="*{contato}" type="text" required>
+                                    <input  style="color: black; border-color: black" data-mask="(00) 0 0000-0000" data-mask-selectonfocus="true" placeholder="(DD) 0 0000-0000" th:field="*{contato}" type="text">
                                 </div>
                             </div>
 
                         </div>
-                        <div class="checkout__input">
-                            <p>Endereço<span>*</span></p>
-                            <input th:field="*{endereco.cidade}" type="text" placeholder="Cidade" class="checkout__input__add" required>
-                            <input th:field="*{endereco.rua}" type="text" placeholder="Rua" class="checkout__input__add" required>
-                            <input th:field="*{endereco.bairro}" type="text" placeholder="Bairro" class="checkout__input__add" required>
-                            <input th:field="*{endereco.numero}" type="number" placeholder="Número" class="checkout__input__add" required>
-                            <input th:field="*{endereco.estado}" type="text" placeholder="Estado" class="checkout__input__add" required>
-                            <input data-mask="00.000-000" data-mask-selectonfocus="true" th:field="*{endereco.cep}" type="text" placeholder="CEP" class="checkout__input__add" required>
-                            <input th:field="*{endereco.complemento}" type="text" placeholder="Complemento" class="checkout__input__add">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12">
+                                <div class="checkout__input">
+                                    <p>Endereço<span>*</span></p>
+                                    <input style="color: black; border-color: black" th:field="*{endereco.cidade}" type="text" placeholder="Cidade" class="checkout__input__add" required>
+                                    <input style="color: black; border-color: black" th:field="*{endereco.rua}" type="text" placeholder="Rua" class="checkout__input__add" required>
+                                    <input style="color: black; border-color: black" th:field="*{endereco.bairro}" type="text" placeholder="Bairro" class="checkout__input__add" required>
+                                    <input style="color: black; border-color: black" th:field="*{endereco.numero}" type="number" placeholder="Número" class="checkout__input__add" required>
+                                    <input style="color: black; border-color: black" th:field="*{endereco.estado}" type="text" placeholder="Estado" class="checkout__input__add" required>
+                                    <input style="color: black; border-color: black" data-mask="00.000-000" data-mask-selectonfocus="true" th:field="*{endereco.cep}" type="text" placeholder="CEP" class="checkout__input__add" required>
+                                    <input style="color: black; border-color: black" th:field="*{endereco.complemento}" type="text" placeholder="Complemento" class="checkout__input__add">
+                                </div>
+                            </div>
                         </div>
-                        <div class="checkout__input">
-                            <p>Crendenciais de acesso<span>*</span></p>
-                            <input th:field="*{user.username}" type="text" placeholder="Login" class="checkout__input__add" required>
-                            <input th:field="*{user.password}" type="password" placeholder="Senha" class="checkout__input__add" required>
-                            <input type="password" placeholder="Confirmação de senha" class="checkout__input__add" required>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12">
+                                <div class="checkout__input">
+                                    <p>Crendenciais de acesso<span>*</span></p>
+                                    <input style="color: black; border-color: black" th:field="*{user.username}" type="text" placeholder="Login" class="checkout__input__add" required>
+                                    <input style="color: black; border-color: black" th:field="*{user.password}" type="password" placeholder="Senha" class="checkout__input__add" required>
+                                    <input style="color: black; border-color: black" type="password" placeholder="Confirmação de senha" class="checkout__input__add" required>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <button style="width: 66%" type="submit" class="site-btn">CADASTRAR</button>
+                <div class="d-flex justify-content-center">
+                    <button style="width: 66%" type="submit" class="site-btn">CADASTRAR</button>
+                </div>
+
             </form>
         </div>
     </div>
@@ -115,6 +141,72 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/jquery.mask.js"></script>
 <script src="/js/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#form-comp").validate({
+            rules : {
+                nome: {
+                    required: true,
+                    minlength: 10
+                },
+
+                cpf: {
+                    required: true,
+                    minlength: 14,
+                    maxlength: 14
+                },
+
+                contato: {
+                    required: true,
+                    minlength: 16,
+                    maxlength: 16
+                },
+
+                cidade: {
+                    required: true,
+                    minlength: 5
+                },
+
+                rua: {
+                    required: true,
+                    minlength: 5
+                }
+            },
+
+            messages : {
+                nome: {
+                    minlength: "Nome deve ter pelo menos 10 caracteres",
+                    required: "Nome não pode estar em branco"
+                },
+
+                cpf: {
+                    required: "CPF não pode estar em branco",
+                    minlength: "CPF inválido",
+                    maxlength: "CPF inválido"
+                },
+
+                contato: {
+                    required: "Contato não pode estar em branco",
+                    minlength: "Contato inválido",
+                    maxlength: "Contato inválido"
+                },
+
+                cidade: {
+                    required: "Cidade não pode estar em branco",
+                    minlength: "Cidade deve ter pelo menos 5 caracteres"
+                },
+
+                rua: {
+                    required: "Rua não pode estar em branco",
+                    minlength: "Rua deve ter pelo menos 5 caracteres"
+                }
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>
