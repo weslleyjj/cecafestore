@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /images
+cecafes/imagens/produtos/
 
 ### STS ###
 .apt_generated
