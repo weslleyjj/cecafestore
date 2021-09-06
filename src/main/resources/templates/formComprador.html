@@ -119,11 +119,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <button style="width: 66%" type="submit" class="site-btn">CADASTRAR</button>
-                </div>
-
             </form>
+            <div class="d-flex justify-content-center">
+                <button id="confimar-cadastro" style="width: 66%" class="site-btn">CADASTRAR</button>
+            </div>
         </div>
     </div>
 </section>
@@ -204,6 +203,29 @@
                 }
             }
         });
+    });
+</script>
+<script>
+    $("#confimar-cadastro").click(function(){
+        if ($("#form-comp").valid()){
+            Swal.fire({
+                icon: 'question',
+                title: 'Cadastrar um comprador?',
+                showDenyButton: true,
+                confirmButtonText: `Cadastrar`,
+                denyButtonText: `Cancelar`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Cadastrado com Sucesso', '', 'success').then((result) => {
+                        if (result.isConfirmed){
+                            document.getElementById("form-comp").submit();
+                        } else {
+                            document.getElementById("form-comp").submit();
+                        }
+                    })
+                }
+            })
+        }
     });
 </script>
 

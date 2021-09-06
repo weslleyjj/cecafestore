@@ -72,6 +72,7 @@
                             </thead>
                             <tbody>
                                 <tr th:each="produto : ${listProdutos}">
+                                    <input id="produtoId" type="hidden" th:value="${produto.id}">
                                     <td class="col-3">
                                         <h5 th:text="${produto.nome}"></h5>
                                     </td>
@@ -86,7 +87,7 @@
                                     </td>
                                     <td class="col-3">
                                         <a title="Editar" th:href="@{'/produto/editar/' + ${produto.id}}"><i class="fa fa-pencil fa-fw"></i></a>&nbsp;&nbsp;&nbsp;
-                                        <a title="Excluir" th:href="@{'/produto/deletar/' + ${produto.id}}"><i class="fa fa-trash-o fa-lg"></i></a>
+                                        <a title="Excluir" id="excluir-produto" onclick="excluir()"><i class="fa fa-trash-o fa-lg"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -117,6 +118,45 @@
             scrollTop: $("#breadcumb").offset().top
         }, 500);
     });
+</script>
+<script>
+    function excluir(){
+        const baseurl = window.location.origin;
+        const idProduto = $("#produtoId").val();
+        console.log(baseurl+"/produto/deletar/"+idProduto);
+
+        Swal.fire({
+            icon: 'question',
+            title: 'Excluir produto?',
+            showDenyButton: true,
+            confirmButtonText: `Excluir`,
+            denyButtonText: `Cancelar`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url : baseurl+"/produto/deletar/"+idProduto,
+                    type : 'get',
+
+                    success: function (response){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Produto excluido',
+                            text: 'O produto foi excluido',
+                        })
+                    },
+
+                    error: function (xhr, textStatus, error){
+                        console.log(xhr)
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ooops...',
+                            text: 'Houve um problema interno e o produto não pôde ser adicionado ao carrinho',
+                        })
+                    }
+                })
+            }
+        })
+    }
 </script>
 </body>
 
