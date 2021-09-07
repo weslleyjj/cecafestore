@@ -87,7 +87,7 @@
                                     </td>
                                     <td class="col-3">
                                         <a title="Editar" th:href="@{'/produto/editar/' + ${produto.id}}"><i class="fa fa-pencil fa-fw"></i></a>&nbsp;&nbsp;&nbsp;
-                                        <a title="Excluir" id="excluir-produto" onclick="excluir()"><i class="fa fa-trash-o fa-lg"></i></a>
+                                        <a title="Excluir" id="excluir-produto" onclick="excluir(this)"><i class="fa fa-trash-o fa-lg"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -120,9 +120,9 @@
     });
 </script>
 <script>
-    function excluir(){
+    function excluir(element){
         const baseurl = window.location.origin;
-        const idProduto = $("#produtoId").val();
+        const idProduto = element.parentElement.parentElement.firstChild.nextSibling.value;
         console.log(baseurl+"/produto/deletar/"+idProduto);
 
         Swal.fire({
