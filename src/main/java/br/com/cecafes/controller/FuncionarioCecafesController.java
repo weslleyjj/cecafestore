@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -104,6 +103,33 @@ public class FuncionarioCecafesController {
         }
 
         return "listagemProdutosCecafes";
+    }
+
+    @GetMapping(value = "/busca-produto")
+    private String buscaPedido(@RequestParam String busca, Model model) {
+        List<ProdutoCecafes> produtosCecafes = produtoCecafesService.findAll();
+        List<ProdutoCecafes> produtosCecafesBusca = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile(busca, Pattern.CASE_INSENSITIVE);
+
+        if (!produtosCecafes.isEmpty()) {
+            Matcher matcher;
+            boolean matchFound;
+            for(ProdutoCecafes produto: produtosCecafes) {
+                matcher = pattern.matcher(
+                        produto.getNome() + " " + produto.getCategoria() + " "
+                        + produto.getPreco() + " " + produto.getUnidadeMedida()
+                );
+                matchFound = matcher.find();
+                if (matchFound) {
+                    produtosCecafesBusca.add(produto);
+                }
+            }
+        }
+
+        model.addAttribute("produtos", produtosCecafesBusca);
+
+        return "busca-produto-cecafes";
     }
 
     @PutMapping(value = "/{id}")
