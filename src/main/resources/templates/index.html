@@ -46,14 +46,14 @@
             <h2> Seja bem vindo! <br />Aproveite nossos serviços!</h2>
             <br>
             <!--     Botões para produtor       -->
-            <a sec:authorize="hasAnyAuthority('PRODUTOR')" th:href="@{/produto/form-produto}" class="primary-btn">Venda seus produtos</a>
-            <a sec:authorize="hasAnyAuthority('PRODUTOR')" th:href="@{/produtor/listar}" class="primary-btn">Meus produtos</a>
+            <a sec:authorize="hasAnyAuthority('PRODUTOR')" th:href="@{/produto/form-produto}" class="primary-btn mt-1">Venda seus produtos</a>
+            <a sec:authorize="hasAnyAuthority('PRODUTOR')" th:href="@{/produtor/listar}" class="primary-btn mt-1">Meus produtos</a>
             <!--     Botões para funcionario       -->
-            <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/pedido/pedidos}" class="primary-btn">Pedidos em aberto</a>
-            <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/funcionario/gerencia-loja}" class="primary-btn">Gerenciar loja</a>
+            <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/pedido/pedidos}" class="primary-btn mt-1">Pedidos em aberto</a>
+            <a sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" th:href="@{/funcionario/gerencia-loja}" class="primary-btn mt-1">Gerenciar loja</a>
             <!--     Botões para comprador       -->
-            <a sec:authorize="hasAnyAuthority('COMPRADOR')" th:href="@{/pedido/pedidos}" class="primary-btn">Meus Pedidos</a>
-            <a sec:authorize="hasAnyAuthority('COMPRADOR')" th:href="@{/comprador/lista-produtos-compra}" class="primary-btn">Meu carrinho</a>
+            <a sec:authorize="hasAnyAuthority('COMPRADOR')" th:href="@{/pedido/pedidos}" class="primary-btn mt-1">Meus Pedidos</a>
+            <a sec:authorize="hasAnyAuthority('COMPRADOR')" th:href="@{/comprador/lista-produtos-compra}" class="primary-btn mt-1">Meu carrinho</a>
         </div>
     </div>
 </div>
