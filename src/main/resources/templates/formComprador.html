@@ -140,7 +140,6 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/jquery.mask.js"></script>
 <script src="/js/main.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -216,13 +215,7 @@
                 denyButtonText: `Cancelar`
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire('Cadastrado com Sucesso', '', 'success').then((result) => {
-                        if (result.isConfirmed){
-                            document.getElementById("form-comp").submit();
-                        } else {
-                            document.getElementById("form-comp").submit();
-                        }
-                    })
+                    document.getElementById("form-comp").submit();
                 }
             })
         }
