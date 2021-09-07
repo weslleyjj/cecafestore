@@ -87,7 +87,7 @@
                     <h5 th:text="${'R$ ' + pedido.valorPedido}"></h5>
                 </div>
             </div>
-            <div class="col-lg-12 mt-4 ml-0 mb-5">
+            <div class="col-lg-8 mt-4 ml-0 mb-5">
                 <h5 >Endereço do Pedido: </h5>
                 <div class="d-flex">
                     <span th:text="${'Rua: ' + pedido.endereco.rua + ', ' + pedido.endereco.numero}"></span>
@@ -96,6 +96,10 @@
                     <span class="ml-3" th:text="${'Cidade: ' + pedido.endereco.cidade }"></span>
                     <span class="ml-3" th:text="${'CEP: ' + pedido.endereco.cep }"></span>
                 </div>
+            </div>
+            <div class="col-lg-4 mt-4 ml-0 mb-5">
+                <h5>Data/hora do pedido:</h5>
+                <span th:text="${#dates.format(pedido.dataRegistro, 'dd/MM/yyyy HH:mm:ss')}"></span>
             </div>
         </div>
         <div class="row">

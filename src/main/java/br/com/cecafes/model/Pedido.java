@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.envers.Audited;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -27,6 +29,9 @@ public class Pedido {
     private Endereco endereco;
     @OneToMany
     private List<ProdutoPedido> produtosPedido;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dataRegistro;
 
     private String status;
 

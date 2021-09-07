@@ -73,6 +73,7 @@
                             <thead>
                             <tr>
                                 <th>Estado</th>
+                                <th>Data</th>
                                 <th>Número</th>
                                 <th>Comprador</th>
                                 <th>Preço</th>
@@ -85,10 +86,13 @@
                                 <td class="col-1">
                                     <h5 th:text="${pedido.status}"></h5>
                                 </td>
+                                <td>
+                                    <h5 th:text="${#dates.format(pedido.dataRegistro, 'dd/MM/yyyy HH:mm:ss')}"></h5>
+                                </td>
                                 <td class="col-2">
                                     <h5 th:text="${pedido.numero}"></h5>
                                 </td>
-                                <td class="col-3">
+                                <td class="col-2">
                                     <span th:text="${pedido.comprador.nome + '/' + pedido.comprador.contato}"></span>
                                 </td>
                                 <td class="col-1">

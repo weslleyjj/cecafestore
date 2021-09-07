@@ -132,7 +132,7 @@ public class PedidoController {
         pedidoOficial.setValorPedido(calculaPedido(produtoPedidoList));
         pedidoOficial.setNumero(pedido.getNumero());
         pedidoOficial.setStatus("PENDENTE");
-
+        pedidoOficial.setDataRegistro(new Date());
 
         pedidoService.save(pedidoOficial);
 
