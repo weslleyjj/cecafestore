@@ -13,7 +13,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     @Query(value = "SELECT * FROM pedido WHERE comprador_id = ?1 ORDER BY id DESC", nativeQuery = true)
     public List<Pedido> findPedidosByCompradorId(Long idComprador);
 
-    @Query(value = "SELECT * FROM pedido WHERE status = 'PENDENTE' ORDER BY id DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM pedido WHERE status = 'PENDENTE' ORDER BY data_registro ASC", nativeQuery = true)
     public List<Pedido> findAllByPedidoPendente();
 
     public List<Pedido> findAllByNumero(String numero);
