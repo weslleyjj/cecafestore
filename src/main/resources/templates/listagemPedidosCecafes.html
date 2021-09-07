@@ -62,7 +62,7 @@
                         <div class="hero__search">
                             <div class="hero__search__form">
                                 <form method="get" id="busca-pedido-form">
-                                    <input id="busca-pedido-input" type="text" placeholder="Informe o número do pedido">
+                                    <input id="busca-pedido-input" type="text" placeholder="Filtre por informações do pedido">
                                     <button id="busca-pedido-button" class="site-btn">FILTRAR</button>
                                 </form>
                             </div>
@@ -145,7 +145,7 @@
     document.getElementById('busca-pedido-button').addEventListener('click', (e) => {
         e.preventDefault();
         const value = document.getElementById('busca-pedido-input').value
-        window.location.href = "/pedido/busca-pedido?numero=" + value;
+        window.location.href = "/pedido/busca-pedido?busca=" + value;
     });
 </script>
 </body>

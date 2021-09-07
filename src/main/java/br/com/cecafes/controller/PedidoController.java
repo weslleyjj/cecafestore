@@ -27,6 +27,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -211,9 +213,32 @@ public class PedidoController {
     }
 
     @GetMapping(value = "/busca-pedido")
-    private String buscaPedido(@RequestParam String numero, Model model) {
-        List<Pedido> pedidos = pedidoService.findByNumero(numero.trim());
-        model.addAttribute("pedidos", pedidos);
+    private String buscaPedido(@RequestParam String busca, Model model) {
+        List<Pedido> pedidos = pedidoService.findAll();
+
+        List<Pedido> pedidosCecafesBusca = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile(busca, Pattern.CASE_INSENSITIVE);
+
+        if (!pedidos.isEmpty()) {
+            Matcher matcher;
+            boolean matchFound;
+            for(Pedido pedido: pedidos) {
+                matcher = pattern.matcher(
+                        pedido.getComprador().getCpf() + " " + pedido.getNumero() + " " + pedido.getStatus()
+                        + " " + pedido.getEndereco().getBairro() + " " + pedido.getEndereco().getCidade()
+                        + " " + pedido.getEndereco().getRua() + " " + pedido.getEndereco().getEstado()
+                        + " " + pedido.getEndereco().getCep() + " " + pedido.getComprador().getNome()
+                        + " " + pedido.getValorPedido()
+                );
+                matchFound = matcher.find();
+                if (matchFound) {
+                    pedidosCecafesBusca.add(pedido);
+                }
+            }
+        }
+
+        model.addAttribute("pedidos", pedidosCecafesBusca);
 
         return "busca-pedido";
     }
