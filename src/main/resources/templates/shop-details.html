@@ -104,63 +104,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6">
+            <div th:each="produtosRelacionados : ${produtosRelacionados}" class="col-lg-3 col-md-4 col-sm-6">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" th:data-setbg="${'/img/product/product-1.jpg'}">
+                    <div class="product__item__pic set-bg" th:data-setbg="'/arquivos/fotos/' + ${produtosRelacionados.fotoUrl}">
+                        <input class="produtoId" type="hidden" th:value="${produtosRelacionados.id}" />
                         <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            <li><a th:href="@{'/shop/' + ${produtosRelacionados.id}}"><i class="fa fa-info-circle"></i></a></li>
+                            <li><a sec:authorize="hasAnyAuthority('COMPRADOR', 'ADMIN')" onclick="addCart(this)" class="add-carrinho"><i class="fa fa-shopping-cart"></i></a></li>
                         </ul>
                     </div>
                     <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" th:data-setbg="${'/img/product/product-2.jpg'}">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" th:data-setbg="${'/img/product/product-3.jpg'}">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" th:data-setbg="${'/img/product/product-4.jpg'}">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
+                        <h6><a th:href="@{'/shop/' + ${produtosRelacionados.id}}" th:text="${produtosRelacionados.nome}"></a></h6>
+                        <h5 th:text="'R$' + ${produtosRelacionados.preco}"></h5>
                     </div>
                 </div>
             </div>
@@ -205,6 +160,33 @@
             }
         });
     });
+</script>
+<script>
+    function addCart(e) {
+        const baseurl = window.location.origin;
+        const idProduto = e.parentElement.parentElement.parentElement.firstChild.nextSibling.value
+        $.ajax({
+            url : baseurl+"/add-item/"+idProduto,
+            type : 'get',
+            success: function (response){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Produto Adicionado',
+                    text: 'O produto foi adicionado ao seu carrinho!',
+                })
+            },
+            error: function (xhr, textStatus, error){
+                console.log(xhr)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops...',
+                    text: 'Houve um problema interno e o produto não pôde ser adicionado ao carrinho',
+                })
+            }
+        });
+
+        countQtdeProdutos();
+    }
 </script>
 </body>
 

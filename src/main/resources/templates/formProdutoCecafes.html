@@ -162,13 +162,7 @@
         denyButtonText: `Cancelar`
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire('Cadastrado com Sucesso', '', 'success').then((result) => {
-            if (result.isConfirmed){
-              document.getElementById("form-pdtceca").submit();
-            } else {
-              document.getElementById("form-pdtceca").submit();
-            }
-          })
+          document.getElementById("form-pdtceca").submit();
         }
       })
     }

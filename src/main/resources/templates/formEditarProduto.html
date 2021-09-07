@@ -24,7 +24,20 @@
   <link  href="/css/slicknav.min.css" rel="stylesheet" >
   <link  href="/css/style.css" rel="stylesheet" >
 
+  <style>
+    input.error {
+      border-color: red;
+      font-weight: 300;
+      color: red;
+    }
 
+    label.error {
+      color: red;
+      font-size: 1rem;
+      display: block;
+      margin-top: 5px;
+    }
+  </style>
 </head>
 
 <body>
@@ -35,10 +48,10 @@
     <div class="row">
       <div class="col-lg-12 text-center">
         <div class="breadcrumb__text">
-          <h2>Cadastro de Produto</h2>
+          <h2>Editar Produto</h2>
           <div class="breadcrumb__option">
             <a href="/">Início</a>
-            <span>Cadastro de Produto</span>
+            <span>Editar Produto</span>
           </div>
         </div>
       </div>
@@ -51,19 +64,19 @@
 <section class="checkout spad">
   <div class="container">
     <div class="checkout__form">
-      <h4>Preencha os campos</h4>
-      <form th:method="post" th:action="@{/produto/saveEditar}" th:object="${produto}" enctype="multipart/form-data">
-        <div class="row">
-          <div class="col-lg-8 col-md-6">
-            <div class="row">
-              <div class="col-lg-6">
+      <form id="form-edit-prod" th:method="post" th:action="@{/produto/saveEditar}" th:object="${produto}" enctype="multipart/form-data">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <h4 class="text-center">Preencha os campos</h4>
+            <div class="row justify-content-center">
+              <div class="col-lg-9">
                 <div class="checkout__input">
                   <p>Nome do produto<span>*</span></p>
                   <input type="hidden" th:field="*{id}" readonly />
-                  <input th:field="*{nome}" type="text" required maxlength="255" placeholder="Nome do produto">
+                  <input style="color: black; border-color: black" th:field="*{nome}" type="text" required maxlength="255" placeholder="Nome do produto">
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-3">
                 <div class="checkout__input">
                   <p>Categoria<span>*</span></p>
                   <select th:field="*{categoria}">
@@ -81,13 +94,13 @@
             </div>
             <!-- Quantidade e Medida -->
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-9">
                 <div class="checkout__input">
                   <p>Quantidade<span>*</span></p>
-                  <input th:field="*{quantidade}" type="number" placeholder="Quantidade do produto" required>
+                  <input style="color: black; border-color: black" th:field="*{quantidade}" type="number" placeholder="Quantidade do produto" required>
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-3">
                 <div class="checkout__input">
                   <p>Medida<span>*</span></p>
                   <select th:field="*{unidadeMedida}" required>
@@ -100,20 +113,22 @@
             </div>
             <div class="checkout__input">
               <p>Data de Validade<span>*</span></p>
-              <input th:field="*{dataValidade}" type="date">
+              <input style="color: black; border-color: black" th:field="*{dataValidade}" type="date">
             </div>
             <div class="checkout__input">
               <p>Preço por unidade de medida<span>*</span></p>
-              <input th:field="*{preco}" type="text" placeholder="Preço por medida" class="checkout__input__add money">
+              <input style="color: black; border-color: black" th:field="*{preco}" type="text" placeholder="Preço por medida" class="checkout__input__add money" required>
             </div>
             <div class="checkout__input">
               <p>Foto do produto<span>*</span></p>
-              <input th:field="*{foto}" type="file" placeholder="Foto do produto" class="checkout__input__add">
+              <input style="color: black; border-color: black" th:field="*{foto}" type="file" placeholder="Foto do produto" class="checkout__input__add">
             </div>
           </div>
         </div>
-        <button style="width: 66%" type="submit" class="site-btn">Cadastrar</button>
       </form>
+      <div class="d-flex justify-content-center">
+        <button id="confimar-cadastro" style="width: 66%" class="site-btn">Cadastrar</button>
+      </div>
     </div>
   </div>
 </section>
@@ -131,8 +146,31 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/jquery.mask.js"></script>
 <script src="/js/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <script>
   $('.money').mask('R$ 000.000.000.000.000,00', {reverse: true});
+</script>
+<script>
+  $(document).ready(function(){
+    $("#form-edit-prod").validate();
+  })
+</script>
+<script>
+  $("#confimar-cadastro").click(function(){
+    if ($("#form-edit-prod").valid()){
+      Swal.fire({
+        icon: 'question',
+        title: 'Editar o produto?',
+        showDenyButton: true,
+        confirmButtonText: `Confirmar`,
+        denyButtonText: `Cancelar`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById("form-edit-prod").submit();
+        }
+      })
+    }
+  });
 </script>
 </body>
 

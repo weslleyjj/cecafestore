@@ -123,7 +123,6 @@
     function excluir(element){
         const baseurl = window.location.origin;
         const idProduto = element.parentElement.parentElement.firstChild.nextSibling.value;
-        console.log(baseurl+"/produto/deletar/"+idProduto);
 
         Swal.fire({
             icon: 'question',
@@ -150,7 +149,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Ooops...',
-                            text: 'Houve um problema interno e o produto não pôde ser adicionado ao carrinho',
+                            text: 'Houve um problema interno e o produto não pôde ser excluido',
                         })
                     }
                 })

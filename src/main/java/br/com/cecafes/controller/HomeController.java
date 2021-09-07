@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,9 +55,27 @@ public class HomeController {
 
     @RequestMapping(value = "/shop/{id}", method = RequestMethod.GET)
     public ModelAndView shop(@PathVariable(name = "id") Long id) {
+        Random random = new Random();
+        ArrayList<ProdutoCecafes> produtosRelacionados = new ArrayList<>();
+
         ModelAndView modelAndView = new ModelAndView("shop-details");
         ProdutoCecafes produto = produtoCecafesService.findById(id);
+        List<ProdutoCecafes> produtos = produtoCecafesService.findAll();
+
+        for(int i = 0; i < produtos.size(); i++){
+            int num = random.nextInt(produtos.size());
+
+            if(!produtosRelacionados.contains(produtos.get(num))){
+                produtosRelacionados.add(produtos.get(num));
+            }
+
+            if(produtosRelacionados.size() == 4){
+                break;
+            }
+        }
+
         modelAndView.addObject("produto", produto);
+        modelAndView.addObject("produtosRelacionados", produtosRelacionados);
 
         return modelAndView;
     }
