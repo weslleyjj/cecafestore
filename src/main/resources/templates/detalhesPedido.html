@@ -65,10 +65,10 @@
 <section class="product-details spad">
     <div class="container">
         <div sec:authorize="hasAnyAuthority('FUNCIONARIO', 'ADMIN')" class="row" style="margin-bottom: 20px;">
-            <a th:href="@{'/pedido/revisar/'+ ${pedido.id} +'/revisado'}"><button th:if="${pedido.status == 'PENDENTE'}" class="site-btn" th:style="'background-color: ' + ${corStatus} + ';'">Marcar como Revisado</button></a>
-            <a th:href="@{'/pedido/revisar/'+${pedido.id}+'/confirmado'}"><button th:if="${pedido.status == 'REVISADO'}" class="site-btn" th:style="'background-color: ' + ${corStatus} + ';'">Confirmar pedido</button></a>
+            <a th:href="@{'/pedido/revisar/'+ ${pedido.id} +'/revisado'}"><button th:if="${pedido.status == 'PENDENTE'}" class="site-btn" th:style="'background-color: #17a2b8 ;'">Marcar como Revisado</button></a>
+            <a th:href="@{'/pedido/revisar/'+${pedido.id}+'/confirmado'}"><button th:if="${pedido.status == 'REVISADO'}" class="site-btn" th:style="'background-color: #7fad39 ;'">Confirmar pedido</button></a>
             <a th:href="@{'/pedido/revisar/'+${pedido.id}+'/negado'}"><button th:if="${pedido.status == 'REVISADO'}" class="site-btn" style="background-color: orangered; margin-left: 10px;">Negar pedido</button></a>
-            <a th:href="@{'/pedido/revisar/'+${pedido.id}+'/revisado'}"><button th:if="${pedido.status == 'NEGADO' || pedido.status == 'CONFIRMADO'}" class="site-btn" style="background-color: #E9A625 ;">Revisar novamente</button></a>
+            <a th:href="@{'/pedido/revisar/'+${pedido.id}+'/revisado'}"><button th:if="${pedido.status == 'NEGADO' || pedido.status == 'CONFIRMADO'}" class="site-btn" style="background-color: #17a2b8 ;">Revisar novamente</button></a>
         </div>
         <div class="row">
             <h2  class=" mb-5">Dados do pedido - <span class="status" th:style="'background-color: ' + ${corStatus} + ';'"
