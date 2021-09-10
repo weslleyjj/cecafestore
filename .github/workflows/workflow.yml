@@ -70,16 +70,16 @@ jobs:
           #From this path
           path: target/cecafestore-0.0.1-SNAPSHOT.jar
   #Deploy's job
-#   deploy:
-#     needs: build
-#     name: Deploy
-#     runs-on: ubuntu-latest
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout the code
-#         uses: actions/checkout@v1
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v1
 
-#       - name: Deploy to AWS
-#         run: |
-#           ssh -o ${{ secrets.SSH_KEY }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir /home/ubuntu/teste_pipeline'
+      - name: Deploy to AWS
+        run: |
+          ssh -o ${{ secrets.SSH_KEY }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir /home/ubuntu/teste_pipeline'
         
