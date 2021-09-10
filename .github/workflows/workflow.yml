@@ -94,7 +94,7 @@ jobs:
           pwd
           ls target/
           ls ./target/
-          cp target/cecafes-0.0.1-SNAPSHOT.jar ./cecafestore.jar
+          cp -r target/cecafes-0.0.1-SNAPSHOT.jar ./cecafestore.jar
           ssh -o stricthostkeychecking=no -i aux_temp.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo systemctl stop cecafestore.service'
           scp -o stricthostkeychecking=no -i aux_temp.pem -v ./cecafestore.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/cecafestore/target
           ssh -o stricthostkeychecking=no -i aux_temp.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo systemctl restart cecafestore.service'
