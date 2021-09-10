@@ -81,5 +81,8 @@ jobs:
 
       - name: Deploy to AWS
         run: |
-          ssh -o ${{ secrets.SSH_KEY }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir /home/ubuntu/teste_pipeline'
+          rm aux_temp.pem
+          echo "${{ secrets.SSH_KEY }}" >> aux_temp.pem
+          chmod 400 aux_temp.pem
+          ssh -o stricthostkeychecking=no -i aux_temp.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir /home/ubuntu/teste_pipeline'
         
