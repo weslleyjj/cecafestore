@@ -37,7 +37,7 @@ jobs:
   #Build's job
   build:
     #Depends on sonar's job
-#     needs: tests
+    needs: tests
     name: Build
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
