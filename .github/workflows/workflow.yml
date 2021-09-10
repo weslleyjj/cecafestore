@@ -91,6 +91,6 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" >> aux_temp.pem
           chmod 400 aux_temp.pem
           ssh -o stricthostkeychecking=no -i aux_temp.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo systemctl stop cecafestore.service'
-          scp -o stricthostkeychecking=no -i aux_temp.pem -v ./target/cecafes-0.0.1-SNAPSHOT.jar $AWS_SSH_USER@$AWS_SSH_HOST:/home/ubuntu/cecafestore/target/cecafes-0.0.1-SNAPSHOT.jar
+          scp -o stricthostkeychecking=no -i aux_temp.pem -v ./target/cecafes-0.0.1-SNAPSHOT.jar ${{ AWS_SSH_USER }}@{{ $AWS_SSH_HOST }}:/home/ubuntu/cecafestore/target/cecafes-0.0.1-SNAPSHOT.jar
           ssh -o stricthostkeychecking=no -i aux_temp.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo systemctl restart cecafestore.service'
         
