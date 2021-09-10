@@ -78,6 +78,11 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v1
+        
+      - uses: actions/download-artifact@master
+        with:
+          name: artifact
+          path: target/
 
       - name: Deploy to AWS
         run: |
