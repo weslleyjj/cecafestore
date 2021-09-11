@@ -11,10 +11,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import java.lang.reflect.Method;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -73,10 +79,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/pedido/pedidos-em-aberto").hasAnyAuthority("FUNCIONARIO", "ADMIN")
                 .antMatchers("/pedido/*").hasAnyAuthority("FUNCIONARIO", "ADMIN", "COMPRADOR")
                 .and()
-                .formLogin().loginPage("/login").permitAll()
+                .formLogin().loginPage("/login")
+                .successHandler(sucessoLogin())
+                .permitAll()
                 .and()
-                .logout().invalidateHttpSession(true).logoutSuccessUrl("/").deleteCookies("JSESSIONID")
+                .logout().invalidateHttpSession(true).logoutSuccessUrl("/").deleteCookies("JSESSIONID", "usuario")
                 .and()
                 .exceptionHandling().accessDeniedPage("/403");
+    }
+
+    private AuthenticationSuccessHandler sucessoLogin(){
+        AuthenticationSuccessHandler atsh = new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                Cookie c = new Cookie("usuario", authentication.getName());
+                response.addCookie(c);
+                response.sendRedirect("/");
+            }
+        };
+
+        return atsh;
     }
 }
