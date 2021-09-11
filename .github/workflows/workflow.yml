@@ -1,12 +1,12 @@
-#Workflow name
-name: CI/CD Pipeline
+# #Workflow name
+# name: CI/CD Pipeline
 on:
   #Manually trigger workflow runs
   workflow_dispatch:
   #Trigger the workflow on push from the main branch
-  push:
-    branches:
-      - master
+#   push:
+#     branches:
+#       - master
 jobs:
   #Test's job
   tests:
@@ -59,7 +59,8 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       #Build the application using Maven
       - name: Build with Maven
-        run: mvn -B package -DskipTests --file pom.xml
+        run: mvn -B package -DskipTests --file pom.xml 
+        
       #Build the application using Maven
       - name: Upload JAR
         #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
@@ -68,18 +69,29 @@ jobs:
           #Set artifact name
           name: artifact
           #From this path
-          path: target/cecafestore-0.0.1-SNAPSHOT.jar
+          path: target/cecafes-0.0.1-SNAPSHOT.jar
   #Deploy's job
-#   deploy:
-#     needs: build
-#     name: Deploy
-#     runs-on: ubuntu-latest
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout the code
-#         uses: actions/checkout@v1
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v1
+        
+      - uses: actions/download-artifact@master
+        with:
+          name: artifact
+          path: target/
 
-#       - name: Deploy to AWS
-#         run: |
-#           ssh -o ${{ secrets.SSH_KEY }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir /home/ubuntu/teste_pipeline'
+      - name: Deploy to AWS
+        run: |
+          rm -f aux_temp.pem
+          echo "${{ secrets.SSH_KEY }}" >> aux_temp.pem
+          chmod 400 aux_temp.pem
+          ssh -o stricthostkeychecking=no -i aux_temp.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo systemctl stop cecafestore.service'
+          scp -o stricthostkeychecking=no -i aux_temp.pem -v ./target/cecafes-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/cecafestore/target
+          ssh -o stricthostkeychecking=no -i aux_temp.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'chmod 777 /home/ubuntu/cecafestore/target/cecafes-0.0.1-SNAPSHOT.jar'
+          ssh -o stricthostkeychecking=no -i aux_temp.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo systemctl restart cecafestore.service'
         
