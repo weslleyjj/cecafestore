@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CecafeStore</title>
+
+    <link rel="shortcut icon" href="/img/favicon.png" />
+
+    <!-- Google Font -->
+    <link th:href="@{'https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap'}" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link  href="/css/bootstrap.min.css" rel="stylesheet">
+    <link  href="/css/font-awesome.min.css" rel="stylesheet">
+    <link  href="/css/elegant-icons.css" rel="stylesheet">
+    <link  href="/css/nice-select.css" rel="stylesheet">
+    <link  href="/css/jquery-ui.min.css" rel="stylesheet">
+    <link  href="/css/owl.carousel.min.css" rel="stylesheet">
+    <link  href="/css/slicknav.min.css" rel="stylesheet" >
+    <link  href="/css/style.css" rel="stylesheet" >
+
+    <style>
+        input.error {
+            border-color: red;
+            font-weight: 300;
+            color: red;
+        }
+
+        label.error {
+            color: red;
+            font-size: 1rem;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/headerFragment :: header}"></div>
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Editar Funcionário</h2>
+                    <div class="breadcrumb__option">
+                        <a href="/">Início</a>
+                        <span>Editar Funcionário</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <form id="form-func" th:method="POST" th:action="@{/saveFuncionarioEdit}" th:object="${usuario}">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h4 class="text-center">Preencha os campos</h4>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12">
+                                <div class="checkout__input">
+                                    <p>Nome Completo<span>*</span></p>
+                                    <input type="hidden" th:field="*{id}" readonly />
+                                    <input style="color: black; border-color: black" th:field="*{nome}" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>CPF<span>*</span></p>
+                                    <input style="color: black; border-color: black" data-mask="000.000.000-00" data-mask-selectonfocus="true" th:field="*{cpf}" type="text" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Matrícula<span>*</span></p>
+                                    <input style="color: black; border-color: black" th:field="*{matricula}" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Crendenciais de acesso<span>*</span></p>
+                            <input style="color: black; border-color: black" th:field="*{user.username}" type="text" placeholder="Login" class="checkout__input__add" required>
+                            <input style="color: black; border-color: black" th:field="*{user.password}" type="password" placeholder="Senha" class="checkout__input__add" required>
+                            <input style="color: black; border-color: black" type="password" placeholder="Confirmação de senha" class="checkout__input__add" required>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="d-flex justify-content-center">
+                <button id="confimar-cadastro" style="width: 66%" class="site-btn">CADASTRAR</button>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Checkout Section End -->
+
+<div th:replace="~{fragments/footerFragment :: footer}"></div>
+
+<!-- Js Plugins -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.mask.js"></script>
+<script src="/js/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#form-func").validate();
+    })
+</script>
+<script>
+    $("#confimar-cadastro").click(function(){
+        if ($("#form-func").valid()){
+            Swal.fire({
+                icon: 'question',
+                title: 'Salvar alterações?',
+                showDenyButton: true,
+                confirmButtonText: `Salvar`,
+                denyButtonText: `Cancelar`
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("form-func").submit();
+                }
+            })
+        }
+    });
+</script>
+</body>
+
+</html>

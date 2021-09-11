@@ -1,26 +1,24 @@
 package br.com.cecafes.controller;
 
-import br.com.cecafes.model.Produto;
-import br.com.cecafes.model.ProdutoCecafes;
-import br.com.cecafes.service.MessageService;
-import br.com.cecafes.service.ProdutoCecafesService;
-import br.com.cecafes.service.ProdutoService;
+import br.com.cecafes.model.*;
+import br.com.cecafes.repository.UserRepository;
+import br.com.cecafes.security.MyUserDetails;
+import br.com.cecafes.service.*;
 import br.com.cecafes.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import javax.validation.Valid;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,11 +27,21 @@ public class HomeController {
     private ProdutoService produtoService;
     private ProdutoCecafesService produtoCecafesService;
     private MessageService messageService;
+    private PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
+    private ProdutorService produtorService;
+    private FuncionarioCecafesService funcionarioCecafesService;
+    private CompradorService compradorService;
 
     @Autowired
-    public HomeController(ProdutoCecafesService produtoCecafesService, MessageService messageService) {
+    public HomeController(ProdutoCecafesService produtoCecafesService, MessageService messageService, UserRepository userRepository, ProdutorService produtorService, CompradorService compradorService, FuncionarioCecafesService funcionarioCecafesService, PasswordEncoder passwordEncoder) {
         this.produtoCecafesService = produtoCecafesService;
         this.messageService = messageService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.produtorService = produtorService;
+        this.funcionarioCecafesService = funcionarioCecafesService;
+        this.compradorService = compradorService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -126,6 +134,114 @@ public class HomeController {
         return "busca";
     }
 
+    @RequestMapping(value = "/detalhesUsuario")
+    public ModelAndView detalhesUsuario() {
+        ModelAndView modelAndView;
+        User user = getUser();
+
+        if (user.getRoles().iterator().next().getName().equals("PRODUTOR")) {
+            modelAndView = new ModelAndView("detalhesUsuario");
+            Produtor produtor = getProdutor(user);
+            modelAndView.addObject("usuario", produtor);
+
+        } else if (user.getRoles().iterator().next().getName().equals("COMPRADOR")) {
+            modelAndView = new ModelAndView("detalhesUsuario");
+            Comprador comprador = getComprador(user);
+            modelAndView.addObject("usuario", comprador);
+
+        } else if (user.getRoles().iterator().next().getName().equals("FUNCIONARIO")) {
+            modelAndView = new ModelAndView("detalhesFuncionario");
+            FuncionarioCecafes funcionarioCecafes = getFuncionario(user);
+            modelAndView.addObject("usuario", funcionarioCecafes);
+
+        } else {
+            modelAndView = new ModelAndView("index");
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/saveFuncionarioEdit")
+    public String saveFuncionarioEdit(@ModelAttribute @Valid FuncionarioCecafes funcionarioCecafes) {
+        User user = getUser();
+
+        funcionarioCecafes.getUser().setPassword(passwordEncoder.encode(funcionarioCecafes.getUser().getPassword()));
+        Set<Role> papel = new HashSet<>();
+        papel.add(new Role().builder().id(3).name("FUNCIONARIO").build());
+        funcionarioCecafes.getUser().setRoles(papel);
+        funcionarioCecafes.getUser().setEnabled(true);
+
+        funcionarioCecafes.getUser().setId(user.getId());
+
+        userRepository.save(funcionarioCecafes.getUser());
+        funcionarioCecafesService.save(funcionarioCecafes);
+
+        return "redirect:/detalhesUsuario";
+    }
+
+    @RequestMapping(value = "/saveCompradorEdit")
+    public String saveCompradorEdit(@ModelAttribute @Valid Comprador comprador) {
+        User user = getUser();
+
+        comprador.getUser().setPassword(passwordEncoder.encode(comprador.getUser().getPassword()));
+        Set<Role> papel = new HashSet<>();
+        papel.add(new Role().builder().id(2).name("COMPRADOR").build());
+        comprador.getUser().setRoles(papel);
+        comprador.getUser().setEnabled(true);
+
+        comprador.getUser().setId(user.getId());
+
+        userRepository.save(comprador.getUser());
+        compradorService.save(comprador);
+
+        return "redirect:/detalhesUsuario";
+    }
+
+    @RequestMapping(value = "/saveProdutorEdit")
+    public String saveProdutorEdit(@ModelAttribute @Valid Produtor produtor) {
+        User user = getUser();
+
+        produtor.getUser().setPassword(passwordEncoder.encode(produtor.getUser().getPassword()));
+        Set<Role> papel = new HashSet<>();
+        papel.add(new Role().builder().id(1).name("PRODUTOR").build());
+        produtor.getUser().setRoles(papel);
+        produtor.getUser().setEnabled(true);
+
+        produtor.getUser().setId(user.getId());
+
+        userRepository.save(produtor.getUser());
+        produtorService.save(produtor);
+
+        return "redirect:/detalhesUsuario";
+    }
+
+    @RequestMapping(value = "/editarUsuario")
+    public ModelAndView editarUsuario() {
+        ModelAndView modelAndView;
+        User user = getUser();
+
+        if (user.getRoles().iterator().next().getName().equals("PRODUTOR")) {
+            modelAndView = new ModelAndView("editarProdutor");
+            Produtor produtor = getProdutor(user);
+            modelAndView.addObject("usuario", produtor);
+
+        } else if (user.getRoles().iterator().next().getName().equals("COMPRADOR")) {
+            modelAndView = new ModelAndView("editarComprador");
+            Comprador comprador = getComprador(user);
+            modelAndView.addObject("usuario", comprador);
+
+        } else if (user.getRoles().iterator().next().getName().equals("FUNCIONARIO")) {
+            modelAndView = new ModelAndView("editarFuncionario");
+            FuncionarioCecafes funcionarioCecafes = getFuncionario(user);
+            modelAndView.addObject("usuario", funcionarioCecafes);
+
+        } else {
+            modelAndView = new ModelAndView("index");
+        }
+
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/shop-grid", method = RequestMethod.GET)
     public String shopGrid() {
         return "shop-grid-template";
@@ -161,6 +277,31 @@ public class HomeController {
         return "blog";
     }
 
+    private User getUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        User user = userRepository.getUserByUsername(userDetails.getUsername());
+
+        return user;
+    }
+
+    private Produtor getProdutor(User user){
+        Produtor produtor = produtorService.findByUsername(user.getUsername());
+
+        return produtor;
+    }
+
+    private FuncionarioCecafes getFuncionario(User user){
+        FuncionarioCecafes funcionarioCecafes = funcionarioCecafesService.findByUsername(user.getUsername());
+
+        return funcionarioCecafes;
+    }
+
+    private Comprador getComprador(User user){
+        Comprador comprador = compradorService.findByUsername(user.getUsername());
+
+        return comprador;
+    }
 }
 
 /*
