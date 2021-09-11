@@ -56,7 +56,9 @@
     <div class="humberger__menu__contact">
         <ul>
             <li><i class="fa fa-envelope"></i> cecafestore@gmail.com</li>
-            <li>Agende já seu pedido</li>
+            <div class="d-inline" sec:authorize="isAuthenticated()">
+                <a id="nomeUser" th:href="@{/detalhesUsuario}"></a>
+            </div>
         </ul>
     </div>
 </div>
@@ -71,7 +73,9 @@
                     <div class="header__top__left">
                         <ul>
                             <li><i class="fa fa-envelope"></i> cecafestore@gmail.com</li>
-                            <li>Agende já o seu pedido</li>
+                            <div class="d-inline" sec:authorize="isAuthenticated()">
+                                <a id="nomeUsuario" th:href="@{/detalhesUsuario}"></a>
+                            </div>
                         </ul>
                     </div>
                 </div>
@@ -214,6 +218,13 @@
             element.innerHTML = count;
         }
     }
+
+    const nomeUsuario = document.getElementById("nomeUsuario");
+    const nomeUser = document.getElementById("nomeUser");
+    const nomeCookie = getCookie("usuario");
+    nomeUsuario.innerText = "Olá, " + nomeCookie;
+    nomeUser.innerText = "Olá, " + nomeCookie;
+
 </script>
 <script src="/js/sweetalert2.all.min.js" rel="script"></script>
 <script>
