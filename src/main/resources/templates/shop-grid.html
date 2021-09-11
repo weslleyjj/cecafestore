@@ -183,7 +183,7 @@
                                     <div class="product__discount__item__text">
                                         <span th:text="${produto.getCategoria()}"></span>
                                         <h5><a th:text="${produto.getNome()}" th:href="@{'/shop/' + ${produto.getId()}}">Raisin’n’nuts</a></h5>
-                                        <div class="product__item__price" th:text="'R$' + ${produto.getPreco()}">$30.00 <span>$36.00</span></div>
+                                        <div class="product__item__price" th:text="'R$' + ${produto.getPreco()} + '/' + ${produto.unidadeMedida}"><span></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -221,7 +221,7 @@
                             </div>
                             <div class="product__item__text">
                                 <h6><a th:href="@{'/shop/' + ${produto.id}}" th:text="${produto.getNome()}"></a></h6>
-                                <h5 th:text="'R$' + ${produto.getPreco()}"></h5>
+                                <h5 th:text="'R$' + ${produto.getPreco()} + '/' + ${produto.unidadeMedida}"></h5>
                             </div>
                         </div>
                     </div>

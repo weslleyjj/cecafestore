@@ -103,7 +103,7 @@
                     </div>
                     <div class="featured__item__text">
                         <h6><a th:href="@{'/shop/' + ${produto.id}}" th:text="${produto.getNome()}"></a></h6>
-                        <h5 th:text="'R$' + ${produto.getPreco()}"></h5>
+                        <h5 th:text="'R$' + ${produto.getPreco()} + '/' + ${produto.unidadeMedida}"></h5>
                     </div>
                 </div>
             </div>
