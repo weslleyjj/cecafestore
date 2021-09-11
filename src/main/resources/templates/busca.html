@@ -136,6 +136,7 @@
                     title: 'Produto Adicionado',
                     text: 'O produto foi adicionado ao seu carrinho!',
                 })
+                countQtdeProdutos()
             },
             error: function (xhr, textStatus, error){
                 console.log(xhr)
@@ -146,8 +147,6 @@
                 })
             }
         });
-
-        countQtdeProdutos();
     }
 </script>
 </html>
