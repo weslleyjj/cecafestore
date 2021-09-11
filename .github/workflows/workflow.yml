@@ -4,9 +4,9 @@ on:
   #Manually trigger workflow runs
   workflow_dispatch:
   #Trigger the workflow on push from the main branch
-#   push:
-#     branches:
-#       - master
+  push:
+    branches:
+      - master
 jobs:
   #Test's job
   tests:
@@ -90,13 +90,6 @@ jobs:
           rm -f aux_temp.pem
           echo "${{ secrets.SSH_KEY }}" >> aux_temp.pem
           chmod 400 aux_temp.pem
-          ls
-          pwd
-          ls target/
-          ls ./target/
-          ls target/cecafes-0.0.1-SNAPSHOT.jar
-          cp -r target/cecafes-0.0.1-SNAPSHOT.jar ./cecafestore.jar
-          ls -lah
           ssh -o stricthostkeychecking=no -i aux_temp.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'sudo systemctl stop cecafestore.service'
           scp -o stricthostkeychecking=no -i aux_temp.pem -v ./target/cecafes-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/cecafestore/target
           ssh -o stricthostkeychecking=no -i aux_temp.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'chmod 777 /home/ubuntu/cecafestore/target/cecafes-0.0.1-SNAPSHOT.jar'
